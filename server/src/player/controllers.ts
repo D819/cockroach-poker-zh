@@ -4,7 +4,6 @@ import {
 } from "../../../client/src/types/event.types";
 import { Player } from "../../../client/src/types/game.types";
 import { GameManager } from "../game/manager";
-import { getColors } from "../../../client/src/utils/data-utils";
 
 export const joinPlayerToGame: ClientEventListeners[ClientEvent.JOIN_GAME] = (
   gameId: string,
@@ -14,7 +13,6 @@ export const joinPlayerToGame: ClientEventListeners[ClientEvent.JOIN_GAME] = (
   gameManager.managePlayer(playerData.socketId).set({
     ...playerData,
     gameId,
-    colors: getColors(5),
   });
 };
 
