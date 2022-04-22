@@ -10,8 +10,8 @@ export interface Game {
   settings: GameSettings;
 }
 
-export interface Card<Suit extends CardSuit = CardSuit> {
-  id: `${Suit} ${CardVariant}`;
+export interface Card<Suit extends CardSuit = CardSuit, Variant extends CardVariant = CardVariant> {
+  id: `${Suit} ${Variant}`;
   suit: Suit;
   variant: CardVariant;
 }
@@ -28,6 +28,10 @@ export enum CardSuit {
 }
 
 export type CardVariant = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "Royal";
+
+type InitialCardSuitNonRoyal<Suit extends CardSuit> = [Card<Suit, "1">, Card<Suit, "2">, Card<Suit, "3">, Card<Suit, "4">, Card<Suit, "5">, Card<Suit, "6">, Card<Suit, "7">, Card<Suit, "8">]
+
+export type InitialCardSuit<Suit extends CardSuit, IsRoyal extends boolean = false> = IsRoyal extends false ? InitialCardSuitNonRoyal<Suit> : [...InitialCardSuitNonRoyal<Suit>, Card<Suit, "Royal">]
 
 export interface CardPass {
   from: string;

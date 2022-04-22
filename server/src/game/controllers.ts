@@ -30,8 +30,7 @@ export const startGame: ClientEventListeners[ClientEvent.START_GAME] = (
   gameId: string
 ): void => {
   const gameManager = GameManager.for(gameId);
-  // todo: deal cards out
-
+  gameManager.dealInitialHands();
   gameManager.update((game) => {
     game.status = GameStatus.ONGOING;
   });

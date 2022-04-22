@@ -1,10 +1,12 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, shuffle } from "lodash";
 import { ServerEvent, ServerIO } from "../../../client/src/types/event.types";
 import {
   GameNotification,
   NotificationForPlayer,
 } from "../../../client/src/types/notification.types";
+import { INITIAL_DECK_NON_ROYAL } from '../../../client/src/utils/deck-utils';
 import {
+  Card,
   Game,
   GameStatus,
   Player,
@@ -109,6 +111,26 @@ export class GameManager {
     } else {
       return { status: "error" };
     }
+  }
+
+  public dealInitialHands(): void {
+    const deck = shuffle(INITIAL_DECK_NON_ROYAL);
+    const playerIds = Object.keys(this.players());
+    const dealtCards: Record<string, Card[]> = Object.fromEntries(playerIds.map(id => [id, []]))
+
+    for (
+      let deckIdx = 0, playerIdx = 0;
+      deckIdx < deck.length;
+      deckIdx++, playerIdx++
+    ) {
+      const playerIdx = deckIdx % playerIds.length;
+      const playerId = playerIds[playerIdx];
+      dealtCards[playerId].push(deck[deckIdx]);
+    }
+
+    this.updateEachPlayer(player => {
+      player.cards.hand = dealtCards[player.socketId]
+    })
   }
 
   public getPlayer(playerId: string): Player | undefined {
