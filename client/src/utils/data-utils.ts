@@ -7,11 +7,13 @@ import {
 
 export const createDummyGame = ({
   id = generateRandomGameId(),
+  active = {},
   players = {},
   status = GameStatus.LOBBY,
 }: Partial<Game> = {}): Game => {
   return {
     id,
+    active,
     players: mapValues(players, (player): Player => ({ ...player, gameId: id })),
     status,
     settings: { royalVariant: false },

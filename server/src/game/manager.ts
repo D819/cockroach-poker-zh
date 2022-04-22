@@ -63,6 +63,7 @@ export class GameManager {
     const gameId = generateRandomGameId();
     const game: Game = {
       id: gameId,
+      active: {},
       players: {
         [socketId]: {
           name: playerName,
@@ -115,14 +116,10 @@ export class GameManager {
 
   public dealInitialHands(): void {
     const deck = shuffle(INITIAL_DECK_NON_ROYAL);
-    const playerIds = Object.keys(this.players());
+    const playerIds = shuffle(Object.keys(this.players()));
     const dealtCards: Record<string, Card[]> = Object.fromEntries(playerIds.map(id => [id, []]))
 
-    for (
-      let deckIdx = 0, playerIdx = 0;
-      deckIdx < deck.length;
-      deckIdx++, playerIdx++
-    ) {
+    for (let deckIdx = 0; deckIdx < deck.length; deckIdx++) {
       const playerIdx = deckIdx % playerIds.length;
       const playerId = playerIds[playerIdx];
       dealtCards[playerId].push(deck[deckIdx]);
@@ -130,6 +127,10 @@ export class GameManager {
 
     this.updateEachPlayer(player => {
       player.cards.hand = dealtCards[player.socketId]
+    })
+
+    this.update(game => {
+      game.active.playerId = playerIds[0];
     })
   }
 
@@ -200,7 +201,7 @@ export class GameManager {
   public resetGame(): void {
     this.update((game) => {
       game.status = GameStatus.LOBBY;
-      delete game.activeCard
+      game.active = {}
     });
 
     this.updateEachPlayer((player) => {
