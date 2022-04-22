@@ -1,7 +1,7 @@
 import { cloneDeep } from "lodash";
 import { ServerEvent } from "../../../client/src/types/event.types";
 import { Player } from "../../../client/src/types/game.types";
-import { GameManager, Operation } from "../game/model";
+import { GameManager, Operation } from "../game/manager";
 import {
   NotificationForPlayer,
 } from "../../../client/src/types/notification.types";

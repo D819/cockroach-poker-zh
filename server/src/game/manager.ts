@@ -9,7 +9,7 @@ import {
   GameStatus,
   Player,
 } from "../../../client/src/types/game.types";
-import { PlayerManager } from "../player/model";
+import { PlayerManager } from "../player/manager";
 import { SERVER_IO } from "../server";
 import {
   generateRandomGameId,

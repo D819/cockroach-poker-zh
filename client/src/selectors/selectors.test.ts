@@ -1,6 +1,6 @@
 import { Game, RoomName } from "../types/game.types";
 import { createDummyGame, createDummyPlayers } from "../utils/data-utils";
-import { GameManager } from "../../../server/src/game/model";
+import { GameManager } from "../../../server/src/game/manager";
 import { TeamColor } from "../types/role.types";
 import { selectTeamWinCheckResult } from "./endgame-selectors";
 

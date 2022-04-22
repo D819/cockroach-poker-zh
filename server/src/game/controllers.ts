@@ -10,7 +10,7 @@ import {
   RoundStatus,
 } from "../../../client/src/types/game.types";
 import { RoleKey } from "../../../client/src/types/role.types";
-import { GameManager } from "./model";
+import { GameManager } from "./manager";
 import { NotificationType } from "../../../client/src/types/notification.types";
 import {
   PlayerActionAbdicationOffered,

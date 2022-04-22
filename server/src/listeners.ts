@@ -30,7 +30,7 @@ import {
   kickPlayer,
 } from "./game/controllers";
 import { joinPlayerToGame, updatePlayer } from "./player/controllers";
-import { GameManager } from "./game/model";
+import { GameManager } from "./game/manager";
 
 export const addListeners = (socket: ServerSocket): void => {
   const listeners: ClientEventListeners = {

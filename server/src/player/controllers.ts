@@ -3,7 +3,7 @@ import {
   ClientEventListeners,
 } from "../../../client/src/types/event.types";
 import { Player } from "../../../client/src/types/game.types";
-import { GameManager } from "../game/model";
+import { GameManager } from "../game/manager";
 import { getColors } from "../../../client/src/utils/data-utils";
 
 export const joinPlayerToGame: ClientEventListeners[ClientEvent.JOIN_GAME] = (
