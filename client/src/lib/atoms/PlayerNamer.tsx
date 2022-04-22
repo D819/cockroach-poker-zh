@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Input } from "semantic-ui-react";
+import { Button, TextInput } from "@mantine/core";
 
 interface Props {
   handleSetName(name: string): void;
@@ -21,14 +21,14 @@ function PlayerNamer({ handleSetName, takenNames }: Props): JSX.Element {
 
   return (
     <>
-      <Input
+      <TextInput
         placeholder="Enter your name"
         value={inputText}
         onChange={(e) => {
           setInputText(e.target.value);
         }}
       />
-      <Button primary onClick={handleSetClick}>
+      <Button onClick={handleSetClick}>
         Set player name
       </Button>
     </>

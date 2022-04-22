@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Game, Player } from "../../../types/game.types";
 import { GameHandlers } from "../GamePage";
 import PlayerList from '../../../lib/atoms/PlayerList';
-import { Button, Message } from 'semantic-ui-react';
+import { Alert, Button } from '@mantine/core';
 import { useCopyToClipboard } from 'react-use';
 
 interface Props
@@ -97,12 +97,13 @@ function GameLobby({
           Copy game join link
         </StyledA>
         {!isAtMinimumPlayerCount && (
-          <Message color="yellow">
-            <Message.Header>
-              Invite your friends!
-            </Message.Header>
-            <Message.Content>At least three players are needed to start the game</Message.Content>
-          </Message>
+          <Alert
+            title="Invite your friends!"
+            color="yellow"
+            style={{ margin: '10px' }}
+          >
+            At least three players are needed to start the game
+          </Alert>
         )}
       </Header>
       <StyledPlayerList
@@ -129,8 +130,7 @@ function GameLobby({
         {player.isHost && (
           <>
             <Button
-              fluid
-              primary
+              fullWidth
               disabled={!isAtMinimumPlayerCount}
               onClick={() => {
                 onGameStart();
