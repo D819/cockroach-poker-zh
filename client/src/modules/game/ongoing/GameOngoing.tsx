@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { Image } from '@mantine/core';
-import PlayerList from "../../../lib/atoms/PlayerList";
+import { Fragment } from 'react';
 import {
   CardSuit,
   Game,
@@ -8,6 +7,7 @@ import {
 } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
 import CollectedCards from "./components/CollectedCards";
+import ActiveCard from "./components/ActiveCard";
 
 interface Props {
   game: Game;
@@ -23,7 +23,7 @@ const Container = styled.div`
 const PlayerGrid = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: min-content min-content auto auto;
+  grid-template-columns: min-content min-content auto 50px;
   grid-row-gap: 10px;
   grid-column-gap: 10px;
 `;
@@ -38,7 +38,7 @@ function GameOngoing({
     <Container className="active-contents">
       <PlayerGrid>
         {players.map((player, idx) => (
-          <>
+          <Fragment key={player.socketId}>
             <p style={{
               gridColumnStart: 1,
               gridRowStart: idx + 1
@@ -66,7 +66,13 @@ function GameOngoing({
                 )}
               />
             </div>
-          </>
+            {game.active.card && game.active.playerId === player.socketId && (
+              <ActiveCard
+                style={{ gridColumnStart: 4, gridRowStart: idx + 1 }}
+                card={game.active.card}
+              />
+            )}
+          </Fragment>
         ))}
       </PlayerGrid>
     </Container>

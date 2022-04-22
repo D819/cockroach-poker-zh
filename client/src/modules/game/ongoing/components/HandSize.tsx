@@ -26,6 +26,7 @@ export default function HandSize({ className, handSize, style }: Props): JSX.Ele
       <Image
         src="/assets/card-back.jpg"
         height="50px"
+        width="auto"
         style={{ gridArea: "hand-size" }}
       />
       <p>{handSize}</p>
