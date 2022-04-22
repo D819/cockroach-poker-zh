@@ -1,9 +1,11 @@
 import { useQuery } from "react-query";
 import { useHistory } from "react-router";
-import { Button, Icon, Image, Message } from "semantic-ui-react";
+import { Alert, Button, Image } from "@mantine/core";
+// import { Button, Icon, Image, Message } from "semantic-ui-react";
 import useSocketListener from "../hooks/useSocketListener";
 import { socketUrl, useSocket } from "../socket";
 import { ClientEvent, ServerEvent } from "../types/event.types";
+import { Icon } from "semantic-ui-react";
 
 function IndexRoute(): JSX.Element {
   const socket = useSocket();
@@ -38,29 +40,26 @@ function IndexRoute(): JSX.Element {
       }}
     >
       <div className="flex-center" style={{ textAlign: "center" }}>
-        <h1>Two Rooms and a Boom</h1>
-        <Image src="/assets/2r1b-dual.jpeg" size="small" />
+        <h1>Cockroach Poker</h1>
+        <Image src="/assets/cockroach-poker.jpg" style={{ maxHeight: '50%' }} />
 
         {isLoading ? (
-          <>
-            <Message icon>
-              <Icon name="circle notched" loading />
-              <Message.Content>
-                <Message.Header>Loading...</Message.Header>
-                <p>This can be 30-40s on first boot. Thanks for waiting!</p>
-              </Message.Content>
-            </Message>
-          </>
+          <Alert
+            icon={<Icon name="circle notched" loading />}
+            title="Loading..."
+            style={{ textAlign: 'left', margin: '10px' }}
+          >
+            This can be 30-40s on first boot. Thanks for waiting!
+          </Alert>
         ) : (
           <p style={{ margin: "5%" }}>
-            Find your teammates, establish trust, and exchange hostages before
-            time runs out and the bomb explodes!
+            The social bluffing game of creepy critters!
           </p>
         )}
       </div>
       <div style={{ width: "100%" }}>
-        <Button
-          fluid
+        {/* <Button
+          fullWidth
           color="black"
           onClick={() => window.open("https://github.com/richardcrng/2r1b")}
         >
@@ -68,13 +67,13 @@ function IndexRoute(): JSX.Element {
         </Button>
         <Button
           disabled={isLoading}
-          fluid
+          fullWidth
           color="green"
           onClick={handleJoinGame}
         >
           JOIN
-        </Button>
-        <Button disabled={isLoading} fluid primary onClick={handleNewGame}>
+        </Button> */}
+        <Button disabled={isLoading} fullWidth onClick={handleNewGame}>
           NEW
         </Button>
       </div>

@@ -38,7 +38,6 @@ export interface CardPass {
 export enum GameStatus {
   LOBBY = "LOBBY",
   ONGOING = "ONGOING",
-  COMPLETE = "COMPLETE",
 }
 
 export interface Player {
