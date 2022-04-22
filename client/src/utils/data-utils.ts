@@ -1,31 +1,20 @@
 import { mapValues } from "lodash";
 import {
-  createStartingRounds,
   Game,
   GameStatus,
   Player,
-  RolesCount,
 } from "../types/game.types";
-import { ALL_ROLES } from "../types/role.types";
-import { DEFAULT_STARTING_ROLES_COUNT } from "./role-utils";
 
 export const createDummyGame = ({
   id = generateRandomGameId(),
   players = {},
-  rounds = createStartingRounds(),
-  rolesCount = DEFAULT_STARTING_ROLES_COUNT,
   status = GameStatus.LOBBY,
-}: Partial<
-  Omit<Game, "rolesCount"> & { rolesCount: Partial<RolesCount> }
-> = {}): Game => {
+}: Partial<Game> = {}): Game => {
   return {
     id,
-    players: mapValues(players, (player) => ({ ...player, gameId: id })),
-    endgame: {},
-    rounds,
-    rolesCount: createRolesCount(rolesCount),
+    players: mapValues(players, (player): Player => ({ ...player, gameId: id })),
     status,
-    settings: { colorSharing: false },
+    settings: { royalVariant: false },
   };
 };
 
@@ -46,33 +35,20 @@ export const createDummyPlayer = ({
   gameId,
   name,
   isHost,
-  role,
-  pendingActions = {},
+  cards = { hand: [], area: [] }
 }: Partial<Player> = {}): Player => {
   return {
     socketId,
     gameId,
     name,
     isHost,
-    role,
-    pendingActions,
-    conditions: {
-      shareRecords: [],
-    },
+    cards
   };
 };
 
 export const generateDummySocketId = (): string => {
   return `-${generateRandomGameId().toLowerCase()}${generateRandomGameId().toLowerCase()}`;
 };
-
-export const createRolesCount = (
-  partialRolesCount: Partial<RolesCount>
-): RolesCount => ({
-  ...mapValues(ALL_ROLES, () => 0),
-  ...partialRolesCount,
-});
-
 export const generateRandomGameId = (): string => {
   const stringOptions = "ABCDEFGHIJLKMNOPQRSTUVWXYZ1234567890";
   const randomChars = [...Array(5).keys()].map(
