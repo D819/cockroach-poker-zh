@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { Image } from '@mantine/core';
 
+interface Props {
+  className?: string;
+  handSize: number;
+  style?: React.CSSProperties;
+}
+
 const HandSizeContainer = styled.div`
   display: grid;
   grid-template-areas: "hand-size";
@@ -14,9 +20,9 @@ const HandSizeContainer = styled.div`
   }
 `;
 
-export default function HandSize({ handSize }: { handSize: number }): JSX.Element {
+export default function HandSize({ className, handSize, style }: Props): JSX.Element {
   return (
-    <HandSizeContainer>
+    <HandSizeContainer {...{ className, style }}>
       <Image
         src="/assets/card-back.jpg"
         height="50px"
