@@ -1,5 +1,8 @@
 export interface Game {
   id: string;
+  activeCard?: Card & {
+    passHistory: CardPass[];
+  };
   players: {
     [playerSocketId: string]: Player;
   };
@@ -25,6 +28,12 @@ export enum CardSuit {
 }
 
 export type CardVariant = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "Royal";
+
+export interface CardPass {
+  from: string;
+  to: string;
+  claim: CardSuit;
+}
 
 export enum GameStatus {
   LOBBY = "LOBBY",
