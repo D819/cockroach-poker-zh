@@ -44,8 +44,15 @@ export enum ServerEvent {
  * Listeners for `ClientEvent`s
  */
 export type ClientEventListeners = {
-
   [ClientEvent.CREATE_GAME]: (socketId: string, playerName?: string) => void;
+
+  [ClientEvent.GET_GAME]: (gameId: string) => void;
+
+  [ClientEvent.GET_PLAYER]: (
+    gameId: string,
+    playerId: string,
+    aliasIds: string[]
+  ) => void;
 
   [ClientEvent.JOIN_GAME]: (gameId: string, player: Player) => void;
 

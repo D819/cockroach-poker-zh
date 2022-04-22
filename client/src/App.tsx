@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import useMobileVH from "./hooks/useMobileVH";
 import GameRoute from "./routes/GameRoute";
 import IndexRoute from "./routes/IndexRoute";
@@ -11,7 +11,7 @@ function App(): JSX.Element {
 
   return (
     <Router>
-      <ToastContainer autoClose={3000} draggablePercent={30} />
+      {/* <ToastContainer autoClose={3000} draggablePercent={30} /> */}
       <main
         className="background"
         style={{

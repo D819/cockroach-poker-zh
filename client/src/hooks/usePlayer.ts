@@ -5,7 +5,6 @@ import { useSocket } from "../socket";
 import { ClientEvent, ServerEvent } from "../types/event.types";
 import { Player } from "../types/game.types";
 import useSocketListener from "./useSocketListener";
-import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
 interface UsePlayerResult {
@@ -68,15 +67,6 @@ export default function usePlayer(
       ])
     );
   });
-
-  useSocketListener(
-    ServerEvent.PLAYER_NOTIFICATION,
-    (playersToNotify, notification) => {
-      if (playerId && playersToNotify[playerId]) {
-        toast(notification.message);
-      }
-    }
-  );
 
   return state;
 }
