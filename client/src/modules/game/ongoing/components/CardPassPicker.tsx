@@ -10,6 +10,13 @@ interface Props {
   pickCard?: boolean;
   players: Player[];
   disabledPlayerIds: string[];
+  onSubmit?(selection: CardPassSelection): void;
+}
+
+interface CardPassSelection {
+  card?: CardSuit;
+  claim: CardSuit;
+  playerId: string;
 }
 
 const PlayerPickChoice = styled.div`
@@ -23,15 +30,9 @@ const PlayerPickChoice = styled.div`
   }
 `;
 
-interface SelectionState {
-  card?: CardSuit;
-  claim?: CardSuit;
-  playerId?: string;
-}
+function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds, onSubmit }: Props): JSX.Element {
 
-function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds }: Props): JSX.Element {
-
-  const [selected, setSelected] = useState<SelectionState>({})
+  const [selected, setSelected] = useState<Partial<CardPassSelection>>({})
   
   const isSubmitDisabled = !(selected.claim && selected.playerId && (!pickCard || selected.card))
 
@@ -56,7 +57,17 @@ function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds
         onChange={(playerId) => playerId && setSelected((prev) => ({ ...prev, playerId }))}
         value={selected.playerId}
       />
-      <Button className='submit-button' disabled={isSubmitDisabled} fullWidth>Submit pass</Button>
+      <Button
+        className='submit-button'
+        disabled={isSubmitDisabled}
+        fullWidth
+        onClick={() => {
+          if (onSubmit && selected.claim && selected.playerId) {
+            // ugly to get TS compiler to accept present selected.claim and selected.playerId
+            onSubmit({ ...selected, claim: selected.claim, playerId: selected.playerId });
+          }
+        }}
+      >Submit pass</Button>
     </PlayerPickChoice>
   );
 }
