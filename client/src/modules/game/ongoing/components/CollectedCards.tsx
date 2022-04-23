@@ -6,6 +6,7 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   count: Record<CardSuit, number>;
+  filterEmpty?: boolean;
 }
 
 const Container = styled.div`
@@ -22,10 +23,15 @@ const SuitCount = styled.div`
   margin: 2px;
 `
 
-function CollectedCards({  className, style, count}: Props): JSX.Element {
+function CollectedCards({  className, style, count, filterEmpty }: Props): JSX.Element {
+
+  const countToShow = filterEmpty
+    ? Object.entries(count).filter(([_, n]) => n > 0)
+    : Object.entries(count);
+
   return (
     <Container {...{ className, style }}>
-      {Object.entries(count).map(([suit, count], idx) => (
+      {countToShow.map(([suit, count], idx) => (
         <SuitCount
           key={suit}
           style={{
@@ -36,7 +42,6 @@ function CollectedCards({  className, style, count}: Props): JSX.Element {
             src={`/assets/icons/${suit.toLowerCase()}.jpg`}
             height='25px'
           />
-          {/* <p className='icon'>{suit[0]}</p> */}
           <p>{count}</p>
         </SuitCount>
       ))}

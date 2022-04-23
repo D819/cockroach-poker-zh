@@ -5,7 +5,6 @@ import {
   Player,
 } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
-import CollectedCards from "./components/CollectedCards";
 import ActiveCard from "./components/ActiveCard";
 import { countEachSuit } from '../../../utils/hand-utils';
 import CardCount from "./components/CardCount";
@@ -55,7 +54,7 @@ const PlayerArea = styled.div`
 const PlayerHand = styled.div`
   display: flex;
   align-items: center;
-  column-gap: 5px;
+  justify-content: space-around;
 
   .hand {
     font-weight: bold;
@@ -95,9 +94,9 @@ function GameOngoing({
                 className="hand-count"
                 handSize={listPlayer.cards.hand.length}
               />
-              <CollectedCards
-                className="collected-cards"
+              <CardCount
                 count={countEachSuit(listPlayer.cards.area)}
+                filterEmpty
               />
               {game.active.card &&
                 game.active.playerId === listPlayer.socketId && (
