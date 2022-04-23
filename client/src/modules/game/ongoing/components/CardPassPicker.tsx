@@ -9,7 +9,7 @@ interface Props {
   style?: React.CSSProperties;
   pickCard?: boolean;
   players: Player[];
-  disabledPlayerIds: string[];
+  isPlayerDisabled?(player: Player): boolean;
   onSubmit?(selection: CardPassSelection): void;
 }
 
@@ -30,7 +30,7 @@ const PlayerPickChoice = styled.div`
   }
 `;
 
-function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds, onSubmit }: Props): JSX.Element {
+function CardPassPicker({ className, style, pickCard, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
 
   const [selected, setSelected] = useState<Partial<CardPassSelection>>({})
   
@@ -51,7 +51,7 @@ function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds
         data={players.map((player) => ({
           label: player.name,
           value: player.socketId,
-          disabled: disabledPlayerIds.includes(player.socketId),
+          disabled: isPlayerDisabled(player),
         }))}
         required
         onChange={(playerId) => playerId && setSelected((prev) => ({ ...prev, playerId }))}

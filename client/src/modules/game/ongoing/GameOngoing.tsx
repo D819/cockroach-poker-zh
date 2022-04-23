@@ -13,6 +13,7 @@ import CardCount from "./components/CardCount";
 import { selectActivePlayer } from '../../../selectors/game-selectors';
 import CardPassPicker from "./components/CardPassPicker";
 import { GameHandlers } from "../GamePage";
+import ActiveDecision from "./components/ActiveDecision";
 
 interface Props extends Pick<GameHandlers, 'onCardPass'> {
   game: Game;
@@ -124,16 +125,8 @@ function GameOngoing({
           </Fragment>
         ))}
       </PlayerGrid>
-      {game.active.phase === GamePhase.CARD_BEING_PICKED && isActivePlayer && (
-        <>
-          <Divider label='Your turnt to pass' p='sm' />
-          <CardPassPicker
-            pickCard={!game.active.card}
-            players={players.filter(p => p.socketId !== player.socketId)}
-            disabledPlayerIds={[]}
-            onSubmit={onCardPass}
-          />
-        </>
+      {isActivePlayer && (
+        <ActiveDecision {...{ game, player, players, onCardPass }} />
       )}
     </Container>
   );

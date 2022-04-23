@@ -4,6 +4,7 @@ import {
   ServerEvent,
 } from "../../../client/src/types/event.types";
 import {
+  GamePhase,
   GameStatus,
 } from "../../../client/src/types/game.types";
 import { GameManager } from "./manager";
@@ -31,6 +32,7 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
     if (card) {
       game.active.card = card;
     }
+    game.active.phase = GamePhase.PREDICT_OR_PASS
   })
 }
 
