@@ -4,6 +4,7 @@ export interface Game {
     playerId: string;
     card?: Card;
     passHistory: CardPass[];
+    phase: GamePhase;
   };
   players: {
     [playerSocketId: string]: Player;
@@ -44,6 +45,11 @@ export interface CardPass {
 export enum GameStatus {
   LOBBY = "LOBBY",
   ONGOING = "ONGOING",
+}
+
+export enum GamePhase {
+  CARD_BEING_PICKED = 'card-being-picked',
+  PREDICT_OR_PASS = 'predict-or-pass'
 }
 
 export interface Player {

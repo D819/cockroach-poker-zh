@@ -8,6 +8,7 @@ import { INITIAL_DECK_NON_ROYAL } from '../../../client/src/utils/deck-utils';
 import {
   Card,
   Game,
+  GamePhase,
   GameStatus,
   Player,
 } from "../../../client/src/types/game.types";
@@ -65,7 +66,8 @@ export class GameManager {
       id: gameId,
       active: {
         playerId: socketId,
-        passHistory: []
+        passHistory: [],
+        phase: GamePhase.CARD_BEING_PICKED
       },
       players: {
         [socketId]: {
@@ -215,7 +217,8 @@ export class GameManager {
       game.status = GameStatus.LOBBY;
       game.active = {
         playerId: this.getHostPlayer()?.socketId ?? this.playerIds()[0],
-        passHistory: []
+        passHistory: [],
+        phase: GamePhase.CARD_BEING_PICKED
       }
     });
 

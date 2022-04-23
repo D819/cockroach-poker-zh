@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import { Alert, Divider, Paper, Text } from '@mantine/core';
 import {
   Game,
+  GamePhase,
   Player,
 } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
@@ -56,10 +57,36 @@ const PlayerArea = styled.div`
 const PlayerHand = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  column-gap: 5px;
 
   .hand {
     font-weight: bold;
+  }
+`
+
+const PlayerPickChoice = styled.div`
+  display: grid;
+  grid-template-areas:
+    "pick-label pick-buttons"
+    "claim-label claim-buttons";
+  grid-template-columns: min-content auto;
+  grid-template-rows: min-content min-content;
+
+  .pick-label {
+    grid-area: pick-label;
+  }
+
+  .pick-buttons {
+    grid-area: pick-buttons;
+  }
+
+  .claim-label {
+    grid-area: claim-label;
+  }
+
+  .claim-buttons {
+    grid-area: claim-buttons;
   }
 `
 
@@ -69,7 +96,8 @@ function GameOngoing({
   players
 }: Props): JSX.Element {
 
-  const activePlayer = selectActivePlayer(game)
+  const activePlayer = selectActivePlayer(game);
+  const isActivePlayer = activePlayer.socketId === player.socketId;
 
   return (
     <Container className="active-contents">
@@ -81,7 +109,9 @@ function GameOngoing({
       </Paper>
       <Divider m="md" />
       <Alert title="hi" m="sm">
-        <Text>{activePlayer.socketId === player.socketId ? "You are" : `${activePlayer.name} is`} active player</Text>
+        <Text>
+          {isActivePlayer ? "You are" : `${activePlayer.name} is`} active player
+        </Text>
       </Alert>
       <PlayerGrid>
         {players.map((listPlayer, idx) => (
@@ -90,7 +120,7 @@ function GameOngoing({
               style={{
                 gridColumnStart: 1,
                 gridRowStart: idx + 1,
-                textAlign: 'right'
+                textAlign: "right",
               }}
             >
               {listPlayer.name}
@@ -109,16 +139,32 @@ function GameOngoing({
                 count={countEachSuit(listPlayer.cards.area)}
                 filterEmpty
               />
-              {game.active.card &&
-                game.active.playerId === listPlayer.socketId && (
-                  <ActiveCard className="passed-card" card={game.active.card} />
-                )}
+              {game.active.card && isActivePlayer && (
+                <ActiveCard className="passed-card" card={game.active.card} />
+              )}
             </PlayerArea>
           </Fragment>
         ))}
       </PlayerGrid>
+      {game.active.phase === GamePhase.CARD_BEING_PICKED && isActivePlayer && (
+        <>
+          <Divider m="md" label="Pick a card and a claim" />
+          <PlayerPickChoice>
+            <Text className="pick-label">Pick a card</Text>
+            <Text className="claim-label">Pick a claim</Text>
+          </PlayerPickChoice>
+        </>
+      )}
     </Container>
   );
+}
+
+const infoMessage = (game: Game, player: Player): string => {
+  if (game.active.playerId === player.socketId) {
+    return game.active.card ? "You are passing: choose a card, claim and player" : "something else"
+  } else {
+    return "default"
+  }
 }
 
 export default GameOngoing;

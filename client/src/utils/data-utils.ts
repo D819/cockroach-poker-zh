@@ -1,6 +1,7 @@
 import { mapValues } from "lodash";
 import {
   Game,
+  GamePhase,
   GameStatus,
   Player,
 } from "../types/game.types";
@@ -9,7 +10,8 @@ export const createDummyGame = ({
   id = generateRandomGameId(),
   active = {
     playerId: generateDummySocketId(),
-    passHistory: []
+    passHistory: [],
+    phase: GamePhase.CARD_BEING_PICKED
   },
   players = {},
   status = GameStatus.LOBBY,

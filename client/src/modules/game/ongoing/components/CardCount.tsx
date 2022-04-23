@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { CardSuit } from "../../../../types/game.types";
 import { Image } from '@mantine/core';
+import SuitIcons from './SuitIcons';
 
 interface Props {
   className?: string;
@@ -27,21 +28,38 @@ function CardCount({ className, style, count, filterEmpty }: Props): JSX.Element
 
 
   return (
-    <Container {...{ className, style }}>
-      {countToShow.map(
-        ([suit, count]) => (
-          <SuitCount key={suit}>
-            <Image
-              className="icon"
-              src={`/assets/icons/${suit.toLowerCase()}.jpg`}
-              height="25px"
-            />
-            <p>{count}</p>
-          </SuitCount>
-        )
+    <SuitIcons
+      {...{ className, style }}
+      filter={filterEmpty ? (suit) => count[suit] > 0 : undefined}
+      renderSuit={(suit) => (
+        <SuitCount>
+          <Image
+            className="icon"
+            src={`/assets/icons/${suit.toLowerCase()}.jpg`}
+            height="25px"
+          />
+          <p>{count[suit]}</p>
+        </SuitCount>
       )}
-    </Container>
+    />
   );
+
+  // return (
+  //   <Container {...{ className, style }}>
+  //     {countToShow.map(
+  //       ([suit, count]) => (
+          // <SuitCount key={suit}>
+          //   <Image
+          //     className="icon"
+          //     src={`/assets/icons/${suit.toLowerCase()}.jpg`}
+          //     height="25px"
+          //   />
+          //   <p>{count}</p>
+          // </SuitCount>
+  //       )
+  //     )}
+  //   </Container>
+  // );
 }
 
 export default CardCount;
