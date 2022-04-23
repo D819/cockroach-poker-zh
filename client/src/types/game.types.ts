@@ -13,8 +13,13 @@ export interface Game {
   settings: GameSettings;
 }
 
+export type CardId<
+  Suit extends CardSuit = CardSuit,
+  Variant extends CardVariant = CardVariant
+> = `${Suit} ${Variant}`;
+
 export interface Card<Suit extends CardSuit = CardSuit, Variant extends CardVariant = CardVariant> {
-  id: `${Suit} ${Variant}`;
+  id: CardId<Suit, Variant>;
   suit: Suit;
   variant: CardVariant;
 }

@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 import { ServerEvent } from "../../../client/src/types/event.types";
-import { Player } from "../../../client/src/types/game.types";
+import { CardId, Player } from "../../../client/src/types/game.types";
 import { GameManager, Operation } from "../game/manager";
 import {
   NotificationForPlayer,
@@ -63,6 +63,12 @@ export class PlayerManager {
     } else {
       return { status: "error" };
     }
+  }
+
+  public dropCard(cardId: CardId): void {
+    this.update(player => {
+      player.cards.hand = player.cards.hand.filter(card => card.id !== cardId)
+    })
   }
 
   public getNameOrFail(): string {

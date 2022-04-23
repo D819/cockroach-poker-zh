@@ -31,6 +31,7 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
     game.active.passHistory.push({ from, to, claim });
     if (card) {
       game.active.card = card;
+      gameManager.managePlayer(from).dropCard(card.id);
     }
     game.active.phase = GamePhase.PREDICT_OR_PASS
   })
