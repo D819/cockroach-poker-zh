@@ -23,10 +23,38 @@ const Container = styled.div`
 const PlayerGrid = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: min-content min-content auto 50px;
+  grid-template-columns: min-content 1fr;
   grid-row-gap: 10px;
   grid-column-gap: 10px;
 `;
+
+const PlayerArea = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-areas:
+    "hand-count collected pass"
+    "hand-details hand-details hand-details";
+  grid-template-columns: min-content auto 50px;
+  grid-template-rows: auto min-content;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+
+  .hand-count {
+    grid-area: hand-count;
+  }
+
+  .collected-cards {
+    grid-area: collected;
+  }
+
+  .passed-card {
+    grid-area: pass;
+  }
+
+  .hand-details {
+    grid-area: hand-details;
+  }
+`
 
 function GameOngoing({
   game,
@@ -39,39 +67,44 @@ function GameOngoing({
       <PlayerGrid>
         {players.map((player, idx) => (
           <Fragment key={player.socketId}>
-            <p style={{
-              gridColumnStart: 1,
-              gridRowStart: idx + 1
-            }}>{player.name}</p>
-            <HandSize
+            <p
+              style={{
+                gridColumnStart: 1,
+                gridRowStart: idx + 1,
+              }}
+            >
+              {player.name}
+            </p>
+            <PlayerArea
               style={{
                 gridColumnStart: 2,
                 gridRowStart: idx + 1
               }}
-              handSize={player.cards.hand.length}
-            />
-            <div
-              style={{
-                gridColumnStart: 3,
-                gridRowStart: idx + 1
-              }}
             >
-              <CollectedCards
-                count={player.cards.area.reduce(
-                  (accCount, curr) => ({
-                    ...accCount,
-                    [curr.suit]: accCount[curr.suit] + 1
-                  }),
-                  Object.fromEntries(Object.keys(CardSuit).map(suit => [suit, 0])) as Record<CardSuit, number>
-                )}
+              <HandSize
+                className='hand-count'
+                handSize={player.cards.hand.length}
               />
-            </div>
-            {game.active.card && game.active.playerId === player.socketId && (
-              <ActiveCard
-                style={{ gridColumnStart: 4, gridRowStart: idx + 1 }}
-                card={game.active.card}
-              />
-            )}
+              <div className='collected-cards'>
+                <CollectedCards
+                  count={player.cards.area.reduce(
+                    (accCount, curr) => ({
+                      ...accCount,
+                      [curr.suit]: accCount[curr.suit] + 1,
+                    }),
+                    Object.fromEntries(
+                      Object.keys(CardSuit).map((suit) => [suit, 0])
+                    ) as Record<CardSuit, number>
+                  )}
+                />
+              </div>
+              {game.active.card && game.active.playerId === player.socketId && (
+                <ActiveCard
+                  className='passed-card'
+                  card={game.active.card}
+                />
+              )}
+            </PlayerArea>
           </Fragment>
         ))}
       </PlayerGrid>

@@ -7,7 +7,10 @@ import {
 
 export const createDummyGame = ({
   id = generateRandomGameId(),
-  active = {},
+  active = {
+    playerId: generateDummySocketId(),
+    passHistory: []
+  },
   players = {},
   status = GameStatus.LOBBY,
 }: Partial<Game> = {}): Game => {
