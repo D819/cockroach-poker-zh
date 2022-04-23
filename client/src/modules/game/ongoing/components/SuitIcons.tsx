@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { CardSuit } from "../../../../types/game.types";
-import { Image } from '@mantine/core';
 import { Fragment } from 'react';
+import SuitIcon from './SuitIcon';
 
 interface Props {
   className?: string;
@@ -29,10 +29,7 @@ function SuitIcons({
         <Fragment key={suit}>
           {renderSuit(
             suit,
-            <Image
-              src={`/assets/icons/${suit.toLowerCase().replaceAll(' ', '-')}.jpg`}
-              height="25px"
-            />
+            <SuitIcon suit={suit} />
           )}
         </Fragment>
       ))}

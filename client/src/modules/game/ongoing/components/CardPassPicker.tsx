@@ -1,13 +1,14 @@
-import { Button, Select, Text } from '@mantine/core';
+import { Button, Group, Select, Text } from '@mantine/core';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { CardSuit, Player } from '../../../../types/game.types';
+import { Card, CardSuit, Player } from '../../../../types/game.types';
+import SuitIcon from './SuitIcon';
 import SuitSelector from './SuitSelector';
 
 interface Props {
   className?: string;
   style?: React.CSSProperties;
-  pickCard?: boolean;
+  activeCard?: Card;
   players: Player[];
   isPlayerDisabled?(player: Player): boolean;
   onSubmit?(selection: CardPassSelection): void;
@@ -25,27 +26,44 @@ const PlayerPickChoice = styled.div`
   grid-template-rows: auto auto;
   grid-row-gap: 10px;
 
-  .submit-button {
+  .full-grid-width {
     grid-column-end: span 2;
+  }
+
+  .bold {
+    font-weight: bold;
   }
 `;
 
-function CardPassPicker({ className, style, pickCard, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
+function CardPassPicker({ className, style, activeCard, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
 
   const [selected, setSelected] = useState<Partial<CardPassSelection>>({})
   
-  const isSubmitDisabled = !(selected.claim && selected.playerId && (!pickCard || selected.card))
+  const isSubmitDisabled = !(selected.claim && selected.playerId && (!!activeCard || selected.card))
 
   return (
     <PlayerPickChoice {...{ className, style }}>
-      {pickCard && (
+      {activeCard ? (
+        <Group className="full-grid-width bold">
+          <Text>It's a {activeCard.suit}!</Text>
+          <SuitIcon suit={activeCard.suit} />
+        </Group>
+      ) : (
         <>
           <Text>Pick a card</Text>
-          <SuitSelector onSelect={(suit) => setSelected((prev) => ({ ...prev, card: suit }))} value={selected.card} />
+          <SuitSelector
+            onSelect={(suit) =>
+              setSelected((prev) => ({ ...prev, card: suit }))
+            }
+            value={selected.card}
+          />
         </>
       )}
       <Text>Pick a claim</Text>
-      <SuitSelector onSelect={(suit) => setSelected((prev) => ({ ...prev, claim: suit }))} value={selected.claim} />
+      <SuitSelector
+        onSelect={(suit) => setSelected((prev) => ({ ...prev, claim: suit }))}
+        value={selected.claim}
+      />
       <Text>Pick a player</Text>
       <Select
         data={players.map((player) => ({
@@ -54,20 +72,28 @@ function CardPassPicker({ className, style, pickCard, players, isPlayerDisabled 
           disabled: isPlayerDisabled(player),
         }))}
         required
-        onChange={(playerId) => playerId && setSelected((prev) => ({ ...prev, playerId }))}
+        onChange={(playerId) =>
+          playerId && setSelected((prev) => ({ ...prev, playerId }))
+        }
         value={selected.playerId}
       />
       <Button
-        className='submit-button'
+        className="full-grid-width"
         disabled={isSubmitDisabled}
         fullWidth
         onClick={() => {
           if (onSubmit && selected.claim && selected.playerId) {
             // ugly to get TS compiler to accept present selected.claim and selected.playerId
-            onSubmit({ ...selected, claim: selected.claim, playerId: selected.playerId });
+            onSubmit({
+              ...selected,
+              claim: selected.claim,
+              playerId: selected.playerId,
+            });
           }
         }}
-      >Submit pass</Button>
+      >
+        Submit pass
+      </Button>
     </PlayerPickChoice>
   );
 }

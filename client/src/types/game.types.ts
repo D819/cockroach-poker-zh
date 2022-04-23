@@ -25,14 +25,14 @@ export interface Card<Suit extends CardSuit = CardSuit, Variant extends CardVari
 }
 
 export enum CardSuit {
-  BAT = "bat",
-  COCKROACH = "cockroach",
-  FLY = "fly",
-  RAT = "rat",
-  SCORPION = "scorpion",
-  SPIDER = "spider",
-  STINK_BUG = "stink bug",
-  TOAD = "toad"
+  BAT = "Bat",
+  COCKROACH = "Cockroach",
+  FLY = "Fly",
+  RAT = "Rat",
+  SCORPION = "Scorpion",
+  SPIDER = "Spider",
+  STINK_BUG = "Stink bug",
+  TOAD = "Toad"
 }
 
 export type CardVariant = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "Royal";
