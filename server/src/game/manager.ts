@@ -1,4 +1,4 @@
-import { cloneDeep, shuffle } from "lodash";
+import { cloneDeep, last, shuffle } from "lodash";
 import { ServerEvent, ServerIO } from "../../../client/src/types/event.types";
 import {
   GameNotification,
@@ -7,6 +7,7 @@ import {
 import { INITIAL_DECK_NON_ROYAL } from '../../../client/src/utils/deck-utils';
 import {
   Card,
+  CardPass,
   Game,
   GamePhase,
   GameStatus,
@@ -67,7 +68,7 @@ export class GameManager {
       active: {
         playerId: socketId,
         passHistory: [],
-        phase: GamePhase.CARD_BEING_PICKED
+        phase: GamePhase.PASS_SELECTION
       },
       players: {
         [socketId]: {
@@ -119,6 +120,26 @@ export class GameManager {
     }
   }
 
+  public activeCard(): Card | undefined {
+    return this.snapshot()?.active.card;
+  }
+
+  public activePlayer(): Player {
+    const snapshot = this.snapshot();
+    if (!snapshot) throw new Error("Couldn't find data");
+
+    const player = this.players()[snapshot.active.playerId];
+    if (!player) throw new Error("Couldn't find active player");
+
+    return player
+  }
+
+  private currentClaim(): CardPass {
+    const lastPass = last(this.snapshot()?.active.passHistory);
+    if (!lastPass) throw new Error("No claims found");
+    return lastPass
+  }
+
   public dealInitialHands(): void {
     const deck = shuffle(INITIAL_DECK_NON_ROYAL);
     const playerIds = shuffle(Object.keys(this.players()));
@@ -155,6 +176,13 @@ export class GameManager {
     } else {
       throw new Error(`Couldn't find player with id ${playerId}`);
     }
+  }
+
+  private isCurrentClaimTruthful(): boolean {
+    const { claim } = this.currentClaim();
+    const actual = this.activeCard();
+
+    return actual?.suit === claim
   }
 
   public manageEachPlayer(cb: (playerManager: PlayerManager) => void) {
@@ -218,7 +246,7 @@ export class GameManager {
       game.active = {
         playerId: this.getHostPlayer()?.socketId ?? this.playerIds()[0],
         passHistory: [],
-        phase: GamePhase.CARD_BEING_PICKED
+        phase: GamePhase.PASS_SELECTION
       }
     });
 
@@ -228,6 +256,20 @@ export class GameManager {
         area: []
       }
     });
+  }
+
+  public resolveCardPrediction(prediction: boolean): void {
+    const gainedCard = this.activeCard();
+    const isPredictionAccurate = this.isCurrentClaimTruthful() === prediction
+    const gainingPlayerId = isPredictionAccurate
+      ? this.currentClaim().from
+      : this.currentClaim().to;
+
+    this.managePlayer(gainingPlayerId).update(player => {
+      gainedCard && player.cards.area.push(gainedCard);
+    })
+
+    this.startNewCardPass(gainingPlayerId);
   }
 
   public set(game: Game): void {
@@ -245,6 +287,15 @@ export class GameManager {
     if (operation.status === "success") {
       return operation.result;
     }
+  }
+
+  public startNewCardPass(playerId: string): void {
+    this.update(game => {
+      delete game.active.card;
+      game.active.passHistory = [];
+      game.active.phase = GamePhase.PASS_SELECTION;
+      game.active.playerId = playerId
+    })
   }
 
   /**

@@ -36,6 +36,20 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
   })
 }
 
+export const peekAtCard: ClientEventListeners[ClientEvent.PEEK_AT_CARD] = (
+  gameId
+) => {
+  GameManager.for(gameId).update(game => {
+    game.active.phase = GamePhase.PASS_SELECTION
+  })
+}
+
+export const predictCard: ClientEventListeners[ClientEvent.PREDICT_CARD] = (
+  gameId, prediction
+) => {
+  GameManager.for(gameId).resolveCardPrediction(prediction);
+}
+
 export const resetGame: ClientEventListeners[ClientEvent.RESET_GAME] = (
   gameId
 ) => {

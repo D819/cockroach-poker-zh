@@ -22,6 +22,8 @@ export enum ClientEvent {
   JOIN_GAME = "join",
   KICK_PLAYER = "kick-player",
   PASS_CARD = 'pass-card',
+  PEEK_AT_CARD = 'peek-at-card',
+  PREDICT_CARD = 'predict-card',
   RESET_GAME = "reset-game",
   START_GAME = "start-game",
   UPDATE_PLAYER = "update-player",
@@ -63,6 +65,10 @@ export type ClientEventListeners = {
   [ClientEvent.KICK_PLAYER]: (gameId: string, playerId: string) => void;
 
   [ClientEvent.PASS_CARD]: (gameId: string, data: { from: string; to: string; claim: CardSuit; card?: Card }) => void;
+
+  [ClientEvent.PEEK_AT_CARD]: (gameId: string) => void;
+
+  [ClientEvent.PREDICT_CARD]: (gameId: string, predictTrue: boolean) => void;
 
   [ClientEvent.RESET_GAME]: (gameId: string) => void;
 

@@ -11,7 +11,7 @@ export const createDummyGame = ({
   active = {
     playerId: generateDummySocketId(),
     passHistory: [],
-    phase: GamePhase.CARD_BEING_PICKED
+    phase: GamePhase.PASS_SELECTION
   },
   players = {},
   status = GameStatus.LOBBY,

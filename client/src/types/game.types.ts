@@ -48,7 +48,7 @@ export enum GameStatus {
 }
 
 export enum GamePhase {
-  CARD_BEING_PICKED = 'card-being-picked',
+  PASS_SELECTION = 'pass-selection',
   PREDICT_OR_PASS = 'predict-or-pass'
 }
 

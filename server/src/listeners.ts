@@ -10,6 +10,8 @@ import {
   updateGameSettings,
   kickPlayer,
   passCard,
+  peekAtCard,
+  predictCard,
 } from "./game/controllers";
 import { joinPlayerToGame, updatePlayer } from "./player/controllers";
 import { GameManager } from "./game/manager";
@@ -40,6 +42,8 @@ export const addListeners = (socket: ServerSocket): void => {
     [ClientEvent.JOIN_GAME]: joinPlayerToGame,
     [ClientEvent.KICK_PLAYER]: kickPlayer,
     [ClientEvent.PASS_CARD]: passCard,
+    [ClientEvent.PEEK_AT_CARD]: peekAtCard,
+    [ClientEvent.PREDICT_CARD]: predictCard,
     [ClientEvent.RESET_GAME]: resetGame,
     [ClientEvent.START_GAME]: startGame,
     [ClientEvent.UPDATE_PLAYER]: updatePlayer,

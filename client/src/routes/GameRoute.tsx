@@ -84,6 +84,16 @@ function GameRoute(): JSX.Element {
                 card: cardPassed
               })
             }}
+
+            onCardPeek={() => {
+              if (!game.data) return
+              socket.emit(ClientEvent.PEEK_AT_CARD, game.data.id)
+            }}
+
+            onCardPredict={(prediction) => {
+              if (!game.data) return
+              socket.emit(ClientEvent.PREDICT_CARD, game.data.id, prediction)
+            }}
             
             onGameReset={() => {
               game.data && socket.emit(ClientEvent.RESET_GAME, game.data.id);

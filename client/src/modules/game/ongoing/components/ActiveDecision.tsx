@@ -29,7 +29,7 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
   const { active: { card, phase, passHistory } } = game
 
   switch (phase) {
-    case GamePhase.CARD_BEING_PICKED:
+    case GamePhase.PASS_SELECTION:
       return (
         <Container {...{ className, style }}>
           <Divider label="Your turn to pass" p="sm" />
