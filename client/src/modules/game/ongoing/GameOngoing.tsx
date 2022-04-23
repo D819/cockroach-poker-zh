@@ -8,6 +8,9 @@ import {
 import HandSize from "./components/HandSize";
 import CollectedCards from "./components/CollectedCards";
 import ActiveCard from "./components/ActiveCard";
+import { countEachSuit } from '../../../utils/hand-utils';
+import { Image } from '@mantine/core';
+import HandDetails from "./components/HandDetails";
 
 interface Props {
   game: Game;
@@ -65,44 +68,35 @@ function GameOngoing({
   return (
     <Container className="active-contents">
       <PlayerGrid>
-        {players.map((player, idx) => (
-          <Fragment key={player.socketId}>
+        {players.map((listPlayer, idx) => (
+          <Fragment key={listPlayer.socketId}>
             <p
               style={{
                 gridColumnStart: 1,
                 gridRowStart: idx + 1,
               }}
             >
-              {player.name}
+              {listPlayer.name}
             </p>
             <PlayerArea
               style={{
                 gridColumnStart: 2,
-                gridRowStart: idx + 1
+                gridRowStart: idx + 1,
               }}
             >
               <HandSize
-                className='hand-count'
-                handSize={player.cards.hand.length}
+                className="hand-count"
+                handSize={listPlayer.cards.hand.length}
               />
-              <div className='collected-cards'>
-                <CollectedCards
-                  count={player.cards.area.reduce(
-                    (accCount, curr) => ({
-                      ...accCount,
-                      [curr.suit]: accCount[curr.suit] + 1,
-                    }),
-                    Object.fromEntries(
-                      Object.keys(CardSuit).map((suit) => [suit, 0])
-                    ) as Record<CardSuit, number>
-                  )}
-                />
+              <div className="collected-cards">
+                <CollectedCards count={countEachSuit(listPlayer.cards.area)} />
               </div>
-              {game.active.card && game.active.playerId === player.socketId && (
-                <ActiveCard
-                  className='passed-card'
-                  card={game.active.card}
-                />
+              {game.active.card &&
+                game.active.playerId === listPlayer.socketId && (
+                  <ActiveCard className="passed-card" card={game.active.card} />
+                )}
+              {player.socketId === listPlayer.socketId && (
+                <HandDetails className='hand-details' count={countEachSuit(listPlayer.cards.hand)} />
               )}
             </PlayerArea>
           </Fragment>
