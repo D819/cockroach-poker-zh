@@ -63,7 +63,10 @@ export class GameManager {
     const gameId = generateRandomGameId();
     const game: Game = {
       id: gameId,
-      active: {},
+      active: {
+        playerId: socketId,
+        passHistory: []
+      },
       players: {
         [socketId]: {
           name: playerName,
@@ -134,6 +137,11 @@ export class GameManager {
     })
   }
 
+  public getHostPlayer(): Player | undefined {
+    const host = Object.values(this.players()).find(player => player.isHost);
+    return host
+  }
+
   public getPlayer(playerId: string): Player | undefined {
     return this.managePlayer(playerId).snapshot();
   }
@@ -166,6 +174,10 @@ export class GameManager {
       this._playerManagerMap.set(playerId, newPlayerManager);
       return newPlayerManager;
     }
+  }
+
+  public playerIds(): string[] {
+    return Object.keys(this.players());
   }
 
   public players(): Readonly<Record<string, Player>> {
@@ -201,7 +213,10 @@ export class GameManager {
   public resetGame(): void {
     this.update((game) => {
       game.status = GameStatus.LOBBY;
-      game.active = {}
+      game.active = {
+        playerId: this.getHostPlayer()?.socketId ?? this.playerIds()[0],
+        passHistory: []
+      }
     });
 
     this.updateEachPlayer((player) => {

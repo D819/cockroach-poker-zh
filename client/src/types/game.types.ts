@@ -1,10 +1,9 @@
 export interface Game {
   id: string;
   active: {
-    playerId?: string;
-    card?: Card & {
-      passHistory: CardPass[];
-    }
+    playerId: string;
+    card?: Card;
+    passHistory: CardPass[];
   };
   players: {
     [playerSocketId: string]: Player;
