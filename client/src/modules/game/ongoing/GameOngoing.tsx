@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Fragment } from 'react';
+import { Alert, Divider, Paper, Text } from '@mantine/core';
 import {
   Game,
   Player,
@@ -8,6 +9,7 @@ import HandSize from "./components/HandSize";
 import ActiveCard from "./components/ActiveCard";
 import { countEachSuit } from '../../../utils/hand-utils';
 import CardCount from "./components/CardCount";
+import { selectActivePlayer } from '../../../selectors/game-selectors';
 
 interface Props {
   game: Game;
@@ -67,12 +69,20 @@ function GameOngoing({
   players
 }: Props): JSX.Element {
 
+  const activePlayer = selectActivePlayer(game)
+
   return (
     <Container className="active-contents">
-      <PlayerHand>
-        <p className='hand'>Your hand:</p>
-        <CardCount count={countEachSuit(player.cards.hand)}/>
-      </PlayerHand>
+      <Paper shadow="sm" withBorder p={2}>
+        <PlayerHand>
+          <p className="hand">Your hand:</p>
+          <CardCount count={countEachSuit(player.cards.hand)} />
+        </PlayerHand>
+      </Paper>
+      <Divider m="md" />
+      <Alert title="hi" m="sm">
+        <Text>{activePlayer.socketId === player.socketId ? "You are" : `${activePlayer.name} is`} active player</Text>
+      </Alert>
       <PlayerGrid>
         {players.map((listPlayer, idx) => (
           <Fragment key={listPlayer.socketId}>
@@ -80,6 +90,7 @@ function GameOngoing({
               style={{
                 gridColumnStart: 1,
                 gridRowStart: idx + 1,
+                textAlign: 'right'
               }}
             >
               {listPlayer.name}
