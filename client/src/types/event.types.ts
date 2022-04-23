@@ -1,6 +1,6 @@
 import { Socket as TClientSocket } from "socket.io-client";
 import { Socket as TServerSocket, Server as TServer } from "socket.io";
-import { Game, GameSettings, Player } from "./game.types";
+import { Card, CardSuit, Game, GameSettings, Player } from "./game.types";
 import { GameNotification, PlayerNotification } from "./notification.types";
 
 export type ClientSocket = TClientSocket<
@@ -21,6 +21,7 @@ export enum ClientEvent {
   GET_PLAYER = "get-player",
   JOIN_GAME = "join",
   KICK_PLAYER = "kick-player",
+  PASS_CARD = 'pass-card',
   RESET_GAME = "reset-game",
   START_GAME = "start-game",
   UPDATE_PLAYER = "update-player",
@@ -60,6 +61,8 @@ export type ClientEventListeners = {
   [ClientEvent.JOIN_GAME]: (gameId: string, player: Player) => void;
 
   [ClientEvent.KICK_PLAYER]: (gameId: string, playerId: string) => void;
+
+  [ClientEvent.PASS_CARD]: (gameId: string, data: { from: string; to: string; claim: CardSuit; card?: Card }) => void;
 
   [ClientEvent.RESET_GAME]: (gameId: string) => void;
 

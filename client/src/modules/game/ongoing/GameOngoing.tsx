@@ -12,8 +12,9 @@ import { countEachSuit } from '../../../utils/hand-utils';
 import CardCount from "./components/CardCount";
 import { selectActivePlayer } from '../../../selectors/game-selectors';
 import CardPassPicker from "./components/CardPassPicker";
+import { GameHandlers } from "../GamePage";
 
-interface Props {
+interface Props extends Pick<GameHandlers, 'onCardPass'> {
   game: Game;
   player: Player;
   players: Player[];
@@ -69,7 +70,8 @@ const PlayerHand = styled.div`
 function GameOngoing({
   game,
   player,
-  players
+  players,
+  onCardPass
 }: Props): JSX.Element {
 
   const activePlayer = selectActivePlayer(game);
@@ -126,9 +128,10 @@ function GameOngoing({
         <>
           <Divider label='Your turnt to pass' p='sm' />
           <CardPassPicker
-            pickCard
+            pickCard={!game.active.card}
             players={players.filter(p => p.socketId !== player.socketId)}
             disabledPlayerIds={[]}
+            onSubmit={onCardPass}
           />
         </>
       )}

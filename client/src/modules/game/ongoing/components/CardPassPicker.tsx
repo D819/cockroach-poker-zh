@@ -13,7 +13,7 @@ interface Props {
   onSubmit?(selection: CardPassSelection): void;
 }
 
-interface CardPassSelection {
+export interface CardPassSelection {
   card?: CardSuit;
   claim: CardSuit;
   playerId: string;

@@ -7,6 +7,7 @@ import useSocketAliases from "../hooks/useSocketAliases";
 import { useSocket } from "../socket";
 import { ClientEvent } from "../types/event.types";
 import { GameStatus } from "../types/game.types";
+import { selectActivePlayer } from "../selectors/game-selectors";
 
 function GameRoute(): JSX.Element {
   const { gameId } = useParams<{ gameId: string }>();
@@ -70,10 +71,24 @@ function GameRoute(): JSX.Element {
         {game.data && player.data && (
           <GamePage
             game={game.data}
+
+            onCardPass={(selection) => {
+              if (!game.data) return
+
+              const cardPassed = selection.card ? selectActivePlayer(game.data).cards.hand.find(card => card.suit === selection.card) : undefined
+
+              socket.emit(ClientEvent.PASS_CARD, game.data.id, {
+                from: game.data.active.playerId,
+                to: selection.playerId,
+                claim: selection.claim,
+                card: cardPassed
+              })
+            }}
             
             onGameReset={() => {
               game.data && socket.emit(ClientEvent.RESET_GAME, game.data.id);
             }}
+
             onGameStart={() => {
               game.data && socket.emit(ClientEvent.START_GAME, game.data.id);
             }}

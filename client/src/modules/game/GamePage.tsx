@@ -6,6 +6,7 @@ import {
 } from "../../types/game.types";
 import GameLobby from "./lobby/GameLobby";
 import GameOngoing from "./ongoing/GameOngoing";
+import { CardPassSelection } from './ongoing/components/CardPassPicker';
 
 interface Props extends GameHandlers {
   game: Game;
@@ -14,6 +15,7 @@ interface Props extends GameHandlers {
 }
 
 export interface GameHandlers {
+  onCardPass(selection: CardPassSelection): void;
   onGameStart(): void;
   onGameReset(): void;
   onPlayerKick(playerIdToKick: string): void;
@@ -22,6 +24,7 @@ export interface GameHandlers {
 
 function GamePage({
   game,
+  onCardPass,
   onGameReset,
   onGameStart,
   onPlayerKick,
@@ -50,6 +53,7 @@ function GamePage({
           game,
           player,
           players,
+          onCardPass,
         }}
       />
     );
