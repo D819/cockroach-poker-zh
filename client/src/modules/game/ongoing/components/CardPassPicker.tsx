@@ -1,11 +1,11 @@
-import { Select, Text } from '@mantine/core';
+import { Button, Select, Text } from '@mantine/core';
 import styled from 'styled-components';
 import { Player } from '../../../../types/game.types';
 import SuitSelector from './SuitSelector';
 
 interface Props {
   className?: string;
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
   pickCard?: boolean;
   players: Player[];
   disabledPlayerIds: string[];
@@ -13,13 +13,13 @@ interface Props {
 
 const PlayerPickChoice = styled.div`
   display: grid;
-  grid-template-areas:
-    "card-label card-select"
-    "claim-label claim-select"
-    "player-label player-select";
   grid-template-columns: "auto auto";
-  grid-template-rows: repeat(3, min-content);
+  grid-template-rows: auto auto;
   grid-row-gap: 10px;
+
+  .submit-button {
+    grid-column-end: span 2;
+  }
 `;
 
 function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds }: Props): JSX.Element {
@@ -27,15 +27,14 @@ function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds
     <PlayerPickChoice {...{ className, style }}>
       {pickCard && (
         <>
-          <Text className="card-label">Pick a card</Text>
-          <SuitSelector className="card-select" />
+          <Text>Pick a card</Text>
+          <SuitSelector />
         </>
       )}
-      <Text className="claim-label">Pick a claim</Text>
-      <SuitSelector className="claim-select" />
-      <Text className="player-label">Pick a player</Text>
+      <Text>Pick a claim</Text>
+      <SuitSelector />
+      <Text>Pick a player</Text>
       <Select
-        className="player-select"
         data={players.map((player) => ({
           label: player.name,
           value: player.socketId,
@@ -43,6 +42,7 @@ function CardPassPicker({ className, style, pickCard, players, disabledPlayerIds
         }))}
         required
       />
+      <Button className='submit-button' fullWidth>Submit pass</Button>
     </PlayerPickChoice>
   );
 }
