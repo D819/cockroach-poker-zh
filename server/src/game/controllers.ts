@@ -19,6 +19,21 @@ export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
   });
 };
 
+export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
+  gameId,
+  { from, to, claim, card }
+) => {
+  const gameManager = GameManager.for(gameId);
+
+  gameManager.update(game => {
+    game.active.playerId = to;
+    game.active.passHistory.push({ from, to, claim });
+    if (card) {
+      game.active.card = card;
+    }
+  })
+}
+
 export const resetGame: ClientEventListeners[ClientEvent.RESET_GAME] = (
   gameId
 ) => {

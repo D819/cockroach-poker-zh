@@ -117,7 +117,7 @@ function GameOngoing({
                 count={countEachSuit(listPlayer.cards.area)}
                 filterEmpty
               />
-              {game.active.card && isActivePlayer && (
+              {game.active.card && listPlayer.socketId === game.active.playerId && (
                 <ActiveCard className="passed-card" card={game.active.card} />
               )}
             </PlayerArea>
