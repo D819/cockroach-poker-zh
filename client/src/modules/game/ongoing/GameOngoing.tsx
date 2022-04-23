@@ -3,7 +3,6 @@ import { Fragment } from 'react';
 import { Alert, Divider, Paper, Text } from '@mantine/core';
 import {
   Game,
-  GamePhase,
   Player,
 } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
@@ -11,11 +10,10 @@ import ActiveCard from "./components/ActiveCard";
 import { countEachSuit } from '../../../utils/hand-utils';
 import CardCount from "./components/CardCount";
 import { selectActivePlayer } from '../../../selectors/game-selectors';
-import CardPassPicker from "./components/CardPassPicker";
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
 
-interface Props extends Pick<GameHandlers, 'onCardPass'> {
+interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   game: Game;
   player: Player;
   players: Player[];
@@ -72,7 +70,9 @@ function GameOngoing({
   game,
   player,
   players,
-  onCardPass
+  onCardPass,
+  onCardPeek,
+  onCardPredict
 }: Props): JSX.Element {
 
   const activePlayer = selectActivePlayer(game);
@@ -126,7 +126,7 @@ function GameOngoing({
         ))}
       </PlayerGrid>
       {isActivePlayer && (
-        <ActiveDecision {...{ game, player, players, onCardPass }} />
+        <ActiveDecision {...{ game, player, players, onCardPass, onCardPeek, onCardPredict }} />
       )}
     </Container>
   );
