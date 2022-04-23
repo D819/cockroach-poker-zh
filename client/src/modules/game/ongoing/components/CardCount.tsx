@@ -35,7 +35,7 @@ function CardCount({ className, style, count, filterEmpty }: Props): JSX.Element
         <SuitCount>
           <Image
             className="icon"
-            src={`/assets/icons/${suit.toLowerCase()}.jpg`}
+            src={`/assets/icons/${suit.toLowerCase().replaceAll(' ', '-')}.jpg`}
             height="25px"
           />
           <p>{count[suit]}</p>

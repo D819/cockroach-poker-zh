@@ -26,7 +26,7 @@ export enum CardSuit {
   RAT = "rat",
   SCORPION = "scorpion",
   SPIDER = "spider",
-  STINK_BUG = "stink-bug",
+  STINK_BUG = "stink bug",
   TOAD = "toad"
 }
 

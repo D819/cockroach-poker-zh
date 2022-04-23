@@ -30,7 +30,7 @@ function SuitIcons({
           {renderSuit(
             suit,
             <Image
-              src={`/assets/icons/${suit.toLowerCase()}.jpg`}
+              src={`/assets/icons/${suit.toLowerCase().replaceAll(' ', '-')}.jpg`}
               height="25px"
             />
           )}

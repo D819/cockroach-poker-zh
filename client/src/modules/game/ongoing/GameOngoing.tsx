@@ -11,6 +11,7 @@ import ActiveCard from "./components/ActiveCard";
 import { countEachSuit } from '../../../utils/hand-utils';
 import CardCount from "./components/CardCount";
 import { selectActivePlayer } from '../../../selectors/game-selectors';
+import CardPassPicker from "./components/CardPassPicker";
 
 interface Props {
   game: Game;
@@ -62,31 +63,6 @@ const PlayerHand = styled.div`
 
   .hand {
     font-weight: bold;
-  }
-`
-
-const PlayerPickChoice = styled.div`
-  display: grid;
-  grid-template-areas:
-    "pick-label pick-buttons"
-    "claim-label claim-buttons";
-  grid-template-columns: min-content auto;
-  grid-template-rows: min-content min-content;
-
-  .pick-label {
-    grid-area: pick-label;
-  }
-
-  .pick-buttons {
-    grid-area: pick-buttons;
-  }
-
-  .claim-label {
-    grid-area: claim-label;
-  }
-
-  .claim-buttons {
-    grid-area: claim-buttons;
   }
 `
 
@@ -148,11 +124,12 @@ function GameOngoing({
       </PlayerGrid>
       {game.active.phase === GamePhase.CARD_BEING_PICKED && isActivePlayer && (
         <>
-          <Divider m="md" label="Pick a card and a claim" />
-          <PlayerPickChoice>
-            <Text className="pick-label">Pick a card</Text>
-            <Text className="claim-label">Pick a claim</Text>
-          </PlayerPickChoice>
+          <Divider label='Your turnt to pass' p='sm' />
+          <CardPassPicker
+            pickCard
+            players={players}
+            disabledPlayerIds={[]}
+          />
         </>
       )}
     </Container>
