@@ -127,7 +127,7 @@ function GameOngoing({
           <Divider label='Your turnt to pass' p='sm' />
           <CardPassPicker
             pickCard
-            players={players}
+            players={players.filter(p => p.socketId !== player.socketId)}
             disabledPlayerIds={[]}
           />
         </>
