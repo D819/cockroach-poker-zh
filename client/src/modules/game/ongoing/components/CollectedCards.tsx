@@ -9,45 +9,35 @@ interface Props {
 }
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  row-gap: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `
 
 const SuitCount = styled.div`
-  display: grid;
-  grid-template-areas:
-    "icon count";
-  grid-column-gap: 5px;
-
-  .icon {
-    grid-area: icon;
-    margin: auto;
-  }
-
-  .count {
-    grid-area: count;
-  }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 2px;
+  margin: 2px;
 `
 
 function CollectedCards({  className, style, count}: Props): JSX.Element {
   return (
-    <Container>
+    <Container {...{ className, style }}>
       {Object.entries(count).map(([suit, count], idx) => (
         <SuitCount
           key={suit}
           style={{
             gridRowStart: idx < 4 ? 1 : 2,
-            gridColumnStart: (idx % 4) + 1
           }}
         >
           <Image
-            className='icon'
             src={`/assets/icons/${suit.toLowerCase()}.jpg`}
             height='25px'
           />
           {/* <p className='icon'>{suit[0]}</p> */}
-          <p className='count'>{count}</p>
+          <p>{count}</p>
         </SuitCount>
       ))}
     </Container>

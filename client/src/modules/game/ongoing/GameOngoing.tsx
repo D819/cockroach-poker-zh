@@ -88,15 +88,16 @@ function GameOngoing({
                 className="hand-count"
                 handSize={listPlayer.cards.hand.length}
               />
-              <div className="collected-cards">
-                <CollectedCards count={countEachSuit(listPlayer.cards.area)} />
-              </div>
+              <CollectedCards className="collected-cards" count={countEachSuit(listPlayer.cards.area)} />
               {game.active.card &&
                 game.active.playerId === listPlayer.socketId && (
                   <ActiveCard className="passed-card" card={game.active.card} />
                 )}
               {player.socketId === listPlayer.socketId && (
-                <HandDetails className='hand-details' count={countEachSuit(listPlayer.cards.hand)} />
+                <HandDetails
+                  className="hand-details"
+                  count={countEachSuit(listPlayer.cards.hand)}
+                />
               )}
             </PlayerArea>
           </Fragment>
