@@ -6,18 +6,28 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   label?: string;
+  onSelect?(suit: CardSuit): void;
   required?: boolean;
+  value?: CardSuit;
 }
 
-function SuitSelector({ className, style, label, required }: Props): JSX.Element {
+function SuitSelector({ className, style, label, required, value, onSelect }: Props): JSX.Element {
   return (
     <Select
       {...{ className, style, label, required }}
       data={Object.values(CardSuit).map((suit) => ({
         value: suit,
-        image: `/assets/icons/${suit.toLowerCase().replaceAll(' ', '-')}.jpg`,
+        image: `/assets/icons/${suit.toLowerCase().replaceAll(" ", "-")}.jpg`,
         label: suit,
       }))}
+      value={value}
+      onChange={(value) => {
+        // cast from string | null to do a check
+        const prospectiveSuit = value as CardSuit
+        if (onSelect && Object.values(CardSuit).includes(prospectiveSuit)) {
+          onSelect(prospectiveSuit)
+        }
+      }}
       itemComponent={SelectItem}
       styles={{
         label: {
