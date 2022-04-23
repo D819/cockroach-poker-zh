@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Fragment } from 'react';
 import {
-  CardSuit,
   Game,
   Player,
 } from "../../../types/game.types";
@@ -9,8 +8,7 @@ import HandSize from "./components/HandSize";
 import CollectedCards from "./components/CollectedCards";
 import ActiveCard from "./components/ActiveCard";
 import { countEachSuit } from '../../../utils/hand-utils';
-import { Image } from '@mantine/core';
-import HandDetails from "./components/HandDetails";
+import CardCount from "./components/CardCount";
 
 interface Props {
   game: Game;
@@ -35,8 +33,7 @@ const PlayerArea = styled.div`
   display: grid;
   align-items: center;
   grid-template-areas:
-    "hand-count collected pass"
-    "hand-details hand-details hand-details";
+    "hand-count collected pass";
   grid-template-columns: min-content auto 50px;
   grid-template-rows: auto min-content;
   grid-row-gap: 10px;
@@ -53,9 +50,15 @@ const PlayerArea = styled.div`
   .passed-card {
     grid-area: pass;
   }
+`
 
-  .hand-details {
-    grid-area: hand-details;
+const PlayerHand = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+
+  .hand {
+    font-weight: bold;
   }
 `
 
@@ -67,6 +70,10 @@ function GameOngoing({
 
   return (
     <Container className="active-contents">
+      <PlayerHand>
+        <p className='hand'>Your hand:</p>
+        <CardCount count={countEachSuit(player.cards.hand)}/>
+      </PlayerHand>
       <PlayerGrid>
         {players.map((listPlayer, idx) => (
           <Fragment key={listPlayer.socketId}>
@@ -88,17 +95,14 @@ function GameOngoing({
                 className="hand-count"
                 handSize={listPlayer.cards.hand.length}
               />
-              <CollectedCards className="collected-cards" count={countEachSuit(listPlayer.cards.area)} />
+              <CollectedCards
+                className="collected-cards"
+                count={countEachSuit(listPlayer.cards.area)}
+              />
               {game.active.card &&
                 game.active.playerId === listPlayer.socketId && (
                   <ActiveCard className="passed-card" card={game.active.card} />
                 )}
-              {player.socketId === listPlayer.socketId && (
-                <HandDetails
-                  className="hand-details"
-                  count={countEachSuit(listPlayer.cards.hand)}
-                />
-              )}
             </PlayerArea>
           </Fragment>
         ))}

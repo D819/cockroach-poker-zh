@@ -12,23 +12,30 @@ const Container = styled.div`
   display: flex;
 `
 
-function HandDetails({ className, style, count }: Props): JSX.Element {
+const SuitCount = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2px;
+`;
+
+function CardCount({ className, style, count }: Props): JSX.Element {
   return (
     <Container {...{ className, style }}>
       {Object.entries(count).map(
         ([suit, count]) => (
-          <div key={suit}>
+          <SuitCount key={suit}>
             <Image
               className="icon"
               src={`/assets/icons/${suit.toLowerCase()}.jpg`}
               height="25px"
             />
             <p>{count}</p>
-          </div>
+          </SuitCount>
         )
       )}
     </Container>
   );
 }
 
-export default HandDetails;
+export default CardCount;
