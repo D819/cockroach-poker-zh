@@ -1,14 +1,15 @@
 import { Button, Group, Select, Text } from '@mantine/core';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Card, CardSuit, Player } from '../../../../types/game.types';
+import { CardSuit, Game, Player } from '../../../../types/game.types';
 import SuitIcon from './SuitIcon';
 import SuitSelector from './SuitSelector';
+import { selectCurrentPassRecord } from '../../../../selectors/game-selectors';
 
 interface Props {
   className?: string;
   style?: React.CSSProperties;
-  activeCard?: Card;
+  game: Game;
   players: Player[];
   isPlayerDisabled?(player: Player): boolean;
   onSubmit?(selection: CardPassSelection): void;
@@ -35,19 +36,28 @@ const PlayerPickChoice = styled.div`
   }
 `;
 
-function CardPassPicker({ className, style, activeCard, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
+function CardPassPicker({ className, style, game, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
+
+  const pass = selectCurrentPassRecord(game);
 
   const [selected, setSelected] = useState<Partial<CardPassSelection>>({})
-  
+  const { card: activeCard } = game.active
+
   const isSubmitDisabled = !(selected.claim && selected.playerId && (!!activeCard || selected.card))
 
   return (
     <PlayerPickChoice {...{ className, style }}>
       {activeCard ? (
-        <Group className="full-grid-width bold">
-          <Text>It's a {activeCard.suit}!</Text>
-          <SuitIcon suit={activeCard.suit} />
-        </Group>
+        <>
+          <Group className="full-grid-width bold">
+            <Text>
+              The claimed "{pass?.claim}" is... a {activeCard.suit}{" "}
+              {pass?.claim === activeCard.suit ? "😅" : "😱"}
+            </Text>
+            <SuitIcon suit={activeCard.suit} />
+          </Group>
+          <Text className='full-grid-width'>It's your turn to pass it on!</Text>
+        </>
       ) : (
         <>
           <Text>Pick a card</Text>

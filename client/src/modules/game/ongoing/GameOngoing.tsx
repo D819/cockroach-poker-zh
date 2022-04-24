@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Fragment } from 'react';
-import { Alert, Divider, Paper, Text } from '@mantine/core';
+import { Divider, Paper } from '@mantine/core';
 import {
   Game,
   Player,
@@ -12,6 +12,7 @@ import CardCount from "./components/CardCount";
 import { selectActivePlayer } from '../../../selectors/game-selectors';
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
+import GameInfo from "./components/GameInfo";
 
 interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   game: Game;
@@ -87,11 +88,7 @@ function GameOngoing({
         </PlayerHand>
       </Paper>
       <Divider m="md" />
-      <Alert title="hi" m="sm">
-        <Text>
-          {isActivePlayer ? "You are" : `${activePlayer.name} is`} active player
-        </Text>
-      </Alert>
+      <GameInfo {...{ game, player, players }} />
       <PlayerGrid>
         {players.map((listPlayer, idx) => (
           <Fragment key={listPlayer.socketId}>
@@ -130,14 +127,6 @@ function GameOngoing({
       )}
     </Container>
   );
-}
-
-const infoMessage = (game: Game, player: Player): string => {
-  if (game.active.playerId === player.socketId) {
-    return game.active.card ? "You are passing: choose a card, claim and player" : "something else"
-  } else {
-    return "default"
-  }
 }
 
 export default GameOngoing;

@@ -34,7 +34,7 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
         <Container {...{ className, style }}>
           <Divider label="Your turn to pass" p="sm" />
           <CardPassPicker
-            activeCard={card}
+            game={game}
             players={players.filter((p) => p.socketId !== player.socketId)}
             isPlayerDisabled={(p) =>
               !!passHistory.find((pass) =>
