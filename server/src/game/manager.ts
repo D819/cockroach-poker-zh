@@ -279,8 +279,8 @@ export class GameManager {
         isPredictionAccurate ? "correctly" : "incorrectly"
       } predicted ${from === player.socketId ? "your" : `${this.getPlayerOrFail(from).name}'s`} claim, so ${
         player.socketId === gainingPlayerId
-          ? "you take"
-          : `${this.getPlayerOrFail(gainingPlayerId).name} takes`
+          ? "you collect"
+          : `${this.getPlayerOrFail(gainingPlayerId).name} collects`
       } the card`,
     }));
 
