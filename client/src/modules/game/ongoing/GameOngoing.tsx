@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Fragment } from 'react';
-import { Divider, Paper } from '@mantine/core';
+import { Alert, Divider, Paper, Text } from '@mantine/core';
 import {
   Game,
   Player,
@@ -13,6 +13,7 @@ import { selectActivePlayer } from '../../../selectors/game-selectors';
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
 import GameInfo from "./components/GameInfo";
+import { getGameHeadline } from "../../../utils/game-utils";
 
 interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   game: Game;
@@ -23,6 +24,21 @@ interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCard
 const Container = styled.div`
   height: 100%;
   width: 100%;
+
+  display: grid;
+  grid-template-areas:
+    "data"
+    "actions";
+  grid-template-rows: auto 1fr;
+
+  .data {
+    grid-area: data;
+  }
+
+  .actions {
+    grid-area: actions;
+    align-self: end;
+  }
 `;
 
 const PlayerGrid = styled.div`
@@ -81,49 +97,60 @@ function GameOngoing({
 
   return (
     <Container className="active-contents">
-      <Paper shadow="sm" withBorder p={2}>
-        <PlayerHand>
-          <p className="hand">Your hand:</p>
-          <CardCount count={countEachSuit(player.cards.hand)} />
-        </PlayerHand>
-      </Paper>
-      <Divider m="md" />
-      <GameInfo {...{ game, player, players }} />
-      <PlayerGrid>
-        {players.map((listPlayer, idx) => (
-          <Fragment key={listPlayer.socketId}>
-            <p
-              style={{
-                gridColumnStart: 1,
-                gridRowStart: idx + 1,
-                textAlign: "right",
-              }}
-            >
-              {listPlayer.name}
-            </p>
-            <PlayerArea
-              style={{
-                gridColumnStart: 2,
-                gridRowStart: idx + 1,
-              }}
-            >
-              <HandSize
-                className="hand-count"
-                handSize={listPlayer.cards.hand.length}
-              />
-              <CardCount
-                count={countEachSuit(listPlayer.cards.area)}
-                filterEmpty
-              />
-              {game.active.card && listPlayer.socketId === game.active.playerId && (
-                <ActiveCard className="passed-card" card={game.active.card} />
-              )}
-            </PlayerArea>
-          </Fragment>
-        ))}
-      </PlayerGrid>
+      <div className="data">
+        <Paper shadow="sm" withBorder>
+          <PlayerHand>
+            <p className="hand">Your hand:</p>
+            <CardCount count={countEachSuit(player.cards.hand)} />
+          </PlayerHand>
+          <Alert>
+            <Text>{getGameHeadline(game, player)}</Text>
+          </Alert>
+        </Paper>
+        <Divider m="md" />
+        <PlayerGrid className="player-areas">
+          {players.map((listPlayer, idx) => (
+            <Fragment key={listPlayer.socketId}>
+              <p
+                style={{
+                  gridColumnStart: 1,
+                  gridRowStart: idx + 1,
+                  textAlign: "right",
+                }}
+              >
+                {listPlayer.name}
+              </p>
+              <PlayerArea
+                style={{
+                  gridColumnStart: 2,
+                  gridRowStart: idx + 1,
+                }}
+              >
+                <HandSize
+                  className="hand-count"
+                  handSize={listPlayer.cards.hand.length}
+                />
+                <CardCount
+                  count={countEachSuit(listPlayer.cards.area)}
+                  filterEmpty
+                />
+                {game.active.card &&
+                  listPlayer.socketId === game.active.playerId && (
+                    <ActiveCard
+                      className="passed-card"
+                      card={game.active.card}
+                    />
+                  )}
+              </PlayerArea>
+            </Fragment>
+          ))}
+        </PlayerGrid>
+      </div>
       {isActivePlayer && (
-        <ActiveDecision {...{ game, player, players, onCardPass, onCardPeek, onCardPredict }} />
+        <ActiveDecision
+          className="actions"
+          {...{ game, player, players, onCardPass, onCardPeek, onCardPredict }}
+        />
       )}
     </Container>
   );
