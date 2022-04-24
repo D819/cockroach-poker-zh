@@ -15,6 +15,7 @@ interface Props extends GameHandlers {
 }
 
 export interface GameHandlers {
+  onCardFlip(): void;
   onCardPass(selection: CardPassSelection): void;
   onCardPeek(): void;
   onCardPredict(truth: boolean): void;
@@ -26,6 +27,7 @@ export interface GameHandlers {
 
 function GamePage({
   game,
+  onCardFlip,
   onCardPass,
   onCardPeek,
   onCardPredict,
@@ -57,6 +59,7 @@ function GamePage({
           game,
           player,
           players,
+          onCardFlip,
           onCardPass,
           onCardPeek,
           onCardPredict

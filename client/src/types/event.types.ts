@@ -25,13 +25,13 @@ export enum ClientEvent {
   PEEK_AT_CARD = 'peek-at-card',
   PREDICT_CARD = 'predict-card',
   RESET_GAME = "reset-game",
+  RESOLVE_FLIP = 'resolve-flip',
   START_GAME = "start-game",
   UPDATE_PLAYER = "update-player",
   UPDATE_GAME_SETTINGS = "update-game-setting",
 }
 
 export enum ServerEvent {
-  CARD_PREDICTED = 'card-predicted',
   GAME_CREATED = "game-created",
   GAME_GOTTEN = "game-gotten",
   GAME_JOINED = "game-joined",
@@ -73,6 +73,8 @@ export type ClientEventListeners = {
 
   [ClientEvent.RESET_GAME]: (gameId: string) => void;
 
+  [ClientEvent.RESOLVE_FLIP]: (gameId: string) => void;
+
   [ClientEvent.START_GAME]: (gameId: string) => void;
 
   [ClientEvent.UPDATE_PLAYER]: (gameId: string, player: Player) => void;
@@ -87,7 +89,6 @@ export type ClientEventListeners = {
  * Listeners for `ServerEvent`s
  */
 export type ServerEventListeners = {
-  [ServerEvent.CARD_PREDICTED]: (gameId: string, data: { from: string, to: string, claim: CardSuit, card: Card, prediction: boolean; }) => void;
   [ServerEvent.GAME_CREATED]: (game: Game) => void;
   [ServerEvent.GAME_OVER]: (gameId: string, game: Game) => void;
   [ServerEvent.GAME_GOTTEN]: (gameId: string, game: Game) => void;

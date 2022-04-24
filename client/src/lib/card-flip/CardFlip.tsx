@@ -19,6 +19,7 @@ export interface CardFlipProps {
   onClick?(): void;
   onClickFront?(): void;
   onClickBack?(): void;
+  onFlip?(): void;
   // onAnimationComplete?(isFlippedUp: boolean): void;
   rotate?: number;
 }
@@ -49,6 +50,7 @@ function CardFlipWithRef(
     onClick,
     onClickFront,
     onClickBack,
+    onFlip,
     // onAnimationComplete,
     isFlippedUp,
     rotate: rotation = 0,
@@ -62,7 +64,7 @@ function CardFlipWithRef(
     rotate: rotation,
     filter: disabled ? "grayscale(100%)" : "grayscale(0%)",
     config: springConfig,
-    onRest: () => console.log('flip complete')
+    onRest: () => onFlip && onFlip()
   });
 
   const frontElement = (

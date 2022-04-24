@@ -58,6 +58,15 @@ export const resetGame: ClientEventListeners[ClientEvent.RESET_GAME] = (
   gameManager.resetGame();
 };
 
+export const resolveFlip: ClientEventListeners[ClientEvent.RESOLVE_FLIP] = (gameId) => {
+  const gameManager = GameManager.for(gameId);
+
+  const prediction = gameManager.snapshot()?.active.prediction;
+  if (typeof prediction !== 'boolean') return // might be multiple clients asking to resolve flip
+
+  gameManager.resolveCardPrediction(prediction)
+}
+
 export const startGame: ClientEventListeners[ClientEvent.START_GAME] = (
   gameId: string
 ): void => {

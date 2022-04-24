@@ -7,9 +7,10 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   card: Card;
+  onFlip?(): void;
 }
 
-function CardReveal({ className, style, card }: Props): JSX.Element {
+function CardReveal({ className, style, card, onFlip }: Props): JSX.Element {
   const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ function CardReveal({ className, style, card }: Props): JSX.Element {
       front={<img alt='card-front' src={`/assets/card-fronts/${card.id.toLowerCase().replaceAll(' ', '-')}.jpg`}  />}
       back={<img alt='card-back' src="/assets/card-back.jpg"  />}
       isFlippedUp={isFlipped}
+      onFlip={onFlip}
       springConfig={{ ...config.molasses, clamp: true }}
     />
   )

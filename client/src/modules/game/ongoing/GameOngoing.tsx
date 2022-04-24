@@ -16,7 +16,7 @@ import ActiveDecision from "./components/ActiveDecision";
 import KeyInfo from "./components/KeyInfo";
 import CardReveal from "./components/CardReveal";
 
-interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
+interface Props extends Pick<GameHandlers, 'onCardFlip' | 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   game: Game;
   player: Player;
   players: Player[];
@@ -105,6 +105,7 @@ function GameOngoing({
   game,
   player,
   players,
+  onCardFlip,
   onCardPass,
   onCardPeek,
   onCardPredict
@@ -169,6 +170,7 @@ function GameOngoing({
         className='play-area card-flip'
         style={{ maxHeight: '100%', padding: '10px' }}
         card={activeCard}
+        onFlip={onCardFlip}
       />
       )}
       {isActivePlayer && (

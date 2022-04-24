@@ -260,6 +260,8 @@ export class GameManager {
 
   public resolveCardPrediction(prediction: boolean): void {
     const gainedCard = this.activeCard();
+    if (!gainedCard) return
+
     const isPredictionAccurate = this.isCurrentClaimTruthful() === prediction
     const gainingPlayerId = isPredictionAccurate
       ? this.currentClaim().from

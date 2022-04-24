@@ -72,6 +72,16 @@ function GameRoute(): JSX.Element {
           <GamePage
             game={game.data}
 
+            onCardFlip={() => {
+              console.log('resolving flip')
+
+              if (!game.data || !player.data) return
+
+              socket.emit(ClientEvent.RESOLVE_FLIP, game.data.id);
+
+              console.log('emitted from flip')
+            }}
+
             onCardPass={(selection) => {
               if (!game.data) return
 
