@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Game, Player } from "../../../types/game.types";
 import { GameHandlers } from "../GamePage";
-import PlayerList from '../../../lib/atoms/PlayerList';
+import PlayerList from '../../../ui/atoms/PlayerList';
 import { Alert, Button } from '@mantine/core';
 import { useCopyToClipboard } from 'react-use';
 

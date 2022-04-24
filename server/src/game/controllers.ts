@@ -48,7 +48,7 @@ export const peekAtCard: ClientEventListeners[ClientEvent.PEEK_AT_CARD] = (
 export const predictCard: ClientEventListeners[ClientEvent.PREDICT_CARD] = (
   gameId, prediction
 ) => {
-  GameManager.for(gameId).resolveCardPrediction(prediction);
+  GameManager.for(gameId).revealCardPredictionResult(prediction);
 }
 
 export const resetGame: ClientEventListeners[ClientEvent.RESET_GAME] = (

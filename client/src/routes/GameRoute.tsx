@@ -1,5 +1,5 @@
 import { Redirect, useParams } from "react-router-dom";
-import PlayerNamer from "../lib/atoms/PlayerNamer";
+import PlayerNamer from "../ui/atoms/PlayerNamer";
 import GamePage from "../modules/game/GamePage";
 import useGame from "../hooks/useGame";
 import usePlayer from "../hooks/usePlayer";

@@ -33,6 +33,9 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
   const isFurtherPassPossible = selectIsFurtherPassPossible(game);
 
   switch (phase) {
+    case GamePhase.CARD_REVEAL:
+      return <></>
+
     case GamePhase.PASS_SELECTION:
       return (
         <Container {...{ className, style }}>

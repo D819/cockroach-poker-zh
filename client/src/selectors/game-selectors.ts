@@ -58,3 +58,8 @@ export const selectPassingPlayer = createSelector(
   selectGamePlayers,
   (pass, players) => pass ? players[pass.from] : undefined
 )
+
+export const selectCardPrediction = createSelector(
+  selectActiveGameInfo,
+  (active) => active.prediction
+)

@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { Fragment } from 'react';
-import { Divider, Paper } from '@mantine/core';
+import { Box, Divider, Image, Overlay, Paper, Stack } from '@mantine/core';
 import {
   Game,
+  GamePhase,
   Player,
 } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
@@ -27,11 +28,22 @@ const Container = styled.div`
   display: grid;
   grid-template-areas:
     "data"
+    "play-area"
     "actions";
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
 
   .data {
     grid-area: data;
+  }
+
+  .play-area {
+    grid-area: play-area;
+    position: relative;
+  }
+
+  .card-flip {
+    z-index: 201;
+    opacity: 1;
   }
 
   .actions {
@@ -77,17 +89,6 @@ const PlayerArea = styled.div`
   }
 `
 
-const PlayerHand = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  column-gap: 5px;
-
-  .hand {
-    font-weight: bold;
-  }
-`
-
 function GameOngoing({
   game,
   player,
@@ -107,7 +108,12 @@ function GameOngoing({
           <KeyInfo {...{ game, player }} />
         </Paper>
         <Divider m="md" />
-        <PlayerGrid className="player-areas">
+      </div>
+      <Box className="play-area">
+        {game.active.phase === GamePhase.CARD_REVEAL && (
+          <Overlay opacity={0.9} color="gray" blur={2} />
+        )}
+        <PlayerGrid>
           {players.map((listPlayer, idx) => (
             <Fragment key={listPlayer.socketId}>
               <p
@@ -144,7 +150,12 @@ function GameOngoing({
             </Fragment>
           ))}
         </PlayerGrid>
-      </div>
+      </Box>
+      {game.active.phase === GamePhase.CARD_REVEAL && (
+        <Stack className="play-area card-flip">
+          <Image src="/assets/card-back.jpg" />
+        </Stack>
+      )}
       {isActivePlayer && (
         <ActiveDecision
           className="actions"

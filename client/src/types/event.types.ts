@@ -31,6 +31,7 @@ export enum ClientEvent {
 }
 
 export enum ServerEvent {
+  CARD_PREDICTED = 'card-predicted',
   GAME_CREATED = "game-created",
   GAME_GOTTEN = "game-gotten",
   GAME_JOINED = "game-joined",
@@ -86,6 +87,7 @@ export type ClientEventListeners = {
  * Listeners for `ServerEvent`s
  */
 export type ServerEventListeners = {
+  [ServerEvent.CARD_PREDICTED]: (gameId: string, data: { from: string, to: string, claim: CardSuit, card: Card, prediction: boolean; }) => void;
   [ServerEvent.GAME_CREATED]: (game: Game) => void;
   [ServerEvent.GAME_OVER]: (gameId: string, game: Game) => void;
   [ServerEvent.GAME_GOTTEN]: (gameId: string, game: Game) => void;

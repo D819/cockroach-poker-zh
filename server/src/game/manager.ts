@@ -272,6 +272,16 @@ export class GameManager {
     this.startNewCardPass(gainingPlayerId);
   }
 
+  public revealCardPredictionResult(prediction: boolean): void {
+    const gainedCard = this.activeCard();
+    if (!gainedCard) throw new Error("No card to reveal for prediction");
+
+    this.update(game => {
+      game.active.prediction = prediction;
+      game.active.phase = GamePhase.CARD_REVEAL
+    })
+  }
+
   public set(game: Game): void {
     this._set(game);
   }
