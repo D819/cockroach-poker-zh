@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import ReactMarkdown from 'react-markdown';
 import { Fragment } from 'react';
-import { Alert, Divider, Paper, Text } from '@mantine/core';
+import { Alert, Divider, Paper } from '@mantine/core';
 import {
   Game,
   Player,
@@ -12,8 +13,7 @@ import CardCount from "./components/CardCount";
 import { selectActivePlayer } from '../../../selectors/game-selectors';
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
-import GameInfo from "./components/GameInfo";
-import { getGameHeadline } from "../../../utils/game-utils";
+import { getGameHeadlineMarkdown } from "../../../utils/game-utils";
 
 interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   game: Game;
@@ -38,6 +38,12 @@ const Container = styled.div`
   .actions {
     grid-area: actions;
     align-self: end;
+  }
+
+  .headline {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 `;
 
@@ -104,7 +110,7 @@ function GameOngoing({
             <CardCount count={countEachSuit(player.cards.hand)} />
           </PlayerHand>
           <Alert>
-            <Text>{getGameHeadline(game, player)}</Text>
+            <ReactMarkdown className='headline'>{getGameHeadlineMarkdown(game, player)}</ReactMarkdown>
           </Alert>
         </Paper>
         <Divider m="md" />
