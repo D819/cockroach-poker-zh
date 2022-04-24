@@ -21,7 +21,7 @@ export const getGameHeadlineMarkdown = (game: Game, player: Player): string => {
     ? "***You*** are"
     : `**${activePlayer.name}** is`;
 
-  const passerHas = isPasser ? "***You*** have" : `${passer?.name} has`;
+  const passerHas = isPasser ? "***You*** have" : `**${passer?.name}** has`;
 
   const passerPossessive = isPasser ? "***your***" : `**${passer?.name}**'s`;
 

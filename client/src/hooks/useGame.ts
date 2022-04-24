@@ -55,6 +55,7 @@ export default function useGame(gameId: Game["id"]): UseGameResult {
       if (notificationGameId === gameId) {
         showNotification({
           message: notification.message,
+          autoClose: 5000
         });
       }
     }

@@ -34,13 +34,10 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
     game.active.phase = GamePhase.PREDICT_OR_PASS
   })
 
-  const fromName = gameManager.getPlayerOrFail(from).name;
-  const toName = gameManager.getPlayerOrFail(to).name;
-
-  gameManager.pushPlayersNotification((player) => ({
+  gameManager.pushPlayerNotificationById(to, {
     type: NotificationType.GENERAL,
-    message: `${player.socketId === from ? "You have" : `${fromName} has`} passed a "${claim}" to ${player.socketId === to ? "you" : toName}.`
-  }))
+    message: "You're up!",
+  });
 }
 
 export const peekAtCard: ClientEventListeners[ClientEvent.PEEK_AT_CARD] = (

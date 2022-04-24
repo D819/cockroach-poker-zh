@@ -74,7 +74,8 @@ export default function usePlayer(
     (playersToNotify, notification) => {
       if (playerId && playersToNotify[playerId]) {
         showNotification({
-          message: notification.message
+          message: notification.message,
+          autoClose: 5000
         });
       }
     }

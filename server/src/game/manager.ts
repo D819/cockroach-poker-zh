@@ -3,6 +3,7 @@ import { ServerEvent, ServerIO } from "../../../client/src/types/event.types";
 import {
   GameNotification,
   NotificationForPlayer,
+  NotificationType,
 } from "../../../client/src/types/notification.types";
 import { INITIAL_DECK_NON_ROYAL } from "../../../client/src/utils/deck-utils";
 import {
@@ -263,20 +264,33 @@ export class GameManager {
     if (!gainedCard) return;
 
     const isPredictionAccurate = this.isCurrentClaimTruthful() === prediction;
+    const { to, from } = this.currentClaim();
     const gainingPlayerId = isPredictionAccurate
-      ? this.currentClaim().from
-      : this.currentClaim().to;
+      ? from
+      : to;
 
     this.managePlayer(gainingPlayerId).update((player) => {
       gainedCard && player.cards.area.push(gainedCard);
     });
+
+    this.pushPlayersNotification((player) => ({
+      type: NotificationType.GENERAL,
+      message: `${to === player.socketId ? "You" : this.getPlayerOrFail(to).name} ${
+        isPredictionAccurate ? "correctly" : "incorrectly"
+      } predicted ${from === player.socketId ? "your" : `${this.getPlayerOrFail(from).name}'s`} claim, so ${
+        player.socketId === gainingPlayerId
+          ? "you take"
+          : `${this.getPlayerOrFail(gainingPlayerId).name} takes`
+      } the card`,
+    }));
 
     this.startNewCardPass(gainingPlayerId);
   }
 
   public revealCardPredictionResult(prediction: boolean): void {
     const gainedCard = this.activeCard();
-    if (!gainedCard) throw new Error("No card to reveal for prediction");
+    const pass = this.currentClaim()
+    if (!gainedCard && !pass) throw new Error("No card or claim to reveal for prediction");
 
     this.update((game) => {
       game.active.prediction = prediction;
