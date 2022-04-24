@@ -1,8 +1,9 @@
-import { Button, Divider } from '@mantine/core';
+import { Button, Divider, Text } from '@mantine/core';
 import styled from 'styled-components';
 import { Game, GamePhase, Player } from "../../../../types/game.types";
 import CardPassPicker from "./CardPassPicker";
 import { GameHandlers } from "../../GamePage";
+import { selectIsFurtherPassPossible, selectPlayersAlreadyInvolvedInPass } from '../../../../selectors/game-selectors';
 
 interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   className?: string;
@@ -26,7 +27,10 @@ const PredictOrPass = styled.div`
 `
 
 function ActiveDecision({ className, style, game, player, players, onCardPass, onCardPeek, onCardPredict }: Props): JSX.Element {
-  const { active: { card, phase, passHistory } } = game
+  const { active: { phase } } = game;
+
+  const playersInvolved = selectPlayersAlreadyInvolvedInPass(game);
+  const isFurtherPassPossible = selectIsFurtherPassPossible(game);
 
   switch (phase) {
     case GamePhase.PASS_SELECTION:
@@ -36,11 +40,7 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
           <CardPassPicker
             game={game}
             players={players.filter((p) => p.socketId !== player.socketId)}
-            isPlayerDisabled={(p) =>
-              !!passHistory.find((pass) =>
-                [pass.from, pass.to].includes(p.socketId)
-              )
-            }
+            isPlayerDisabled={(p) => playersInvolved.includes(p.socketId)}
             onSubmit={onCardPass}
           />
         </Container>
@@ -53,7 +53,10 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
 
       return (
         <Container {...{ className, style }}>
-          <Divider label="Your turn to predict or pass" p="sm" />
+          <Divider label="Predict / Pass" p="sm" />
+          {!isFurtherPassPossible && (
+            <Text mb='md'>There are no players left to pass to, so you must make a prediction.</Text>
+          )}
           <PredictOrPass>
             <Button
               color="green"
@@ -69,6 +72,7 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
               className='full-button'
               fullWidth
               onClick={onCardPeek}
+              disabled={!isFurtherPassPossible}
             >
               Peek and pass
             </Button>

@@ -21,6 +21,28 @@ const selectCurrentPassHistory = createSelector(
   (active) => active.passHistory
 )
 
+const selectPlayerDictionaryOfPassActivity = createSelector(
+  selectCurrentPassHistory,
+  (passHistory): Record<string, boolean> => passHistory.reduce(
+    (acc, curr) => ({
+      ...acc,
+      [curr.from]: true,
+      [curr.to]: true
+    }), {}
+  )
+)
+
+export const selectPlayersAlreadyInvolvedInPass = createSelector(
+  selectPlayerDictionaryOfPassActivity,
+  (dict) => Object.keys(dict)
+)
+
+export const selectIsFurtherPassPossible = createSelector(
+  selectPlayersAlreadyInvolvedInPass,
+  selectGamePlayers,
+  (playerIds, players) => playerIds.length < Object.keys(players).length
+)
+
 export const selectIsFirstPass = createSelector(
   selectCurrentPassHistory,
   (passHistory) => passHistory.length === 1
