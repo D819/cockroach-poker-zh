@@ -4,7 +4,7 @@ import {
   GameNotification,
   NotificationForPlayer,
 } from "../../../client/src/types/notification.types";
-import { INITIAL_DECK_NON_ROYAL } from '../../../client/src/utils/deck-utils';
+import { INITIAL_DECK_NON_ROYAL } from "../../../client/src/utils/deck-utils";
 import {
   Card,
   CardPass,
@@ -15,9 +15,7 @@ import {
 } from "../../../client/src/types/game.types";
 import { PlayerManager } from "../player/manager";
 import { SERVER_IO } from "../server";
-import {
-  generateRandomGameId,
-} from "../../../client/src/utils/data-utils";
+import { generateRandomGameId } from "../../../client/src/utils/data-utils";
 
 const GAMES_DB: Record<Game["id"], Game> = {};
 
@@ -68,7 +66,7 @@ export class GameManager {
       active: {
         playerId: socketId,
         passHistory: [],
-        phase: GamePhase.PASS_SELECTION
+        phase: GamePhase.PASS_SELECTION,
       },
       players: {
         [socketId]: {
@@ -78,8 +76,8 @@ export class GameManager {
           gameId,
           cards: {
             hand: [],
-            area: []
-          }
+            area: [],
+          },
         },
       },
       status: GameStatus.LOBBY,
@@ -131,19 +129,21 @@ export class GameManager {
     const player = this.players()[snapshot.active.playerId];
     if (!player) throw new Error("Couldn't find active player");
 
-    return player
+    return player;
   }
 
   private currentClaim(): CardPass {
     const lastPass = last(this.snapshot()?.active.passHistory);
     if (!lastPass) throw new Error("No claims found");
-    return lastPass
+    return lastPass;
   }
 
   public dealInitialHands(): void {
     const deck = shuffle(INITIAL_DECK_NON_ROYAL);
     const playerIds = shuffle(Object.keys(this.players()));
-    const dealtCards: Record<string, Card[]> = Object.fromEntries(playerIds.map(id => [id, []]))
+    const dealtCards: Record<string, Card[]> = Object.fromEntries(
+      playerIds.map((id) => [id, []])
+    );
 
     for (let deckIdx = 0; deckIdx < deck.length; deckIdx++) {
       const playerIdx = deckIdx % playerIds.length;
@@ -151,18 +151,18 @@ export class GameManager {
       dealtCards[playerId].push(deck[deckIdx]);
     }
 
-    this.updateEachPlayer(player => {
-      player.cards.hand = dealtCards[player.socketId]
-    })
+    this.updateEachPlayer((player) => {
+      player.cards.hand = dealtCards[player.socketId];
+    });
 
-    this.update(game => {
+    this.update((game) => {
       game.active.playerId = playerIds[0];
-    })
+    });
   }
 
   public getHostPlayer(): Player | undefined {
-    const host = Object.values(this.players()).find(player => player.isHost);
-    return host
+    const host = Object.values(this.players()).find((player) => player.isHost);
+    return host;
   }
 
   public getPlayer(playerId: string): Player | undefined {
@@ -182,7 +182,7 @@ export class GameManager {
     const { claim } = this.currentClaim();
     const actual = this.activeCard();
 
-    return actual?.suit === claim
+    return actual?.suit === claim;
   }
 
   public manageEachPlayer(cb: (playerManager: PlayerManager) => void) {
@@ -246,30 +246,30 @@ export class GameManager {
       game.active = {
         playerId: this.getHostPlayer()?.socketId ?? this.playerIds()[0],
         passHistory: [],
-        phase: GamePhase.PASS_SELECTION
-      }
+        phase: GamePhase.PASS_SELECTION,
+      };
     });
 
     this.updateEachPlayer((player) => {
       player.cards = {
         hand: [],
-        area: []
-      }
+        area: [],
+      };
     });
   }
 
   public resolveCardPrediction(prediction: boolean): void {
     const gainedCard = this.activeCard();
-    if (!gainedCard) return
+    if (!gainedCard) return;
 
-    const isPredictionAccurate = this.isCurrentClaimTruthful() === prediction
+    const isPredictionAccurate = this.isCurrentClaimTruthful() === prediction;
     const gainingPlayerId = isPredictionAccurate
       ? this.currentClaim().from
       : this.currentClaim().to;
 
-    this.managePlayer(gainingPlayerId).update(player => {
+    this.managePlayer(gainingPlayerId).update((player) => {
       gainedCard && player.cards.area.push(gainedCard);
-    })
+    });
 
     this.startNewCardPass(gainingPlayerId);
   }
@@ -278,10 +278,10 @@ export class GameManager {
     const gainedCard = this.activeCard();
     if (!gainedCard) throw new Error("No card to reveal for prediction");
 
-    this.update(game => {
+    this.update((game) => {
       game.active.prediction = prediction;
-      game.active.phase = GamePhase.CARD_REVEAL
-    })
+      game.active.phase = GamePhase.CARD_REVEAL;
+    });
   }
 
   public set(game: Game): void {
@@ -302,12 +302,12 @@ export class GameManager {
   }
 
   public startNewCardPass(playerId: string): void {
-    this.update(game => {
+    this.update((game) => {
       delete game.active.card;
       game.active.passHistory = [];
       game.active.phase = GamePhase.PASS_SELECTION;
-      game.active.playerId = playerId
-    })
+      game.active.playerId = playerId;
+    });
   }
 
   /**

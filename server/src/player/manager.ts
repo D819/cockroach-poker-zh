@@ -2,9 +2,7 @@ import { cloneDeep } from "lodash";
 import { ServerEvent } from "../../../client/src/types/event.types";
 import { CardId, Player } from "../../../client/src/types/game.types";
 import { GameManager, Operation } from "../game/manager";
-import {
-  NotificationForPlayer,
-} from "../../../client/src/types/notification.types";
+import { NotificationForPlayer } from "../../../client/src/types/notification.types";
 
 export class PlayerManager {
   constructor(
@@ -66,9 +64,11 @@ export class PlayerManager {
   }
 
   public dropCard(cardId: CardId): void {
-    this.update(player => {
-      player.cards.hand = player.cards.hand.filter(card => card.id !== cardId)
-    })
+    this.update((player) => {
+      player.cards.hand = player.cards.hand.filter(
+        (card) => card.id !== cardId
+      );
+    });
   }
 
   public getNameOrFail(): string {
