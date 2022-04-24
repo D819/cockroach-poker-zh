@@ -57,6 +57,7 @@ function GamePage({
           onCardPass,
           onCardPeek,
           onCardPredict,
+          onGameReset,
         }}
       />
     );

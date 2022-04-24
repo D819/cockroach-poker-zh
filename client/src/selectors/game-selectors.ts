@@ -75,3 +75,12 @@ export const selectIsFlipShow = createSelector(
   selectActiveGameInfo,
   (active) => active.showFlip
 );
+
+export const selectLossInfo = (game: Game): Game["loser"] => game.loser;
+
+export const selectLosingPlayer = createSelector(
+  selectLossInfo,
+  selectGamePlayers,
+  (loss, players): Player | undefined =>
+    loss?.id ? players[loss.id] : undefined
+);

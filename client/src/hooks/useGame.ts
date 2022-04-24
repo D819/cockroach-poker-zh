@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { bundle, useRiducer } from "riduce";
+import { showNotification } from "@mantine/notifications";
 import { useSocket } from "../socket";
 import { ClientEvent, ServerEvent } from "../types/event.types";
 import { Game } from "../types/game.types";
@@ -47,6 +48,18 @@ export default function useGame(gameId: Game["id"]): UseGameResult {
       ])
     );
   });
+
+  useSocketListener(
+    ServerEvent.GAME_NOTIFICATION,
+    (notificationGameId, notification) => {
+      if (notificationGameId === gameId) {
+        showNotification({
+          message: notification.message,
+          autoClose: 5000,
+        });
+      }
+    }
+  );
 
   return state;
 }

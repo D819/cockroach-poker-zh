@@ -4,6 +4,7 @@ import {
   ServerEvent,
 } from "../../../client/src/types/event.types";
 import { GamePhase, GameStatus } from "../../../client/src/types/game.types";
+import { NotificationType } from "../../../client/src/types/notification.types";
 import { GameManager } from "./manager";
 
 export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
@@ -31,6 +32,11 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
       gameManager.managePlayer(from).dropCard(card.id);
     }
     game.active.phase = GamePhase.PREDICT_OR_PASS;
+  });
+
+  gameManager.pushPlayerNotificationById(to, {
+    type: NotificationType.GENERAL,
+    message: "You're up!",
   });
 };
 

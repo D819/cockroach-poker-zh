@@ -9,7 +9,10 @@ import {
 } from "../../../../selectors/game-selectors";
 
 interface Props
-  extends Pick<GameHandlers, "onCardPass" | "onCardPeek" | "onCardPredict"> {
+  extends Pick<
+    GameHandlers,
+    "onCardPass" | "onCardPeek" | "onCardPredict" | "onGameReset"
+  > {
   className?: string;
   style?: React.CSSProperties;
   game: Game;
@@ -39,6 +42,7 @@ function ActiveDecision({
   onCardPass,
   onCardPeek,
   onCardPredict,
+  onGameReset,
 }: Props): JSX.Element {
   const {
     active: { phase },
@@ -48,6 +52,19 @@ function ActiveDecision({
   const isFurtherPassPossible = selectIsFurtherPassPossible(game);
 
   switch (phase) {
+    case GamePhase.DECLARE_LOSER:
+      return (
+        <Container {...{ className, style }}>
+          {player.isHost ? (
+            <Button fullWidth onClick={onGameReset}>
+              Restart game
+            </Button>
+          ) : (
+            <Text>Your host can restart a new round</Text>
+          )}
+        </Container>
+      );
+
     case GamePhase.CARD_REVEAL:
       return <></>;
 

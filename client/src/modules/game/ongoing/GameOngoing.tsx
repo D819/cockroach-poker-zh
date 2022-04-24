@@ -18,7 +18,7 @@ import CardReveal from "./components/CardReveal";
 interface Props
   extends Pick<
     GameHandlers,
-    "onCardFlip" | "onCardPass" | "onCardPeek" | "onCardPredict"
+    "onCardFlip" | "onCardPass" | "onCardPeek" | "onCardPredict" | "onGameReset"
   > {
   game: Game;
   player: Player;
@@ -47,12 +47,11 @@ const Container = styled.div`
     position: relative;
   }
 
-  .card-flip {
+  .over-overlay {
     z-index: 201;
-    opacity: 1;
   }
 
-  .card-flip img {
+  .over-overlay img {
     min-height: 0;
     min-width: 0;
     max-height: 100%;
@@ -111,6 +110,7 @@ function GameOngoing({
   onCardPass,
   onCardPeek,
   onCardPredict,
+  onGameReset,
 }: Props): JSX.Element {
   const activePlayer = selectActivePlayer(game);
   const activeCard = selectActiveCard(game);
@@ -166,7 +166,7 @@ function GameOngoing({
       </Box>
       {game.active.phase === GamePhase.CARD_REVEAL && activeCard && (
         <CardReveal
-          className="play-area card-flip"
+          className="play-area over-overlay"
           style={{ maxHeight: "100%", padding: "10px" }}
           card={activeCard}
           onFlip={onCardFlip}
@@ -175,7 +175,15 @@ function GameOngoing({
       {isActivePlayer && (
         <ActiveDecision
           className="actions"
-          {...{ game, player, players, onCardPass, onCardPeek, onCardPredict }}
+          {...{
+            game,
+            player,
+            players,
+            onCardPass,
+            onCardPeek,
+            onCardPredict,
+            onGameReset,
+          }}
         />
       )}
     </Container>
