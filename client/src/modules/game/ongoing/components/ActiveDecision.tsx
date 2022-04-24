@@ -39,6 +39,7 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
           <Divider label="Your turn to pass" p="sm" />
           <CardPassPicker
             game={game}
+            player={player}
             players={players.filter((p) => p.socketId !== player.socketId)}
             isPlayerDisabled={(p) => playersInvolved.includes(p.socketId)}
             onSubmit={onCardPass}

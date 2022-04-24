@@ -10,6 +10,7 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   game: Game;
+  player: Player;
   players: Player[];
   isPlayerDisabled?(player: Player): boolean;
   onSubmit?(selection: CardPassSelection): void;
@@ -36,7 +37,7 @@ const PlayerPickChoice = styled.div`
   }
 `;
 
-function CardPassPicker({ className, style, game, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
+function CardPassPicker({ className, style, game, player, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
 
   const pass = selectCurrentPassRecord(game);
 
@@ -66,6 +67,7 @@ function CardPassPicker({ className, style, game, players, isPlayerDisabled = ()
               setSelected((prev) => ({ ...prev, card: suit }))
             }
             value={selected.card}
+            isSuitDisabled={(suit) => !player.cards.hand.find(card => card.suit === suit)}
           />
         </>
       )}

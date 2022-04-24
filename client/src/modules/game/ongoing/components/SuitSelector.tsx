@@ -7,11 +7,12 @@ interface Props {
   style?: React.CSSProperties;
   label?: string;
   onSelect?(suit: CardSuit): void;
+  isSuitDisabled?(suit: CardSuit): boolean;
   required?: boolean;
   value?: CardSuit;
 }
 
-function SuitSelector({ className, style, label, required, value, onSelect }: Props): JSX.Element {
+function SuitSelector({ className, style, label, required, value, onSelect, isSuitDisabled = () => false }: Props): JSX.Element {
   return (
     <Select
       {...{ className, style, label, required }}
@@ -19,6 +20,7 @@ function SuitSelector({ className, style, label, required, value, onSelect }: Pr
         value: suit,
         image: `/assets/icons/${suit.toLowerCase().replaceAll(" ", "-")}.jpg`,
         label: suit,
+        disabled: isSuitDisabled(suit)
       }))}
       value={value}
       onChange={(value) => {
