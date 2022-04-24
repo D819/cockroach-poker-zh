@@ -220,6 +220,23 @@ export class GameManager {
     }
   }
 
+  public checkForLoser(): string | undefined {
+    for (const playerId of this.playerIds()) {
+      const completedSuit = this.managePlayer(playerId).completedSetIfExists();
+      if (completedSuit) {
+        this.update(game => {
+          game.loser = {
+            id: playerId,
+            suit: completedSuit
+          }
+          game.active.phase = GamePhase.DECLARE_LOSER
+        })
+
+      return playerId
+      }
+    }
+  }
+
   public pushGameNotificationToAll(notification: GameNotification): void {
     this.io.emit(ServerEvent.GAME_NOTIFICATION, this.gameId, notification);
   }
@@ -284,7 +301,10 @@ export class GameManager {
       } the card`,
     }));
 
-    this.startNewCardPass(gainingPlayerId);
+    if (!this.checkForLoser()) {
+      this.startNewCardPass(gainingPlayerId);
+    }
+
   }
 
   public revealCardPredictionResult(prediction: boolean): void {

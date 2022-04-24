@@ -48,6 +48,17 @@ function ActiveDecision({
   const isFurtherPassPossible = selectIsFurtherPassPossible(game);
 
   switch (phase) {
+    case GamePhase.DECLARE_LOSER:
+      return (
+        <Container {...{ className, style }}>
+          {player.isHost ? (
+            <Button fullWidth>Restart game</Button>
+          ) : (
+            <Text>Your host can restart a new round</Text>
+          )}
+        </Container>
+      )
+
     case GamePhase.CARD_REVEAL:
       return <></>;
 

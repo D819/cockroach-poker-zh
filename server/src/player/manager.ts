@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 import { ServerEvent } from "../../../client/src/types/event.types";
-import { CardId, Player } from "../../../client/src/types/game.types";
+import { CardId, CardSuit, Player } from "../../../client/src/types/game.types";
 import { GameManager, Operation } from "../game/manager";
 import { NotificationForPlayer } from "../../../client/src/types/notification.types";
 
@@ -61,6 +61,30 @@ export class PlayerManager {
     } else {
       return { status: "error" };
     }
+  }
+
+  public completedSetIfExists(): CardSuit | undefined {
+    const suitCount = Object.entries(this.countEachSuit()) as [CardSuit, number][];
+
+    for (const [suit, total] of suitCount) {
+      if (total === 4) {
+        return suit
+      }
+    }
+  }
+
+  private countEachSuit(): Partial<Record<CardSuit, number>> {
+    const snapshot = this.snapshot();
+    if (!snapshot) throw new Error("Couldn't find underlying player data");
+
+    const collectedCards = Object.values(snapshot.cards.area);
+
+    const totals = collectedCards.reduce((acc, curr) => ({
+      ...acc,
+      [curr.suit]: (acc[curr.suit] ?? 0) + 1
+    }), {} as Partial<Record<CardSuit, number>>);
+
+    return totals
   }
 
   public dropCard(cardId: CardId): void {

@@ -5,6 +5,8 @@ import {
   selectCurrentPassRecord,
   selectIsFirstPass,
   selectIsFurtherPassPossible,
+  selectLosingPlayer,
+  selectLossInfo,
   selectPassingPlayer,
 } from "../selectors/game-selectors";
 import { Game, GamePhase, Player } from "../types/game.types";
@@ -26,6 +28,12 @@ export const getGameHeadlineMarkdown = (game: Game, player: Player): string => {
   const passerPossessive = isPasser ? "***your***" : `**${passer?.name}**'s`;
 
   switch (phase) {
+    case GamePhase.DECLARE_LOSER: {
+      const losingPlayer = selectLosingPlayer(game);
+
+      return `${losingPlayer?.socketId === player.socketId ? "You lose" : `${losingPlayer?.name} loses`}`
+    }
+
     case GamePhase.CARD_REVEAL: {
       const prediction = selectCardPrediction(game);
       return `${activePlayerIs} predicting a **${
@@ -64,6 +72,13 @@ export const getGameInfoMarkdown = (game: Game, player: Player): string => {
   const passerPossessive = isPasser ? "***your***" : `**${passer?.name}**'s`;
 
   switch (phase) {
+    case GamePhase.DECLARE_LOSER: {
+      const lossInfo = selectLossInfo(game);
+      const losingPlayer = selectLosingPlayer(game);
+
+      return `By collecting 4 ${lossInfo?.suit} cards, ${losingPlayer?.socketId === player.socketId ? "you lose" : `${losingPlayer?.name} loses`} the game. \n\nAll other players are joint winners!`;
+    }
+
     case GamePhase.CARD_REVEAL: {
       const prediction = selectCardPrediction(game);
       return [
@@ -124,3 +139,9 @@ export const getGameInfoMarkdown = (game: Game, player: Player): string => {
     }
   }
 };
+
+// export const pluraliseSuit = (suit: CardSuit): string => {
+//   switch (suit) {
+//     case CardSuit.BAT
+//   }
+// }

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Fragment } from "react";
-import { Box, Divider, Overlay, Paper } from "@mantine/core";
+import { Box, Divider, Overlay, Paper, Stack, Text, Title } from "@mantine/core";
 import { Game, GamePhase, Player } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
 import ActiveCard from "./components/ActiveCard";
@@ -47,12 +47,11 @@ const Container = styled.div`
     position: relative;
   }
 
-  .card-flip {
+  .over-overlay {
     z-index: 201;
-    opacity: 1;
   }
 
-  .card-flip img {
+  .over-overlay img {
     min-height: 0;
     min-width: 0;
     max-height: 100%;
@@ -166,7 +165,7 @@ function GameOngoing({
       </Box>
       {game.active.phase === GamePhase.CARD_REVEAL && activeCard && (
         <CardReveal
-          className="play-area card-flip"
+          className="play-area over-overlay"
           style={{ maxHeight: "100%", padding: "10px" }}
           card={activeCard}
           onFlip={onCardFlip}
