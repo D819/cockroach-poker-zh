@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import ReactMarkdown from 'react-markdown';
 import { Fragment } from 'react';
-import { Alert, Divider, Paper } from '@mantine/core';
+import { Divider, Paper } from '@mantine/core';
 import {
   Game,
   Player,
@@ -13,7 +12,6 @@ import CardCount from "./components/CardCount";
 import { selectActivePlayer } from '../../../selectors/game-selectors';
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
-import { getGameHeadlineMarkdown } from "../../../utils/game-utils";
 import KeyInfo from "./components/KeyInfo";
 
 interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {

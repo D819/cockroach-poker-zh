@@ -50,7 +50,7 @@ export const getGameInfoMarkdown = (game: Game, player: Player): string => {
 
       const predictionConsequenceMessage = `If ${isActivePlayer ? "***you*** predict" : `**${activePlayer.name}** predicts`} correctly, ${isPasser ? "***you*** are" : `**${passer?.name}** is`} forced to take the card. Otherwise, ${isActivePlayer ? "***you*** take" : `**${activePlayer.name}** takes`} the card.`
 
-      return [passMessage, pass ? peekOrPassMessage : mustPassMessage, predictionConsequenceMessage].join("\n\n")
+      return [passMessage, isFurtherPassPossible ? peekOrPassMessage : mustPassMessage, predictionConsequenceMessage].join("\n\n")
     }
 
     case GamePhase.PASS_SELECTION: {
