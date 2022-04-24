@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "license": "CC-BY-NC-SA-4.0",
-  "description": "Two Rooms and a Boom React client",
+  "description": "Cockroach Poker client",
+  "engines": {
+    "node": "^16.13.0"
+  },
   "dependencies": {
     "@mantine/core": "^4.1.4",
     "@mantine/hooks": "^4.1.4",

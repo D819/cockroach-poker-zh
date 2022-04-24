@@ -1,7 +1,7 @@
 {
   "name": "@cockroach-poker/server",
   "version": "0.0.1",
-  "description": "Two Rooms and a Boom Socket.io server",
+  "description": "Cockroach Poker Socket.io server",
   "license": "CC-BY-NC-SA-4.0",
   "devDependencies": {
     "@babel/core": "^7.15.0",
