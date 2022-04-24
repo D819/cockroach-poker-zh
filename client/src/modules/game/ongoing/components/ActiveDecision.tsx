@@ -9,7 +9,7 @@ import {
 } from "../../../../selectors/game-selectors";
 
 interface Props
-  extends Pick<GameHandlers, "onCardPass" | "onCardPeek" | "onCardPredict"> {
+  extends Pick<GameHandlers, "onCardPass" | "onCardPeek" | "onCardPredict" | "onGameReset"> {
   className?: string;
   style?: React.CSSProperties;
   game: Game;
@@ -39,6 +39,7 @@ function ActiveDecision({
   onCardPass,
   onCardPeek,
   onCardPredict,
+  onGameReset
 }: Props): JSX.Element {
   const {
     active: { phase },
@@ -52,7 +53,7 @@ function ActiveDecision({
       return (
         <Container {...{ className, style }}>
           {player.isHost ? (
-            <Button fullWidth>Restart game</Button>
+            <Button fullWidth onClick={onGameReset}>Restart game</Button>
           ) : (
             <Text>Your host can restart a new round</Text>
           )}

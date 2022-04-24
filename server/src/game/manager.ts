@@ -229,7 +229,13 @@ export class GameManager {
             id: playerId,
             suit: completedSuit
           }
+          delete game.active.card;
           game.active.phase = GamePhase.DECLARE_LOSER
+        })
+
+        this.pushGameNotificationToAll({
+          type: NotificationType.GENERAL,
+          message: 'Game over!'
         })
 
       return playerId

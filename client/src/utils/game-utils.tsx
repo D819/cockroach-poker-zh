@@ -31,7 +31,7 @@ export const getGameHeadlineMarkdown = (game: Game, player: Player): string => {
     case GamePhase.DECLARE_LOSER: {
       const losingPlayer = selectLosingPlayer(game);
 
-      return `${losingPlayer?.socketId === player.socketId ? "You lose" : `${losingPlayer?.name} loses`}`
+      return `${losingPlayer?.socketId === player.socketId ? "***You*** lose" : `**${losingPlayer?.name}** loses`}`
     }
 
     case GamePhase.CARD_REVEAL: {
@@ -76,7 +76,7 @@ export const getGameInfoMarkdown = (game: Game, player: Player): string => {
       const lossInfo = selectLossInfo(game);
       const losingPlayer = selectLosingPlayer(game);
 
-      return `By collecting 4 ${lossInfo?.suit} cards, ${losingPlayer?.socketId === player.socketId ? "you lose" : `${losingPlayer?.name} loses`} the game. \n\nAll other players are joint winners!`;
+      return `By collecting 4 ${lossInfo?.suit} cards, ${losingPlayer?.socketId === player.socketId ? "you have" : `${losingPlayer?.name} has`} lost the game. \n\nAll other players are joint winners!`;
     }
 
     case GamePhase.CARD_REVEAL: {

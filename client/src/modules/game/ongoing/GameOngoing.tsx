@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Fragment } from "react";
-import { Box, Divider, Overlay, Paper, Stack, Text, Title } from "@mantine/core";
+import { Box, Divider, Overlay, Paper } from "@mantine/core";
 import { Game, GamePhase, Player } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
 import ActiveCard from "./components/ActiveCard";
@@ -18,7 +18,7 @@ import CardReveal from "./components/CardReveal";
 interface Props
   extends Pick<
     GameHandlers,
-    "onCardFlip" | "onCardPass" | "onCardPeek" | "onCardPredict"
+    "onCardFlip" | "onCardPass" | "onCardPeek" | "onCardPredict" | "onGameReset"
   > {
   game: Game;
   player: Player;
@@ -110,6 +110,7 @@ function GameOngoing({
   onCardPass,
   onCardPeek,
   onCardPredict,
+  onGameReset
 }: Props): JSX.Element {
   const activePlayer = selectActivePlayer(game);
   const activeCard = selectActiveCard(game);
@@ -174,7 +175,7 @@ function GameOngoing({
       {isActivePlayer && (
         <ActiveDecision
           className="actions"
-          {...{ game, player, players, onCardPass, onCardPeek, onCardPredict }}
+          {...{ game, player, players, onCardPass, onCardPeek, onCardPredict, onGameReset }}
         />
       )}
     </Container>
