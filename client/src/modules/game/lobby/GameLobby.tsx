@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import { Game, Player } from "../../../types/game.types";
 import { GameHandlers } from "../GamePage";
-import PlayerList from '../../../ui/atoms/PlayerList';
-import { Alert, Button } from '@mantine/core';
-import { useCopyToClipboard } from 'react-use';
+import PlayerList from "../../../ui/atoms/PlayerList";
+import { Alert, Button } from "@mantine/core";
+import { useCopyToClipboard } from "react-use";
 
 interface Props
   extends Pick<
@@ -72,9 +72,8 @@ function GameLobby({
   onPlayerKick,
   onSettingsUpdate,
   player,
-  players
+  players,
 }: Props): JSX.Element {
-
   // eslint-disable-next-line
   const [_, copyToClipboard] = useCopyToClipboard();
 
@@ -100,7 +99,7 @@ function GameLobby({
           <Alert
             title="Invite your friends!"
             color="yellow"
-            style={{ margin: '10px' }}
+            style={{ margin: "10px" }}
           >
             At least three players are needed to start the game
           </Alert>
@@ -144,6 +143,5 @@ function GameLobby({
     </Container>
   );
 }
-
 
 export default GameLobby;

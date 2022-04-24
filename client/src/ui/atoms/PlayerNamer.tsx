@@ -28,9 +28,7 @@ function PlayerNamer({ handleSetName, takenNames }: Props): JSX.Element {
           setInputText(e.target.value);
         }}
       />
-      <Button onClick={handleSetClick}>
-        Set player name
-      </Button>
+      <Button onClick={handleSetClick}>Set player name</Button>
     </>
   );
 }

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import { CardSuit } from "../../../../types/game.types";
-import SuitIcons from './SuitIcons';
+import SuitIcons from "./SuitIcons";
 
 interface Props {
   className?: string;
@@ -16,7 +16,12 @@ const SuitCount = styled.div`
   margin: 2px;
 `;
 
-function CardCount({ className, style, count, filterEmpty }: Props): JSX.Element {
+function CardCount({
+  className,
+  style,
+  count,
+  filterEmpty,
+}: Props): JSX.Element {
   return (
     <SuitIcons
       {...{ className, style }}

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Image } from '@mantine/core';
+import { Image } from "@mantine/core";
 import { Card } from "../../../../types/game.types";
 
 interface Props {
@@ -11,8 +11,7 @@ interface Props {
 
 const Container = styled.div`
   display: grid;
-  grid-template-areas:
-    "card";
+  grid-template-areas: "card";
 
   .card {
     grid-area: card;
@@ -24,7 +23,7 @@ const Container = styled.div`
     z-index: 1;
     font-size: 2rem;
   }
-`
+`;
 
 function ActiveCard({ className, style, card, isFaceUp }: Props): JSX.Element {
   return (
@@ -35,7 +34,7 @@ function ActiveCard({ className, style, card, isFaceUp }: Props): JSX.Element {
         height="50px"
         width="auto"
       />
-      <p className='card'>?</p>
+      <p className="card">?</p>
     </Container>
   );
 }

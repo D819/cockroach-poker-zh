@@ -1,6 +1,6 @@
-import { Avatar, Group, Select, Text } from '@mantine/core';
-import { forwardRef } from 'react';
-import { CardSuit } from '../../../../types/game.types';
+import { Avatar, Group, Select, Text } from "@mantine/core";
+import { forwardRef } from "react";
+import { CardSuit } from "../../../../types/game.types";
 
 interface Props {
   className?: string;
@@ -12,7 +12,15 @@ interface Props {
   value?: CardSuit;
 }
 
-function SuitSelector({ className, style, label, required, value, onSelect, isSuitDisabled = () => false }: Props): JSX.Element {
+function SuitSelector({
+  className,
+  style,
+  label,
+  required,
+  value,
+  onSelect,
+  isSuitDisabled = () => false,
+}: Props): JSX.Element {
   return (
     <Select
       {...{ className, style, label, required }}
@@ -20,14 +28,14 @@ function SuitSelector({ className, style, label, required, value, onSelect, isSu
         value: suit,
         image: `/assets/icons/${suit.toLowerCase().replaceAll(" ", "-")}.jpg`,
         label: suit,
-        disabled: isSuitDisabled(suit)
+        disabled: isSuitDisabled(suit),
       }))}
       value={value}
       onChange={(value) => {
         // cast from string | null to do a check
-        const prospectiveSuit = value as CardSuit
+        const prospectiveSuit = value as CardSuit;
         if (onSelect && Object.values(CardSuit).includes(prospectiveSuit)) {
-          onSelect(prospectiveSuit)
+          onSelect(prospectiveSuit);
         }
       }}
       itemComponent={SelectItem}

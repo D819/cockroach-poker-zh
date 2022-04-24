@@ -19,25 +19,34 @@ function CardReveal({ className, style, card, onFlip }: Props): JSX.Element {
         setIsFlipped(true);
       }, 500);
     }
-  }, [isFlipped, setIsFlipped])
+  }, [isFlipped, setIsFlipped]);
 
   return (
     <CardFlip
       {...{ className, style }}
-      styles={{ cardFrame: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: "center",
-        maxHeight: '100%',
-        minHeight: 0
-        }}}
-      front={<img alt='card-front' src={`/assets/card-fronts/${card.id.toLowerCase().replaceAll(' ', '-')}.jpg`}  />}
-      back={<img alt='card-back' src="/assets/card-back.jpg"  />}
+      styles={{
+        cardFrame: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          maxHeight: "100%",
+          minHeight: 0,
+        },
+      }}
+      front={
+        <img
+          alt="card-front"
+          src={`/assets/card-fronts/${card.id
+            .toLowerCase()
+            .replaceAll(" ", "-")}.jpg`}
+        />
+      }
+      back={<img alt="card-back" src="/assets/card-back.jpg" />}
       isFlippedUp={isFlipped}
       onFlip={onFlip}
       springConfig={{ ...config.molasses, clamp: true }}
     />
-  )
+  );
 }
 
 export default CardReveal;

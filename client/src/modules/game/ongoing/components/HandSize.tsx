@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Image } from '@mantine/core';
+import styled from "styled-components";
+import { Image } from "@mantine/core";
 
 interface Props {
   className?: string;
@@ -20,7 +20,11 @@ const HandSizeContainer = styled.div`
   }
 `;
 
-export default function HandSize({ className, handSize, style }: Props): JSX.Element {
+export default function HandSize({
+  className,
+  handSize,
+  style,
+}: Props): JSX.Element {
   return (
     <HandSizeContainer {...{ className, style }}>
       <Image

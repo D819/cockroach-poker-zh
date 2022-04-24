@@ -1,11 +1,15 @@
-import { Button, Divider, Text } from '@mantine/core';
-import styled from 'styled-components';
+import { Button, Divider, Text } from "@mantine/core";
+import styled from "styled-components";
 import { Game, GamePhase, Player } from "../../../../types/game.types";
 import CardPassPicker from "./CardPassPicker";
 import { GameHandlers } from "../../GamePage";
-import { selectIsFurtherPassPossible, selectPlayersAlreadyInvolvedInPass } from '../../../../selectors/game-selectors';
+import {
+  selectIsFurtherPassPossible,
+  selectPlayersAlreadyInvolvedInPass,
+} from "../../../../selectors/game-selectors";
 
-interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
+interface Props
+  extends Pick<GameHandlers, "onCardPass" | "onCardPeek" | "onCardPredict"> {
   className?: string;
   style?: React.CSSProperties;
   game: Game;
@@ -13,7 +17,7 @@ interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCard
   players: Player[];
 }
 
-const Container = styled.div``
+const Container = styled.div``;
 
 const PredictOrPass = styled.div`
   display: grid;
@@ -24,17 +28,28 @@ const PredictOrPass = styled.div`
   .full-button {
     grid-column-end: span 2;
   }
-`
+`;
 
-function ActiveDecision({ className, style, game, player, players, onCardPass, onCardPeek, onCardPredict }: Props): JSX.Element {
-  const { active: { phase } } = game;
+function ActiveDecision({
+  className,
+  style,
+  game,
+  player,
+  players,
+  onCardPass,
+  onCardPeek,
+  onCardPredict,
+}: Props): JSX.Element {
+  const {
+    active: { phase },
+  } = game;
 
   const playersInvolved = selectPlayersAlreadyInvolvedInPass(game);
   const isFurtherPassPossible = selectIsFurtherPassPossible(game);
 
   switch (phase) {
     case GamePhase.CARD_REVEAL:
-      return <></>
+      return <></>;
 
     case GamePhase.PASS_SELECTION:
       return (
@@ -49,7 +64,7 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
           />
         </Container>
       );
-    
+
     case GamePhase.PREDICT_OR_PASS: {
       const makePredictionHandler = (truth: boolean) => () => {
         onCardPredict && onCardPredict(truth);
@@ -59,7 +74,10 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
         <Container {...{ className, style }}>
           <Divider label="Predict / Pass" p="sm" />
           {!isFurtherPassPossible && (
-            <Text mb='md'>There are no players left to pass to, so you must make a prediction.</Text>
+            <Text mb="md">
+              There are no players left to pass to, so you must make a
+              prediction.
+            </Text>
           )}
           <PredictOrPass>
             <Button
@@ -69,11 +87,15 @@ function ActiveDecision({ className, style, game, player, players, onCardPass, o
             >
               Truth
             </Button>
-            <Button color="red" fullWidth onClick={makePredictionHandler(false)}>
+            <Button
+              color="red"
+              fullWidth
+              onClick={makePredictionHandler(false)}
+            >
               Lie
             </Button>
             <Button
-              className='full-button'
+              className="full-button"
               fullWidth
               onClick={onCardPeek}
               disabled={!isFurtherPassPossible}

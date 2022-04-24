@@ -1,4 +1,9 @@
-import { Card, CardSuit, CardVariant, InitialCardSuit } from "../types/game.types";
+import {
+  Card,
+  CardSuit,
+  CardVariant,
+  InitialCardSuit,
+} from "../types/game.types";
 
 const createCard = <Suit extends CardSuit, Variant extends CardVariant>(
   suit: Suit,
@@ -6,8 +11,8 @@ const createCard = <Suit extends CardSuit, Variant extends CardVariant>(
 ): Card<Suit, Variant> => ({
   id: `${suit} ${variant}`,
   suit,
-  variant
-})
+  variant,
+});
 
 const createNonRoyalDeck = <Suit extends CardSuit>(
   suit: Suit
@@ -21,13 +26,6 @@ const createNonRoyalDeck = <Suit extends CardSuit>(
   createCard(suit, "7"),
   createCard(suit, "8"),
 ];
-
-const createRoyalDeck = <Suit extends CardSuit>(
-  suit: Suit
-): InitialCardSuit<Suit, true> => [
-  ...createNonRoyalDeck(suit),
-  createCard(suit, "Royal")
-]
 
 export const INITIAL_DECK_NON_ROYAL: Card[] = [
   ...createNonRoyalDeck(CardSuit.BAT),

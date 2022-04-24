@@ -29,7 +29,8 @@ const Container = styled.div`
   display: grid;
   grid-template-areas: "content";
 
-  .card-front, .card-back {
+  .card-front,
+  .card-back {
     grid-area: content;
   }
 
@@ -54,7 +55,7 @@ function CardFlipWithRef(
     // onAnimationComplete,
     isFlippedUp,
     rotate: rotation = 0,
-    springConfig
+    springConfig,
   }: CardFlipProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ): JSX.Element {
@@ -64,12 +65,12 @@ function CardFlipWithRef(
     rotate: rotation,
     filter: disabled ? "grayscale(100%)" : "grayscale(0%)",
     config: springConfig,
-    onRest: () => onFlip && onFlip()
+    onRest: () => onFlip && onFlip(),
   });
 
   const frontElement = (
     <animated.div
-      className='card-front'
+      className="card-front"
       onClick={() => onClickFront && onClickFront()}
       style={{
         ...styles?.cardFrame,
@@ -79,12 +80,14 @@ function CardFlipWithRef(
         filter,
         // display: opacity.to((v) => (v === 0 ? "none" : "block")),
       }}
-    >{front}</animated.div>
+    >
+      {front}
+    </animated.div>
   );
 
   const backElement = (
     <animated.div
-      className='card-back'
+      className="card-back"
       onClick={() => onClickBack && onClickBack()}
       style={{
         ...styles?.cardFrame,
@@ -93,7 +96,9 @@ function CardFlipWithRef(
         rotateY: "180deg",
         // display: opacity.to((v) => (v === 1 ? "none" : "block")),
       }}
-    >{back}</animated.div>
+    >
+      {back}
+    </animated.div>
   );
 
   return (
@@ -102,7 +107,7 @@ function CardFlipWithRef(
       ref={ref}
       style={{
         ...style,
-        ...styles?.parent
+        ...styles?.parent,
       }}
       onClick={onClick}
     >
@@ -112,7 +117,6 @@ function CardFlipWithRef(
     </Container>
   );
 }
-
 
 const CardFlip = forwardRef(CardFlipWithRef);
 

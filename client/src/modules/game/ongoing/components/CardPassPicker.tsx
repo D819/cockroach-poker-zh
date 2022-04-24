@@ -1,10 +1,10 @@
-import { Button, Group, Select, Text } from '@mantine/core';
-import { useState } from 'react';
-import styled from 'styled-components';
-import { CardSuit, Game, Player } from '../../../../types/game.types';
-import SuitIcon from './SuitIcon';
-import SuitSelector from './SuitSelector';
-import { selectCurrentPassRecord } from '../../../../selectors/game-selectors';
+import { Button, Group, Select, Text } from "@mantine/core";
+import { useState } from "react";
+import styled from "styled-components";
+import { CardSuit, Game, Player } from "../../../../types/game.types";
+import SuitIcon from "./SuitIcon";
+import SuitSelector from "./SuitSelector";
+import { selectCurrentPassRecord } from "../../../../selectors/game-selectors";
 
 interface Props {
   className?: string;
@@ -37,14 +37,25 @@ const PlayerPickChoice = styled.div`
   }
 `;
 
-function CardPassPicker({ className, style, game, player, players, isPlayerDisabled = () => false, onSubmit }: Props): JSX.Element {
-
+function CardPassPicker({
+  className,
+  style,
+  game,
+  player,
+  players,
+  isPlayerDisabled = () => false,
+  onSubmit,
+}: Props): JSX.Element {
   const pass = selectCurrentPassRecord(game);
 
-  const [selected, setSelected] = useState<Partial<CardPassSelection>>({})
-  const { card: activeCard } = game.active
+  const [selected, setSelected] = useState<Partial<CardPassSelection>>({});
+  const { card: activeCard } = game.active;
 
-  const isSubmitDisabled = !(selected.claim && selected.playerId && (!!activeCard || selected.card))
+  const isSubmitDisabled = !(
+    selected.claim &&
+    selected.playerId &&
+    (!!activeCard || selected.card)
+  );
 
   return (
     <PlayerPickChoice {...{ className, style }}>
@@ -57,7 +68,9 @@ function CardPassPicker({ className, style, game, player, players, isPlayerDisab
             </Text>
             <SuitIcon suit={activeCard.suit} />
           </Group>
-          <Text className='full-grid-width' mb='sm'>It's your turn to pass it on!</Text>
+          <Text className="full-grid-width" mb="sm">
+            It's your turn to pass it on!
+          </Text>
         </>
       ) : (
         <>
@@ -67,7 +80,9 @@ function CardPassPicker({ className, style, game, player, players, isPlayerDisab
               setSelected((prev) => ({ ...prev, card: suit }))
             }
             value={selected.card}
-            isSuitDisabled={(suit) => !player.cards.hand.find(card => card.suit === suit)}
+            isSuitDisabled={(suit) =>
+              !player.cards.hand.find((card) => card.suit === suit)
+            }
           />
         </>
       )}
@@ -109,6 +124,5 @@ function CardPassPicker({ className, style, game, player, players, isPlayerDisab
     </PlayerPickChoice>
   );
 }
-
 
 export default CardPassPicker;

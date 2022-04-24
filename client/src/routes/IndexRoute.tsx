@@ -19,12 +19,6 @@ function IndexRoute(): JSX.Element {
     socket.emit(ClientEvent.CREATE_GAME, socket.id);
   };
 
-  const handleJoinGame = () => {
-    window.alert(
-      "This isn't implemented yet - get the join link from your host!"
-    );
-  };
-
   const { isLoading } = useQuery("server-ping", () =>
     fetch(`${socketUrl}/ping`).then((res) => res.json())
   );
@@ -41,13 +35,13 @@ function IndexRoute(): JSX.Element {
     >
       <div className="flex-center" style={{ textAlign: "center" }}>
         <h1>Cockroach Poker</h1>
-        <Image src="/assets/cockroach-poker.jpg" style={{ maxHeight: '50%' }} />
+        <Image src="/assets/cockroach-poker.jpg" style={{ maxHeight: "50%" }} />
 
         {isLoading ? (
           <Alert
             icon={<Icon name="circle notched" loading />}
             title="Loading..."
-            style={{ textAlign: 'left', margin: '10px' }}
+            style={{ textAlign: "left", margin: "10px" }}
           >
             This can be 30-40s on first boot. Thanks for waiting!
           </Alert>

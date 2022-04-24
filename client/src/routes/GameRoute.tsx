@@ -44,7 +44,7 @@ function GameRoute(): JSX.Element {
                 gameId,
                 cards: {
                   hand: [],
-                  area: []
+                  area: [],
                 },
               });
             } else {
@@ -55,8 +55,8 @@ function GameRoute(): JSX.Element {
                 gameId,
                 cards: {
                   hand: [],
-                  area: []
-                }
+                  area: [],
+                },
               });
             }
           }}
@@ -71,53 +71,49 @@ function GameRoute(): JSX.Element {
         {game.data && player.data && (
           <GamePage
             game={game.data}
-
             onCardFlip={() => {
-              console.log('resolving flip')
+              console.log("resolving flip");
 
-              if (!game.data || !player.data) return
+              if (!game.data || !player.data) return;
 
               socket.emit(ClientEvent.RESOLVE_FLIP, game.data.id);
 
-              console.log('emitted from flip')
+              console.log("emitted from flip");
             }}
-
             onCardPass={(selection) => {
-              if (!game.data) return
+              if (!game.data) return;
 
-              const cardPassed = selection.card ? selectActivePlayer(game.data).cards.hand.find(card => card.suit === selection.card) : undefined
+              const cardPassed = selection.card
+                ? selectActivePlayer(game.data).cards.hand.find(
+                    (card) => card.suit === selection.card
+                  )
+                : undefined;
 
               socket.emit(ClientEvent.PASS_CARD, game.data.id, {
                 from: game.data.active.playerId,
                 to: selection.playerId,
                 claim: selection.claim,
-                card: cardPassed
-              })
+                card: cardPassed,
+              });
             }}
-
             onCardPeek={() => {
-              if (!game.data) return
-              socket.emit(ClientEvent.PEEK_AT_CARD, game.data.id)
+              if (!game.data) return;
+              socket.emit(ClientEvent.PEEK_AT_CARD, game.data.id);
             }}
-
             onCardPredict={(prediction) => {
-              if (!game.data) return
-              socket.emit(ClientEvent.PREDICT_CARD, game.data.id, prediction)
+              if (!game.data) return;
+              socket.emit(ClientEvent.PREDICT_CARD, game.data.id, prediction);
             }}
-            
             onGameReset={() => {
               game.data && socket.emit(ClientEvent.RESET_GAME, game.data.id);
             }}
-
             onGameStart={() => {
               game.data && socket.emit(ClientEvent.START_GAME, game.data.id);
             }}
-            
             onPlayerKick={(playerId) => {
               game.data &&
                 socket.emit(ClientEvent.KICK_PLAYER, game.data.id, playerId);
             }}
-            
             onSettingsUpdate={(newSettings) => {
               game.data &&
                 socket.emit(
@@ -126,7 +122,6 @@ function GameRoute(): JSX.Element {
                   newSettings
                 );
             }}
-            
             players={Object.values(game.data.players)}
             player={player.data}
           />

@@ -1,12 +1,15 @@
-import { ActionIcon, Alert, Popover } from '@mantine/core';
-import { useState } from 'react';
+import { ActionIcon, Alert, Popover } from "@mantine/core";
+import { useState } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import ReactMarkdown from 'react-markdown';
-import styled from 'styled-components';
-import { Game, Player } from '../../../../types/game.types';
-import { countEachSuit } from '../../../../utils/hand-utils';
-import CardCount from './CardCount';
-import { getGameHeadlineMarkdown, getGameInfoMarkdown } from '../../../../utils/game-utils';
+import ReactMarkdown from "react-markdown";
+import styled from "styled-components";
+import { Game, Player } from "../../../../types/game.types";
+import { countEachSuit } from "../../../../utils/hand-utils";
+import CardCount from "./CardCount";
+import {
+  getGameHeadlineMarkdown,
+  getGameInfoMarkdown,
+} from "../../../../utils/game-utils";
 
 interface KeyInfoProps {
   className?: string;
@@ -26,16 +29,12 @@ const PlayerHand = styled.div`
   }
 `;
 
-const EmptyForSpacing = styled.div`
-  content: "";
-  display: block;
-  position: absolute;
-  right: -5px;
-  width: 5px;
-  height: 1px;
-`;
-
-function KeyInfo({ className, style, game, player }: KeyInfoProps): JSX.Element {
+function KeyInfo({
+  className,
+  style,
+  game,
+  player,
+}: KeyInfoProps): JSX.Element {
   return (
     <>
       <PlayerHand>
@@ -46,7 +45,7 @@ function KeyInfo({ className, style, game, player }: KeyInfoProps): JSX.Element 
         icon={<GameInfoPopover {...{ game, player }} />}
         styles={{
           root: { padding: "10px 5px", overflowX: "scroll" },
-          message: { marginRight: '5px', display: 'inline-block' }
+          message: { marginRight: "5px", display: "inline-block" },
         }}
       >
         <ReactMarkdown className="headline">
@@ -56,7 +55,6 @@ function KeyInfo({ className, style, game, player }: KeyInfoProps): JSX.Element 
     </>
   );
 }
-
 
 interface GameInfoPopoverProps {
   game: Game;
@@ -79,7 +77,7 @@ function GameInfoPopover({ game, player }: GameInfoPopoverProps) {
           onClick={() => {
             setOpened((prev) => !prev);
           }}
-          variant='transparent'
+          variant="transparent"
         >
           <AiOutlineInfoCircle size={16} />
         </ActionIcon>

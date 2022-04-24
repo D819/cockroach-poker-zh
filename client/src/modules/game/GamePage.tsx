@@ -1,12 +1,7 @@
-import {
-  Game,
-  GameSettings,
-  GameStatus,
-  Player,
-} from "../../types/game.types";
+import { Game, GameSettings, GameStatus, Player } from "../../types/game.types";
 import GameLobby from "./lobby/GameLobby";
 import GameOngoing from "./ongoing/GameOngoing";
-import { CardPassSelection } from './ongoing/components/CardPassPicker';
+import { CardPassSelection } from "./ongoing/components/CardPassPicker";
 
 interface Props extends GameHandlers {
   game: Game;
@@ -38,7 +33,6 @@ function GamePage({
   players,
   player,
 }: Props): JSX.Element {
-
   if (game.status === GameStatus.LOBBY) {
     return (
       <GameLobby
@@ -62,7 +56,7 @@ function GamePage({
           onCardFlip,
           onCardPass,
           onCardPeek,
-          onCardPredict
+          onCardPredict,
         }}
       />
     );

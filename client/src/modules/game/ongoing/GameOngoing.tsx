@@ -1,22 +1,25 @@
 import styled from "styled-components";
-import { Fragment } from 'react';
-import { Box, Divider, Overlay, Paper } from '@mantine/core';
-import {
-  Game,
-  GamePhase,
-  Player,
-} from "../../../types/game.types";
+import { Fragment } from "react";
+import { Box, Divider, Overlay, Paper } from "@mantine/core";
+import { Game, GamePhase, Player } from "../../../types/game.types";
 import HandSize from "./components/HandSize";
 import ActiveCard from "./components/ActiveCard";
-import { countEachSuit } from '../../../utils/hand-utils';
+import { countEachSuit } from "../../../utils/hand-utils";
 import CardCount from "./components/CardCount";
-import { selectActiveCard, selectActivePlayer } from '../../../selectors/game-selectors';
+import {
+  selectActiveCard,
+  selectActivePlayer,
+} from "../../../selectors/game-selectors";
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
 import KeyInfo from "./components/KeyInfo";
 import CardReveal from "./components/CardReveal";
 
-interface Props extends Pick<GameHandlers, 'onCardFlip' | 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
+interface Props
+  extends Pick<
+    GameHandlers,
+    "onCardFlip" | "onCardPass" | "onCardPeek" | "onCardPredict"
+  > {
   game: Game;
   player: Player;
   players: Player[];
@@ -48,7 +51,7 @@ const Container = styled.div`
     z-index: 201;
     opacity: 1;
   }
-  
+
   .card-flip img {
     min-height: 0;
     min-width: 0;
@@ -81,8 +84,7 @@ const PlayerGrid = styled.div`
 const PlayerArea = styled.div`
   display: grid;
   align-items: center;
-  grid-template-areas:
-    "hand-count collected pass";
+  grid-template-areas: "hand-count collected pass";
   grid-template-columns: min-content auto 50px;
   grid-template-rows: auto min-content;
   grid-row-gap: 10px;
@@ -99,7 +101,7 @@ const PlayerArea = styled.div`
   .passed-card {
     grid-area: pass;
   }
-`
+`;
 
 function GameOngoing({
   game,
@@ -108,9 +110,8 @@ function GameOngoing({
   onCardFlip,
   onCardPass,
   onCardPeek,
-  onCardPredict
+  onCardPredict,
 }: Props): JSX.Element {
-
   const activePlayer = selectActivePlayer(game);
   const activeCard = selectActiveCard(game);
   const isActivePlayer = activePlayer.socketId === player.socketId;
@@ -124,9 +125,7 @@ function GameOngoing({
         <Divider m="md" />
       </div>
       <Box className="play-area">
-        {game.active.phase === GamePhase.CARD_REVEAL && (
-          <Overlay blur={1} />
-        )}
+        {game.active.phase === GamePhase.CARD_REVEAL && <Overlay blur={1} />}
         <PlayerGrid>
           {players.map((listPlayer, idx) => (
             <Fragment key={listPlayer.socketId}>
@@ -166,12 +165,12 @@ function GameOngoing({
         </PlayerGrid>
       </Box>
       {game.active.phase === GamePhase.CARD_REVEAL && activeCard && (
-      <CardReveal
-        className='play-area card-flip'
-        style={{ maxHeight: '100%', padding: '10px' }}
-        card={activeCard}
-        onFlip={onCardFlip}
-      />
+        <CardReveal
+          className="play-area card-flip"
+          style={{ maxHeight: "100%", padding: "10px" }}
+          card={activeCard}
+          onFlip={onCardFlip}
+        />
       )}
       {isActivePlayer && (
         <ActiveDecision

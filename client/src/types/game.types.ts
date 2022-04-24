@@ -20,7 +20,10 @@ export type CardId<
   Variant extends CardVariant = CardVariant
 > = `${Suit} ${Variant}`;
 
-export interface Card<Suit extends CardSuit = CardSuit, Variant extends CardVariant = CardVariant> {
+export interface Card<
+  Suit extends CardSuit = CardSuit,
+  Variant extends CardVariant = CardVariant
+> {
   id: CardId<Suit, Variant>;
   suit: Suit;
   variant: CardVariant;
@@ -34,14 +37,37 @@ export enum CardSuit {
   SCORPION = "Scorpion",
   SPIDER = "Spider",
   STINK_BUG = "Stink bug",
-  TOAD = "Toad"
+  TOAD = "Toad",
 }
 
-export type CardVariant = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "Royal";
+export type CardVariant =
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "Royal";
 
-type InitialCardSuitNonRoyal<Suit extends CardSuit> = [Card<Suit, "1">, Card<Suit, "2">, Card<Suit, "3">, Card<Suit, "4">, Card<Suit, "5">, Card<Suit, "6">, Card<Suit, "7">, Card<Suit, "8">]
+type InitialCardSuitNonRoyal<Suit extends CardSuit> = [
+  Card<Suit, "1">,
+  Card<Suit, "2">,
+  Card<Suit, "3">,
+  Card<Suit, "4">,
+  Card<Suit, "5">,
+  Card<Suit, "6">,
+  Card<Suit, "7">,
+  Card<Suit, "8">
+];
 
-export type InitialCardSuit<Suit extends CardSuit, IsRoyal extends boolean = false> = IsRoyal extends false ? InitialCardSuitNonRoyal<Suit> : [...InitialCardSuitNonRoyal<Suit>, Card<Suit, "Royal">]
+export type InitialCardSuit<
+  Suit extends CardSuit,
+  IsRoyal extends boolean = false
+> = IsRoyal extends false
+  ? InitialCardSuitNonRoyal<Suit>
+  : [...InitialCardSuitNonRoyal<Suit>, Card<Suit, "Royal">];
 
 export interface CardPass {
   from: string;
@@ -55,9 +81,9 @@ export enum GameStatus {
 }
 
 export enum GamePhase {
-  CARD_REVEAL = 'card-reveal',
-  PASS_SELECTION = 'pass-selection',
-  PREDICT_OR_PASS = 'predict-or-pass',
+  CARD_REVEAL = "card-reveal",
+  PASS_SELECTION = "pass-selection",
+  PREDICT_OR_PASS = "predict-or-pass",
 }
 
 export interface Player {
@@ -68,7 +94,7 @@ export interface Player {
   cards: {
     hand: Card[];
     area: Card[];
-  }
+  };
 }
 
 export interface GameSettings {

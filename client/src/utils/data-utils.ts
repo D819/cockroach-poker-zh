@@ -1,17 +1,12 @@
 import { mapValues } from "lodash";
-import {
-  Game,
-  GamePhase,
-  GameStatus,
-  Player,
-} from "../types/game.types";
+import { Game, GamePhase, GameStatus, Player } from "../types/game.types";
 
 export const createDummyGame = ({
   id = generateRandomGameId(),
   active = {
     playerId: generateDummySocketId(),
     passHistory: [],
-    phase: GamePhase.PASS_SELECTION
+    phase: GamePhase.PASS_SELECTION,
   },
   players = {},
   status = GameStatus.LOBBY,
@@ -19,7 +14,10 @@ export const createDummyGame = ({
   return {
     id,
     active,
-    players: mapValues(players, (player): Player => ({ ...player, gameId: id })),
+    players: mapValues(
+      players,
+      (player): Player => ({ ...player, gameId: id })
+    ),
     status,
     settings: { royalVariant: false },
   };
@@ -42,14 +40,14 @@ export const createDummyPlayer = ({
   gameId,
   name,
   isHost,
-  cards = { hand: [], area: [] }
+  cards = { hand: [], area: [] },
 }: Partial<Player> = {}): Player => {
   return {
     socketId,
     gameId,
     name,
     isHost,
-    cards
+    cards,
   };
 };
 
