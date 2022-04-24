@@ -1,10 +1,10 @@
 # Cockroach Poker
 
 <div style="display: flex; justify-content: space-around;">
-  <img alt="Two Rooms and a Boom app - splash screen" src="./assets/splash-screen.png" width="150" />
-  <img alt="Two Rooms and a Boom app - lobby" src="./assets/lobby.png" width="150" />
-  <img alt="Two Rooms and a Boom app - room" src="./assets/room.png" width="150" />
-  <img alt="Two Rooms and a Boom app - role" src="./assets/role.png" width="150" />
+  <img alt="Cockroach Poker app - splash screen" src="./assets/splash-screen.png" width="150" />
+  <img alt="Cockroach Poker app - lobby" src="./assets/lobby.png" width="150" />
+  <img alt="Cockroach Poker app - room" src="./assets/room.png" width="150" />
+  <img alt="Cockroach Poker app - role" src="./assets/role.png" width="150" />
 </div>
 
 **Cockroach Poker** is a non-gambling social bluffing game (with little to do with traditional poker).
