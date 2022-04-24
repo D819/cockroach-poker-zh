@@ -1,6 +1,6 @@
-# Two Rooms and a Boom - frontend
+# Cockroach Poker - frontend
 
-This is the frontend code for Two Rooms and a Boom:
+This is the frontend code for Cockroach Poker:
 
 - TypeScript
 - React

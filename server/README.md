@@ -1,6 +1,6 @@
-# Two Rooms and a Boom - backend
+# Cockroach Poker - backend
 
-This is the backend code for Two Rooms and a Boom:
+This is the backend code for Cockroach Poker:
 
 - TypeScript
 - socket.io
