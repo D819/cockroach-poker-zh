@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Fragment } from 'react';
-import { Box, Divider, Image, Overlay, Paper, Stack } from '@mantine/core';
+import { Box, Divider, Overlay, Paper } from '@mantine/core';
 import {
   Game,
   GamePhase,
@@ -10,10 +10,11 @@ import HandSize from "./components/HandSize";
 import ActiveCard from "./components/ActiveCard";
 import { countEachSuit } from '../../../utils/hand-utils';
 import CardCount from "./components/CardCount";
-import { selectActivePlayer } from '../../../selectors/game-selectors';
+import { selectActiveCard, selectActivePlayer } from '../../../selectors/game-selectors';
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
 import KeyInfo from "./components/KeyInfo";
+import CardReveal from "./components/CardReveal";
 
 interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   game: Game;
@@ -30,10 +31,12 @@ const Container = styled.div`
     "data"
     "play-area"
     "actions";
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
 
   .data {
     grid-area: data;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .play-area {
@@ -44,6 +47,15 @@ const Container = styled.div`
   .card-flip {
     z-index: 201;
     opacity: 1;
+  }
+  
+  .card-flip img {
+    min-height: 0;
+    min-width: 0;
+    max-height: 100%;
+    max-width: 100%;
+    height: 100%;
+    border-radius: 5%;
   }
 
   .actions {
@@ -99,6 +111,7 @@ function GameOngoing({
 }: Props): JSX.Element {
 
   const activePlayer = selectActivePlayer(game);
+  const activeCard = selectActiveCard(game);
   const isActivePlayer = activePlayer.socketId === player.socketId;
 
   return (
@@ -111,7 +124,7 @@ function GameOngoing({
       </div>
       <Box className="play-area">
         {game.active.phase === GamePhase.CARD_REVEAL && (
-          <Overlay opacity={0.9} color="gray" blur={2} />
+          <Overlay blur={1} />
         )}
         <PlayerGrid>
           {players.map((listPlayer, idx) => (
@@ -151,10 +164,12 @@ function GameOngoing({
           ))}
         </PlayerGrid>
       </Box>
-      {game.active.phase === GamePhase.CARD_REVEAL && (
-        <Stack className="play-area card-flip">
-          <Image src="/assets/card-back.jpg" />
-        </Stack>
+      {game.active.phase === GamePhase.CARD_REVEAL && activeCard && (
+      <CardReveal
+        className='play-area card-flip'
+        style={{ maxHeight: '100%', padding: '10px' }}
+        card={activeCard}
+      />
       )}
       {isActivePlayer && (
         <ActiveDecision

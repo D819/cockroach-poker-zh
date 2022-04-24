@@ -63,3 +63,13 @@ export const selectCardPrediction = createSelector(
   selectActiveGameInfo,
   (active) => active.prediction
 )
+
+export const selectActiveCard = createSelector(
+  selectActiveGameInfo,
+  (active) => active.card
+)
+
+export const selectIsFlipShow = createSelector(
+  selectActiveGameInfo,
+  (active) => active.showFlip
+)

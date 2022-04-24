@@ -20,7 +20,9 @@ export const getGameHeadlineMarkdown = (game: Game, player: Player): string => {
   switch (phase) {
     case GamePhase.CARD_REVEAL: {
       const prediction = selectCardPrediction(game);
-      return `${activePlayerIs} predicting that ${passerPossessive} **"${pass?.claim}"** is ${prediction ? "true" : "a lie"}`
+      return `${activePlayerIs} predicting a **${
+        prediction ? "true" : "false"
+      } "${pass?.claim}"** claim from ${isPasser ? "you" : passer?.name}`;
     }
 
     case GamePhase.PASS_SELECTION:

@@ -6,6 +6,7 @@ export interface Game {
     passHistory: CardPass[];
     phase: GamePhase;
     prediction?: boolean;
+    showFlip?: boolean;
   };
   players: {
     [playerSocketId: string]: Player;

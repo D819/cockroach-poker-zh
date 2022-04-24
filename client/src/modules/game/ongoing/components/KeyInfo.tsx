@@ -26,6 +26,15 @@ const PlayerHand = styled.div`
   }
 `;
 
+const EmptyForSpacing = styled.div`
+  content: "";
+  display: block;
+  position: absolute;
+  right: -5px;
+  width: 5px;
+  height: 1px;
+`;
+
 function KeyInfo({ className, style, game, player }: KeyInfoProps): JSX.Element {
   return (
     <>
@@ -33,7 +42,13 @@ function KeyInfo({ className, style, game, player }: KeyInfoProps): JSX.Element 
         <p className="hand">Your hand:</p>
         <CardCount count={countEachSuit(player.cards.hand)} />
       </PlayerHand>
-      <Alert icon={<GameInfoPopover {...{ game, player }} />}>
+      <Alert
+        icon={<GameInfoPopover {...{ game, player }} />}
+        styles={{
+          root: { padding: "10px 5px", overflowX: "scroll" },
+          message: { marginRight: '5px', display: 'inline-block' }
+        }}
+      >
         <ReactMarkdown className="headline">
           {getGameHeadlineMarkdown(game, player)}
         </ReactMarkdown>
