@@ -14,6 +14,7 @@ import { selectActivePlayer } from '../../../selectors/game-selectors';
 import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
 import { getGameHeadlineMarkdown } from "../../../utils/game-utils";
+import KeyInfo from "./components/KeyInfo";
 
 interface Props extends Pick<GameHandlers, 'onCardPass' | 'onCardPeek' | 'onCardPredict'> {
   game: Game;
@@ -105,13 +106,7 @@ function GameOngoing({
     <Container className="active-contents">
       <div className="data">
         <Paper shadow="sm" withBorder>
-          <PlayerHand>
-            <p className="hand">Your hand:</p>
-            <CardCount count={countEachSuit(player.cards.hand)} />
-          </PlayerHand>
-          <Alert>
-            <ReactMarkdown className='headline'>{getGameHeadlineMarkdown(game, player)}</ReactMarkdown>
-          </Alert>
+          <KeyInfo {...{ game, player }} />
         </Paper>
         <Divider m="md" />
         <PlayerGrid className="player-areas">
