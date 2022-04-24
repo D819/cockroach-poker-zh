@@ -57,7 +57,7 @@ function CardPassPicker({ className, style, game, player, players, isPlayerDisab
             </Text>
             <SuitIcon suit={activeCard.suit} />
           </Group>
-          <Text className='full-grid-width'>It's your turn to pass it on!</Text>
+          <Text className='full-grid-width' mb='sm'>It's your turn to pass it on!</Text>
         </>
       ) : (
         <>

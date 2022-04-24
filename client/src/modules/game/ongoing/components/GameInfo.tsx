@@ -20,7 +20,7 @@ function GameInfo({ className, style, game, player }: Props): JSX.Element {
 
   if (pass && phase === GamePhase.PREDICT_OR_PASS) {
     const claimTitle = `Claim: "${pass.claim}" (${passer?.name} ➝ ${activePlayer.name})`;
-    const passMessage = `${passer?.name} has passed ${isFirstPass ? "a" : "the"} card onto ${activePlayer.name} with a claim of "${pass.claim}".`
+    const passMessage = `${passer?.name} has passed ${isFirstPass ? "a" : "the"} card onto ${isActivePlayer ? "you" : activePlayer.name} with a claim of "${pass.claim}".`
 
     const peekOrPassMessage = `${isActivePlayer ? "You need" : `${activePlayer.name} needs`} to predict the claim's truthfulness, or peek and pass it on.`
 
