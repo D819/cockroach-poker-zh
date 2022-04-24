@@ -4,6 +4,7 @@ import {
   ServerEvent,
 } from "../../../client/src/types/event.types";
 import { GamePhase, GameStatus } from "../../../client/src/types/game.types";
+import { NotificationType } from "../../../client/src/types/notification.types";
 import { GameManager } from "./manager";
 
 export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
@@ -30,9 +31,17 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
       game.active.card = card;
       gameManager.managePlayer(from).dropCard(card.id);
     }
-    game.active.phase = GamePhase.PREDICT_OR_PASS;
-  });
-};
+    game.active.phase = GamePhase.PREDICT_OR_PASS
+  })
+
+  const fromName = gameManager.getPlayerOrFail(from).name;
+  const toName = gameManager.getPlayerOrFail(to).name;
+
+  gameManager.pushPlayersNotification((player) => ({
+    type: NotificationType.GENERAL,
+    message: `${player.socketId === from ? "You have" : `${fromName} has`} passed a "${claim}" to ${player.socketId === to ? "you" : toName}.`
+  }))
+}
 
 export const peekAtCard: ClientEventListeners[ClientEvent.PEEK_AT_CARD] = (
   gameId
