@@ -6,7 +6,7 @@ import { ClientEvent, ServerEvent } from "../types/event.types";
 import { Player } from "../types/game.types";
 import useSocketListener from "./useSocketListener";
 import { useHistory } from "react-router-dom";
-import { showNotification } from '@mantine/notifications';
+import { showNotification } from "@mantine/notifications";
 
 interface UsePlayerResult {
   data: Player | undefined;
@@ -75,7 +75,7 @@ export default function usePlayer(
       if (playerId && playersToNotify[playerId]) {
         showNotification({
           message: notification.message,
-          autoClose: 5000
+          autoClose: 5000,
         });
       }
     }

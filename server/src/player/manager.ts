@@ -64,11 +64,14 @@ export class PlayerManager {
   }
 
   public completedSetIfExists(): CardSuit | undefined {
-    const suitCount = Object.entries(this.countEachSuit()) as [CardSuit, number][];
+    const suitCount = Object.entries(this.countEachSuit()) as [
+      CardSuit,
+      number
+    ][];
 
     for (const [suit, total] of suitCount) {
       if (total === 4) {
-        return suit
+        return suit;
       }
     }
   }
@@ -79,12 +82,15 @@ export class PlayerManager {
 
     const collectedCards = Object.values(snapshot.cards.area);
 
-    const totals = collectedCards.reduce((acc, curr) => ({
-      ...acc,
-      [curr.suit]: (acc[curr.suit] ?? 0) + 1
-    }), {} as Partial<Record<CardSuit, number>>);
+    const totals = collectedCards.reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.suit]: (acc[curr.suit] ?? 0) + 1,
+      }),
+      {} as Partial<Record<CardSuit, number>>
+    );
 
-    return totals
+    return totals;
   }
 
   public dropCard(cardId: CardId): void {

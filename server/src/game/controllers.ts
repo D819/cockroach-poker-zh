@@ -31,14 +31,14 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
       game.active.card = card;
       gameManager.managePlayer(from).dropCard(card.id);
     }
-    game.active.phase = GamePhase.PREDICT_OR_PASS
-  })
+    game.active.phase = GamePhase.PREDICT_OR_PASS;
+  });
 
   gameManager.pushPlayerNotificationById(to, {
     type: NotificationType.GENERAL,
     message: "You're up!",
   });
-}
+};
 
 export const peekAtCard: ClientEventListeners[ClientEvent.PEEK_AT_CARD] = (
   gameId

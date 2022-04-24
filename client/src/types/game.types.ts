@@ -86,7 +86,7 @@ export enum GameStatus {
 
 export enum GamePhase {
   CARD_REVEAL = "card-reveal",
-  DECLARE_LOSER = 'declare-loser',
+  DECLARE_LOSER = "declare-loser",
   PASS_SELECTION = "pass-selection",
   PREDICT_OR_PASS = "predict-or-pass",
 }

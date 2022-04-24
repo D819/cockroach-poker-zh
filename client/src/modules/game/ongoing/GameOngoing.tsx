@@ -110,7 +110,7 @@ function GameOngoing({
   onCardPass,
   onCardPeek,
   onCardPredict,
-  onGameReset
+  onGameReset,
 }: Props): JSX.Element {
   const activePlayer = selectActivePlayer(game);
   const activeCard = selectActiveCard(game);
@@ -175,7 +175,15 @@ function GameOngoing({
       {isActivePlayer && (
         <ActiveDecision
           className="actions"
-          {...{ game, player, players, onCardPass, onCardPeek, onCardPredict, onGameReset }}
+          {...{
+            game,
+            player,
+            players,
+            onCardPass,
+            onCardPeek,
+            onCardPredict,
+            onGameReset,
+          }}
         />
       )}
     </Container>

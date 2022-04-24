@@ -224,21 +224,21 @@ export class GameManager {
     for (const playerId of this.playerIds()) {
       const completedSuit = this.managePlayer(playerId).completedSetIfExists();
       if (completedSuit) {
-        this.update(game => {
+        this.update((game) => {
           game.loser = {
             id: playerId,
-            suit: completedSuit
-          }
+            suit: completedSuit,
+          };
           delete game.active.card;
-          game.active.phase = GamePhase.DECLARE_LOSER
-        })
+          game.active.phase = GamePhase.DECLARE_LOSER;
+        });
 
         this.pushGameNotificationToAll({
           type: NotificationType.GENERAL,
-          message: 'Game over!'
-        })
+          message: "Game over!",
+        });
 
-      return playerId
+        return playerId;
       }
     }
   }
@@ -288,9 +288,7 @@ export class GameManager {
 
     const isPredictionAccurate = this.isCurrentClaimTruthful() === prediction;
     const { to, from } = this.currentClaim();
-    const gainingPlayerId = isPredictionAccurate
-      ? from
-      : to;
+    const gainingPlayerId = isPredictionAccurate ? from : to;
 
     this.managePlayer(gainingPlayerId).update((player) => {
       gainedCard && player.cards.area.push(gainedCard);
@@ -298,9 +296,13 @@ export class GameManager {
 
     this.pushPlayersNotification((player) => ({
       type: NotificationType.GENERAL,
-      message: `${to === player.socketId ? "You" : this.getPlayerOrFail(to).name} ${
-        isPredictionAccurate ? "correctly" : "incorrectly"
-      } predicted ${from === player.socketId ? "your" : `${this.getPlayerOrFail(from).name}'s`} claim, so ${
+      message: `${
+        to === player.socketId ? "You" : this.getPlayerOrFail(to).name
+      } ${isPredictionAccurate ? "correctly" : "incorrectly"} predicted ${
+        from === player.socketId
+          ? "your"
+          : `${this.getPlayerOrFail(from).name}'s`
+      } claim, so ${
         player.socketId === gainingPlayerId
           ? "you collect"
           : `${this.getPlayerOrFail(gainingPlayerId).name} collects`
@@ -310,13 +312,13 @@ export class GameManager {
     if (!this.checkForLoser()) {
       this.startNewCardPass(gainingPlayerId);
     }
-
   }
 
   public revealCardPredictionResult(prediction: boolean): void {
     const gainedCard = this.activeCard();
-    const pass = this.currentClaim()
-    if (!gainedCard && !pass) throw new Error("No card or claim to reveal for prediction");
+    const pass = this.currentClaim();
+    if (!gainedCard && !pass)
+      throw new Error("No card or claim to reveal for prediction");
 
     this.update((game) => {
       game.active.prediction = prediction;
