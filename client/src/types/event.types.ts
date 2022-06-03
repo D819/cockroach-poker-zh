@@ -32,6 +32,9 @@ export enum ClientEvent {
 }
 
 export enum ServerEvent {
+  AUDIO_PASS_TRIGGERED = "audio-pass-triggered",
+  AUDIO_PEEK_TRIGGERED = "audio-peek-triggered",
+  AUDIO_PREDICT_TRIGGERED = "audio-predict-triggered",
   GAME_CREATED = "game-created",
   GAME_GOTTEN = "game-gotten",
   GAME_JOINED = "game-joined",
