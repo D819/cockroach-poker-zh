@@ -161,6 +161,26 @@ export class GameManager {
     });
   }
 
+  public declareLoser(loserId?: string): void {
+    const loserPlayerId = loserId ?? this.loserId();
+    if (loserPlayerId) {
+      const completedSuit = this.managePlayer(loserPlayerId).completedSetIfExists()
+      this.update((game) => {
+        game.loser = {
+          id: loserPlayerId,
+          suit: completedSuit,
+        };
+        delete game.active.card;
+        game.active.phase = GamePhase.DECLARE_LOSER;
+      });
+
+      this.pushGameNotificationToAll({
+        type: NotificationType.GENERAL,
+        message: "Game over!",
+      });
+    }
+  }
+
   public getHostPlayer(): Player | undefined {
     const host = Object.values(this.players()).find((player) => player.isHost);
     return host;
@@ -184,6 +204,12 @@ export class GameManager {
     const actual = this.activeCard();
 
     return actual?.suit === claim;
+  }
+
+  public loserId(): string | undefined {
+    for (const playerId of this.playerIds()) {
+      if (this.managePlayer(playerId).hasLost()) return playerId
+    }
   }
 
   public manageEachPlayer(cb: (playerManager: PlayerManager) => void) {
@@ -217,29 +243,6 @@ export class GameManager {
       return snapshot.players;
     } else {
       throw new Error("Could not find game to locate players for");
-    }
-  }
-
-  public checkForLoser(): string | undefined {
-    for (const playerId of this.playerIds()) {
-      const completedSuit = this.managePlayer(playerId).completedSetIfExists();
-      if (completedSuit) {
-        this.update((game) => {
-          game.loser = {
-            id: playerId,
-            suit: completedSuit,
-          };
-          delete game.active.card;
-          game.active.phase = GamePhase.DECLARE_LOSER;
-        });
-
-        this.pushGameNotificationToAll({
-          type: NotificationType.GENERAL,
-          message: "Game over!",
-        });
-
-        return playerId;
-      }
     }
   }
 
@@ -309,8 +312,12 @@ export class GameManager {
       } the card`,
     }));
 
-    if (!this.checkForLoser()) {
-      this.startNewCardPass(gainingPlayerId);
+    // If there is a losing player, it will always be the player
+    //  who has just gained a card (so no other players need checking)
+    if (this.managePlayer(gainingPlayerId).hasLost()) {
+      this.declareLoser(gainingPlayerId)
+    } else {
+      this.startNewCardPass(gainingPlayerId)
     }
   }
 
