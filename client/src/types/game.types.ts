@@ -10,7 +10,7 @@ export interface Game {
   };
   loser?: {
     id: string;
-    suit: CardSuit;
+    suit?: CardSuit;
   };
   players: {
     [playerSocketId: string]: Player;
