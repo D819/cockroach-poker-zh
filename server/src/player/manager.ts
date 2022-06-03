@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 import { ServerEvent } from "../../../client/src/types/event.types";
-import { CardId, CardSuit, Player } from "../../../client/src/types/game.types";
+import { Card, CardId, CardSuit, Player } from "../../../client/src/types/game.types";
 import { GameManager, Operation } from "../game/manager";
 import { NotificationForPlayer } from "../../../client/src/types/notification.types";
 
@@ -105,6 +105,18 @@ export class PlayerManager {
     const name = this._pointer()?.name;
     if (!name) throw new Error("Couldn't find a name");
     return name;
+  }
+
+  public hasLost(): boolean {
+    if (this.cardsInHand().length === 0) return true
+    if (this.completedSetIfExists()) return true
+    return false
+  }
+
+  public cardsInHand(): Card[] {
+    const cards = this.snapshot()?.cards.hand;
+    if (!cards) return []
+    return cards
   }
 
   public pushNotification(playerNotification: NotificationForPlayer): void {
