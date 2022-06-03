@@ -63,6 +63,12 @@ export class PlayerManager {
     }
   }
 
+  public cardsInHand(): Card[] {
+    const cards = this.snapshot()?.cards.hand;
+    if (!cards) return [];
+    return cards;
+  }
+
   public completedSetIfExists(): CardSuit | undefined {
     const suitCount = Object.entries(this.countEachSuit()) as [
       CardSuit,
@@ -107,16 +113,22 @@ export class PlayerManager {
     return name;
   }
 
+  /**
+   * Checks whether a player has lost.
+   * 
+   * This should only be called when a player has just gained a card.
+   * 
+   * It will not report the right results otherwise - e.g. it is
+   *  possible for a player to have 0 cards but not be the loser.
+   * 
+   * (They are only the loser if they have 0 cards in hand and are
+   *  also due to start a new card pass, but can't.)
+   * 
+   */
   public hasLost(): boolean {
-    if (this.cardsInHand().length === 0) return true
-    if (this.completedSetIfExists()) return true
-    return false
-  }
-
-  public cardsInHand(): Card[] {
-    const cards = this.snapshot()?.cards.hand;
-    if (!cards) return []
-    return cards
+    if (this.cardsInHand().length === 0) return true;
+    if (this.completedSetIfExists()) return true;
+    return false;
   }
 
   public pushNotification(playerNotification: NotificationForPlayer): void {
