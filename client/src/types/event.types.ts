@@ -95,6 +95,9 @@ export type ClientEventListeners = {
  * Listeners for `ServerEvent`s
  */
 export type ServerEventListeners = {
+  [ServerEvent.AUDIO_PASS_TRIGGERED]: () => void;
+  [ServerEvent.AUDIO_PEEK_TRIGGERED]: () => void;
+  [ServerEvent.AUDIO_PREDICT_TRIGGERED]: () => void;
   [ServerEvent.GAME_CREATED]: (game: Game) => void;
   [ServerEvent.GAME_OVER]: (gameId: string, game: Game) => void;
   [ServerEvent.GAME_GOTTEN]: (gameId: string, game: Game) => void;
