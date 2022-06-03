@@ -164,7 +164,8 @@ export class GameManager {
   public declareLoser(loserId?: string): void {
     const loserPlayerId = loserId ?? this.loserId();
     if (loserPlayerId) {
-      const completedSuit = this.managePlayer(loserPlayerId).completedSetIfExists()
+      const completedSuit =
+        this.managePlayer(loserPlayerId).completedSetIfExists();
       this.update((game) => {
         game.loser = {
           id: loserPlayerId,
@@ -208,7 +209,7 @@ export class GameManager {
 
   public loserId(): string | undefined {
     for (const playerId of this.playerIds()) {
-      if (this.managePlayer(playerId).hasLost()) return playerId
+      if (this.managePlayer(playerId).hasLost()) return playerId;
     }
   }
 
@@ -315,9 +316,9 @@ export class GameManager {
     // If there is a losing player, it will always be the player
     //  who has just gained a card (so no other players need checking)
     if (this.managePlayer(gainingPlayerId).hasLost()) {
-      this.declareLoser(gainingPlayerId)
+      this.declareLoser(gainingPlayerId);
     } else {
-      this.startNewCardPass(gainingPlayerId)
+      this.startNewCardPass(gainingPlayerId);
     }
   }
 

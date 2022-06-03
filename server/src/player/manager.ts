@@ -1,6 +1,11 @@
 import { cloneDeep } from "lodash";
 import { ServerEvent } from "../../../client/src/types/event.types";
-import { Card, CardId, CardSuit, Player } from "../../../client/src/types/game.types";
+import {
+  Card,
+  CardId,
+  CardSuit,
+  Player,
+} from "../../../client/src/types/game.types";
 import { GameManager, Operation } from "../game/manager";
 import { NotificationForPlayer } from "../../../client/src/types/notification.types";
 
@@ -115,15 +120,15 @@ export class PlayerManager {
 
   /**
    * Checks whether a player has lost.
-   * 
+   *
    * This should only be called when a player has just gained a card.
-   * 
+   *
    * It will not report the right results otherwise - e.g. it is
    *  possible for a player to have 0 cards but not be the loser.
-   * 
+   *
    * (They are only the loser if they have 0 cards in hand and are
    *  also due to start a new card pass, but can't.)
-   * 
+   *
    */
   public hasLost(): boolean {
     if (this.cardsInHand().length === 0) return true;
