@@ -1,4 +1,5 @@
 import {
+  AudioEventTrigger,
   ClientEvent,
   ClientEventListeners,
   ServerEvent,
@@ -38,21 +39,27 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
     type: NotificationType.GENERAL,
     message: "You're up!",
   });
+
+  gameManager.triggerAudio(AudioEventTrigger.PASS);
 };
 
 export const peekAtCard: ClientEventListeners[ClientEvent.PEEK_AT_CARD] = (
   gameId
 ) => {
-  GameManager.for(gameId).update((game) => {
+  const gameManager = GameManager.for(gameId)
+  gameManager.update((game) => {
     game.active.phase = GamePhase.PASS_SELECTION;
   });
+  gameManager.triggerAudio(AudioEventTrigger.PEEK);
 };
 
 export const predictCard: ClientEventListeners[ClientEvent.PREDICT_CARD] = (
   gameId,
   prediction
 ) => {
-  GameManager.for(gameId).revealCardPredictionResult(prediction);
+  const gameManager = GameManager.for(gameId)
+  gameManager.revealCardPredictionResult(prediction);
+  gameManager.triggerAudio(AudioEventTrigger.PREDICT);
 };
 
 export const resetGame: ClientEventListeners[ClientEvent.RESET_GAME] = (
