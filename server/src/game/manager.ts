@@ -1,5 +1,5 @@
 import { cloneDeep, last, shuffle } from "lodash";
-import { ServerEvent, ServerIO } from "../../../client/src/types/event.types";
+import { AudioEventTrigger, ServerEvent, ServerIO } from "../../../client/src/types/event.types";
 import {
   GameNotification,
   NotificationForPlayer,
@@ -358,6 +358,10 @@ export class GameManager {
       game.active.phase = GamePhase.PASS_SELECTION;
       game.active.playerId = playerId;
     });
+  }
+
+  public triggerAudio(audioEventTrigger: AudioEventTrigger): void {
+    this.io.emit(ServerEvent.AUDIO_EVENT_TRIGGERED, audioEventTrigger)
   }
 
   /**
