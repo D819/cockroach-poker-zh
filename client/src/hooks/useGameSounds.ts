@@ -19,6 +19,8 @@ export default function useGameSounds(): GameSounds {
   const [playPredictionIncorrectSound] = useSound(
     "/assets/audio/prediction-incorrect.mp3"
   );
+  const [playPlayerJoinedSound] = useSound("/assets/audio/player-joined.mp3");
+  const [playPlayerKickedSound] = useSound("/assets/audio/player-kicked.mp3");
 
   useSocketListener(ServerEvent.AUDIO_EVENT_TRIGGERED, (audioEventTrigger) => {
     switch (audioEventTrigger) {
@@ -28,8 +30,15 @@ export default function useGameSounds(): GameSounds {
         return playPeekSound();
       case AudioEventTrigger.PREDICT:
         return playPredictSound();
+      case AudioEventTrigger.PLAYER_JOINED:
+        return playPlayerJoinedSound();
+      case AudioEventTrigger.PLAYER_KICKED:
+        return playPlayerKickedSound();
     }
   });
 
-  return { playPredictionCorrectSound, playPredictionIncorrectSound };
+  return {
+    playPredictionCorrectSound,
+    playPredictionIncorrectSound,
+  };
 }

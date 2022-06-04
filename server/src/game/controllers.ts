@@ -13,9 +13,15 @@ export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
   playerIdToKick
 ) => {
   const gameManager = GameManager.for(gameId);
+  const playerName = gameManager.getPlayerOrFail(playerIdToKick).name;
   gameManager.io.emit(ServerEvent.PLAYER_KICKED, gameId, playerIdToKick);
   gameManager.update((game) => {
     delete game.players[playerIdToKick];
+  });
+  gameManager.triggerAudio(AudioEventTrigger.PLAYER_KICKED);
+  gameManager.pushGameNotificationToAll({
+    type: NotificationType.GENERAL,
+    message: `${playerName ?? "A player"} was kicked from the game`,
   });
 };
 
