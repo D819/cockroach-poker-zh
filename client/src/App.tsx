@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import useGameSounds from "./hooks/useGameSounds";
 // import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import useMobileVH from "./hooks/useMobileVH";
@@ -8,7 +7,6 @@ import IndexRoute from "./routes/IndexRoute";
 
 function App(): JSX.Element {
   useMobileVH();
-  useGameSounds();
 
   return (
     <Router>

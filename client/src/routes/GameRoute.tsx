@@ -7,12 +7,15 @@ import useSocketAliases from "../hooks/useSocketAliases";
 import { useSocket } from "../socket";
 import { ClientEvent } from "../types/event.types";
 import { GameStatus } from "../types/game.types";
-import { selectActivePlayer } from "../selectors/game-selectors";
+import { selectActivePlayer, selectIsPredictionCorrect } from "../selectors/game-selectors";
+import useGameSounds from "../hooks/useGameSounds";
 
 function GameRoute(): JSX.Element {
   const { gameId } = useParams<{ gameId: string }>();
   const socket = useSocket();
   const socketAliases = useSocketAliases();
+  const { playPredictionCorrectSound, playPredictionIncorrectSound } = useGameSounds();
+
 
   const game = useGame(gameId);
   const player = usePlayer(socket.id, socketAliases);
@@ -72,13 +75,13 @@ function GameRoute(): JSX.Element {
           <GamePage
             game={game.data}
             onCardFlip={() => {
-              console.log("resolving flip");
-
               if (!game.data || !player.data) return;
 
+              selectIsPredictionCorrect(game.data)
+                ? playPredictionCorrectSound()
+                : playPredictionIncorrectSound()
+              
               socket.emit(ClientEvent.RESOLVE_FLIP, game.data.id);
-
-              console.log("emitted from flip");
             }}
             onCardPass={(selection) => {
               if (!game.data) return;
