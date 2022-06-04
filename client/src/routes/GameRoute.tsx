@@ -7,15 +7,18 @@ import useSocketAliases from "../hooks/useSocketAliases";
 import { useSocket } from "../socket";
 import { ClientEvent } from "../types/event.types";
 import { GameStatus } from "../types/game.types";
-import { selectActivePlayer, selectIsPredictionCorrect } from "../selectors/game-selectors";
+import {
+  selectActivePlayer,
+  selectIsPredictionCorrect,
+} from "../selectors/game-selectors";
 import useGameSounds from "../hooks/useGameSounds";
 
 function GameRoute(): JSX.Element {
   const { gameId } = useParams<{ gameId: string }>();
   const socket = useSocket();
   const socketAliases = useSocketAliases();
-  const { playPredictionCorrectSound, playPredictionIncorrectSound } = useGameSounds();
-
+  const { playPredictionCorrectSound, playPredictionIncorrectSound } =
+    useGameSounds();
 
   const game = useGame(gameId);
   const player = usePlayer(socket.id, socketAliases);
@@ -79,8 +82,8 @@ function GameRoute(): JSX.Element {
 
               selectIsPredictionCorrect(game.data)
                 ? playPredictionCorrectSound()
-                : playPredictionIncorrectSound()
-              
+                : playPredictionIncorrectSound();
+
               socket.emit(ClientEvent.RESOLVE_FLIP, game.data.id);
             }}
             onCardPass={(selection) => {

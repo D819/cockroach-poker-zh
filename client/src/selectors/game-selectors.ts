@@ -75,7 +75,7 @@ export const selectIsCurrentClaimTruthful = createSelector(
   selectActiveCard,
   selectCurrentPassRecord,
   (card, passRecord): boolean => card?.suit === passRecord?.claim
-)
+);
 
 export const selectIsPredictionCorrect = createSelector(
   selectIsCurrentClaimTruthful,

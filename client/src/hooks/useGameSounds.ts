@@ -10,11 +10,15 @@ interface GameSounds {
 }
 
 export default function useGameSounds(): GameSounds {
-  const [playPassSound] = useSound('/assets/audio/pass.mp3');
+  const [playPassSound] = useSound("/assets/audio/pass.mp3");
   const [playPeekSound] = useSound("/assets/audio/peek.mp3");
   const [playPredictSound] = useSound("/assets/audio/predict.mp3");
-  const [playPredictionCorrectSound] = useSound("/assets/audio/prediction-correct.mp3");
-  const [playPredictionIncorrectSound] = useSound("/assets/audio/prediction-incorrect.mp3");
+  const [playPredictionCorrectSound] = useSound(
+    "/assets/audio/prediction-correct.mp3"
+  );
+  const [playPredictionIncorrectSound] = useSound(
+    "/assets/audio/prediction-incorrect.mp3"
+  );
 
   useSocketListener(ServerEvent.AUDIO_EVENT_TRIGGERED, (audioEventTrigger) => {
     switch (audioEventTrigger) {
@@ -23,9 +27,9 @@ export default function useGameSounds(): GameSounds {
       case AudioEventTrigger.PEEK:
         return playPeekSound();
       case AudioEventTrigger.PREDICT:
-        return playPredictSound()
+        return playPredictSound();
     }
-  })
+  });
 
-  return { playPredictionCorrectSound, playPredictionIncorrectSound }
+  return { playPredictionCorrectSound, playPredictionIncorrectSound };
 }

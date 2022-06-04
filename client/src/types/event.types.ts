@@ -49,9 +49,9 @@ export enum ServerEvent {
 }
 
 export enum AudioEventTrigger {
-  PASS = 'pass',
-  PEEK = 'peek',
-  PREDICT = 'predict',
+  PASS = "pass",
+  PEEK = "peek",
+  PREDICT = "predict",
 }
 
 /**
@@ -99,7 +99,9 @@ export type ClientEventListeners = {
  * Listeners for `ServerEvent`s
  */
 export type ServerEventListeners = {
-  [ServerEvent.AUDIO_EVENT_TRIGGERED]: (audioEventTrigger: AudioEventTrigger) => void;
+  [ServerEvent.AUDIO_EVENT_TRIGGERED]: (
+    audioEventTrigger: AudioEventTrigger
+  ) => void;
   [ServerEvent.GAME_CREATED]: (game: Game) => void;
   [ServerEvent.GAME_OVER]: (gameId: string, game: Game) => void;
   [ServerEvent.GAME_GOTTEN]: (gameId: string, game: Game) => void;
