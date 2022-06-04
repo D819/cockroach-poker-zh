@@ -4,10 +4,17 @@ import useSocketListener from "./useSocketListener";
 
 // Howler.js: https://github.com/goldfire/howler.js
 
-export default function useGameSounds(): void {
+interface GameSounds {
+  playPredictionCorrectSound(): void;
+  playPredictionIncorrectSound(): void;
+}
+
+export default function useGameSounds(): GameSounds {
   const [playPassSound] = useSound('/assets/audio/pass.mp3');
   const [playPeekSound] = useSound("/assets/audio/peek.mp3");
   const [playPredictSound] = useSound("/assets/audio/predict.mp3");
+  const [playPredictionCorrectSound] = useSound("/assets/audio/prediction-correct.mp3");
+  const [playPredictionIncorrectSound] = useSound("/assets/audio/prediction-incorrect.mp3");
 
   useSocketListener(ServerEvent.AUDIO_EVENT_TRIGGERED, (audioEventTrigger) => {
     switch (audioEventTrigger) {
@@ -19,4 +26,6 @@ export default function useGameSounds(): void {
         return playPredictSound()
     }
   })
+
+  return { playPredictionCorrectSound, playPredictionIncorrectSound }
 }
