@@ -71,6 +71,18 @@ export const selectActiveCard = createSelector(
   (active) => active.card
 );
 
+export const selectIsCurrentClaimTruthful = createSelector(
+  selectActiveCard,
+  selectCurrentPassRecord,
+  (card, passRecord): boolean => card?.suit === passRecord?.claim
+)
+
+export const selectIsPredictionCorrect = createSelector(
+  selectIsCurrentClaimTruthful,
+  selectCardPrediction,
+  (isTruthful, cardPrediction): boolean => isTruthful === cardPrediction
+);
+
 export const selectIsFlipShow = createSelector(
   selectActiveGameInfo,
   (active) => active.showFlip
