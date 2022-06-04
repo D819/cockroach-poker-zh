@@ -5,6 +5,7 @@ export interface Game {
     card?: Card;
     passHistory: CardPass[];
     phase: GamePhase;
+    /* Whether the prediction is 'true' or 'false' */
     prediction?: boolean;
     showFlip?: boolean;
   };
