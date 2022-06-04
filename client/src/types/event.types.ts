@@ -32,6 +32,7 @@ export enum ClientEvent {
 }
 
 export enum ServerEvent {
+  AUDIO_EVENT_TRIGGERED = "audio-event-triggered",
   GAME_CREATED = "game-created",
   GAME_GOTTEN = "game-gotten",
   GAME_JOINED = "game-joined",
@@ -45,6 +46,12 @@ export enum ServerEvent {
   PLAYER_NOT_FOUND = "player-not-found",
   PLAYER_UPDATED = "player-updated",
   REDIRECT_TO_LOBBY = "redirect-to-lobby",
+}
+
+export enum AudioEventTrigger {
+  PASS = "pass",
+  PEEK = "peek",
+  PREDICT = "predict",
 }
 
 /**
@@ -92,6 +99,9 @@ export type ClientEventListeners = {
  * Listeners for `ServerEvent`s
  */
 export type ServerEventListeners = {
+  [ServerEvent.AUDIO_EVENT_TRIGGERED]: (
+    audioEventTrigger: AudioEventTrigger
+  ) => void;
   [ServerEvent.GAME_CREATED]: (game: Game) => void;
   [ServerEvent.GAME_OVER]: (gameId: string, game: Game) => void;
   [ServerEvent.GAME_GOTTEN]: (gameId: string, game: Game) => void;
