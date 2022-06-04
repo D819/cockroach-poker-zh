@@ -13,7 +13,7 @@ export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
   playerIdToKick
 ) => {
   const gameManager = GameManager.for(gameId);
-  const playerName = gameManager.getPlayerOrFail(playerIdToKick).name
+  const playerName = gameManager.getPlayerOrFail(playerIdToKick).name;
   gameManager.io.emit(ServerEvent.PLAYER_KICKED, gameId, playerIdToKick);
   gameManager.update((game) => {
     delete game.players[playerIdToKick];
@@ -21,8 +21,8 @@ export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
   gameManager.triggerAudio(AudioEventTrigger.PLAYER_KICKED);
   gameManager.pushGameNotificationToAll({
     type: NotificationType.GENERAL,
-    message: `${playerName ?? "A player"} was kicked from the game`
-  })
+    message: `${playerName ?? "A player"} was kicked from the game`,
+  });
 };
 
 export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (

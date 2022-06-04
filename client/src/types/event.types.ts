@@ -52,8 +52,8 @@ export enum AudioEventTrigger {
   PASS = "pass",
   PEEK = "peek",
   PREDICT = "predict",
-  PLAYER_JOINED = 'player-joined',
-  PLAYER_KICKED = 'player-kicked',
+  PLAYER_JOINED = "player-joined",
+  PLAYER_KICKED = "player-kicked",
 }
 
 /**
