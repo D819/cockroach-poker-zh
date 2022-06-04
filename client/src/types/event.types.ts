@@ -51,7 +51,7 @@ export enum ServerEvent {
 export enum AudioEventTrigger {
   PASS = 'pass',
   PEEK = 'peek',
-  PREDICT = 'predict'
+  PREDICT = 'predict',
 }
 
 /**
