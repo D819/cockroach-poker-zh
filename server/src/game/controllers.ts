@@ -17,6 +17,7 @@ export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
   gameManager.update((game) => {
     delete game.players[playerIdToKick];
   });
+  gameManager.triggerAudio(AudioEventTrigger.PLAYER_KICKED);
 };
 
 export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
