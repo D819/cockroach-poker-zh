@@ -46,7 +46,7 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
 export const peekAtCard: ClientEventListeners[ClientEvent.PEEK_AT_CARD] = (
   gameId
 ) => {
-  const gameManager = GameManager.for(gameId)
+  const gameManager = GameManager.for(gameId);
   gameManager.update((game) => {
     game.active.phase = GamePhase.PASS_SELECTION;
   });
@@ -57,7 +57,7 @@ export const predictCard: ClientEventListeners[ClientEvent.PREDICT_CARD] = (
   gameId,
   prediction
 ) => {
-  const gameManager = GameManager.for(gameId)
+  const gameManager = GameManager.for(gameId);
   gameManager.revealCardPredictionResult(prediction);
   gameManager.triggerAudio(AudioEventTrigger.PREDICT);
 };

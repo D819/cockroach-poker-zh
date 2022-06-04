@@ -1,5 +1,9 @@
 import { cloneDeep, last, shuffle } from "lodash";
-import { AudioEventTrigger, ServerEvent, ServerIO } from "../../../client/src/types/event.types";
+import {
+  AudioEventTrigger,
+  ServerEvent,
+  ServerIO,
+} from "../../../client/src/types/event.types";
 import {
   GameNotification,
   NotificationForPlayer,
@@ -361,7 +365,7 @@ export class GameManager {
   }
 
   public triggerAudio(audioEventTrigger: AudioEventTrigger): void {
-    this.io.emit(ServerEvent.AUDIO_EVENT_TRIGGERED, audioEventTrigger)
+    this.io.emit(ServerEvent.AUDIO_EVENT_TRIGGERED, audioEventTrigger);
   }
 
   /**
