@@ -1,4 +1,5 @@
 import {
+  AudioEventTrigger,
   ClientEvent,
   ClientEventListeners,
 } from "../../../client/src/types/event.types";
@@ -14,6 +15,7 @@ export const joinPlayerToGame: ClientEventListeners[ClientEvent.JOIN_GAME] = (
     ...playerData,
     gameId,
   });
+  gameManager.triggerAudio(AudioEventTrigger.PLAYER_JOINED);
 };
 
 export const updatePlayer: ClientEventListeners[ClientEvent.UPDATE_PLAYER] = (
