@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.redirect("https://cockroach-poker.rcr.dev");
+  res.redirect("https://cockroach-poker.upsink.games");
 });
 
 app.get("/ping", (req, res) => {
