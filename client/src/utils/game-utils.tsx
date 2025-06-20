@@ -10,6 +10,7 @@ import {
   selectPassingPlayer,
 } from "../selectors/game-selectors";
 import { Game, GamePhase, Player } from "../types/game.types";
+import i18n from "../i18n/config";
 
 export const getGameHeadlineMarkdown = (game: Game, player: Player): string => {
   const phase = selectActiveGamePhase(game);
@@ -20,12 +21,16 @@ export const getGameHeadlineMarkdown = (game: Game, player: Player): string => {
   const isPasser = passer?.socketId === player.socketId;
 
   const activePlayerIs = isActivePlayer
-    ? "***You*** are"
-    : `**${activePlayer.name}** is`;
+    ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.are')}`
+    : `**${activePlayer.name}** ${i18n.t('game.is')}`;
 
-  const passerHas = isPasser ? "***You*** have" : `**${passer?.name}** has`;
+  const passerHas = isPasser 
+    ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.have')}` 
+    : `**${passer?.name}** ${i18n.t('game.has')}`;
 
-  const passerPossessive = isPasser ? "***your***" : `**${passer?.name}**'s`;
+  const passerPossessive = isPasser 
+    ? `***${i18n.t('game.your')}***` 
+    : `**${passer?.name}**${i18n.t('game.possessive')}`;
 
   switch (phase) {
     case GamePhase.DECLARE_LOSER: {
@@ -33,26 +38,26 @@ export const getGameHeadlineMarkdown = (game: Game, player: Player): string => {
 
       return `${
         losingPlayer?.socketId === player.socketId
-          ? "***You*** lose"
-          : `**${losingPlayer?.name}** loses`
+          ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.lose')}`
+          : `**${losingPlayer?.name}** ${i18n.t('game.loses')}`
       }`;
     }
 
     case GamePhase.CARD_REVEAL: {
       const prediction = selectCardPrediction(game);
-      return `${activePlayerIs} predicting a **${
-        prediction ? "true" : "false"
-      } "${pass?.claim}"** claim from ${isPasser ? "you" : passer?.name}`;
+      return `${activePlayerIs} ${i18n.t('game.predicting')} ${i18n.t('game.a')} **${
+        prediction ? i18n.t('game.truth') : i18n.t('game.lie')
+      } "${pass?.claim && i18n.t(`suits.${pass.claim}`)}"** ${i18n.t('game.claim')} ${i18n.t('game.from')} ${isPasser ? i18n.t('lobby.you') : passer?.name}`;
     }
 
     case GamePhase.PASS_SELECTION:
       return pass
-        ? `${activePlayerIs} peeking at ${passerPossessive} **"${pass?.claim}"**`
-        : `${activePlayerIs} starting a new pass`;
+        ? `${activePlayerIs} ${i18n.t('game.peeking_at')} ${passerPossessive} **"${pass?.claim && i18n.t(`suits.${pass.claim}`)}"**`
+        : `${activePlayerIs} ${String(i18n.t('game.is_starting_new_pass'))}`;
 
     case GamePhase.PREDICT_OR_PASS:
-      return `${passerHas} passed a **"${pass?.claim}"** to **${
-        isActivePlayer ? "*you*" : activePlayer.name
+      return `${passerHas} ${i18n.t('game.passed_a')} **"${pass?.claim && i18n.t(`suits.${pass.claim}`)}"** ${i18n.t('game.to')} **${
+        isActivePlayer ? `*${i18n.t('lobby.you')}*` : activePlayer.name
       }**`;
   }
 };
@@ -68,76 +73,78 @@ export const getGameInfoMarkdown = (game: Game, player: Player): string => {
   const isPasser = passer?.socketId === player.socketId;
 
   const activePlayerIs = isActivePlayer
-    ? "***You*** are"
-    : `**${activePlayer.name}** is`;
+    ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.are')}`
+    : `**${activePlayer.name}** ${i18n.t('game.is')}`;
 
-  const passerHas = isPasser ? "***You*** have" : `${passer?.name} has`;
+  const passerHas = isPasser 
+    ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.have')}` 
+    : `${passer?.name} ${i18n.t('game.has')}`;
 
-  const passerPossessive = isPasser ? "***your***" : `**${passer?.name}**'s`;
+  const passerPossessive = isPasser 
+    ? `***${i18n.t('game.your')}***` 
+    : `**${passer?.name}**${i18n.t('game.possessive')}`;
 
   switch (phase) {
     case GamePhase.DECLARE_LOSER: {
       const lossInfo = selectLossInfo(game);
       const losingPlayer = selectLosingPlayer(game);
 
-      return `By collecting 4 ${lossInfo?.suit} cards, ${
+      return `${i18n.t('game.by_collecting')} 4 ${lossInfo?.suit && i18n.t(`suits.${lossInfo.suit}`)} ${i18n.t('game.cards')}, ${
         losingPlayer?.socketId === player.socketId
-          ? "you have"
-          : `${losingPlayer?.name} has`
-      } lost the game. \n\nAll other players are joint winners!`;
+          ? `${i18n.t('lobby.you')} ${i18n.t('game.have_lost')}`
+          : `${losingPlayer?.name} ${i18n.t('game.has_lost')}`
+      } ${i18n.t('game.the_game')}. \n\n${i18n.t('game.all_other_winners')}`;
     }
 
     case GamePhase.CARD_REVEAL: {
       const prediction = selectCardPrediction(game);
       return [
-        `${activePlayerIs} predicting that ${passerPossessive} **"${
-          pass?.claim
-        }"** is ${prediction ? "true" : "a lie"}.`,
-        `If the prediction is accurate, ${
-          isPasser ? "***you***" : `**${passer?.name}**`
-        } will take the card.`,
-        `If the prediction is inaccurate, ${
-          isActivePlayer ? "***you***" : `**${activePlayer.name}**`
-        } will take the card.`,
+        `${activePlayerIs} ${i18n.t('game.predicting_that')} ${passerPossessive} **"${
+          pass?.claim && i18n.t(`suits.${pass.claim}`)
+        }"** ${i18n.t('game.is')} ${prediction ? i18n.t('game.truth') : i18n.t('game.lie')}.`,
+        `${i18n.t('game.if_prediction_accurate')}, ${
+          isPasser ? `***${i18n.t('lobby.you')}***` : `**${passer?.name}**`
+        } ${i18n.t('game.will_take_card')}.`,
+        `${i18n.t('game.if_prediction_inaccurate')}, ${
+          isActivePlayer ? `***${i18n.t('lobby.you')}***` : `**${activePlayer.name}**`
+        } ${i18n.t('game.will_take_card')}.`,
       ].join("\n\n");
     }
 
     case GamePhase.PASS_SELECTION: {
-      const peekMessage = `${activePlayerIs} peeking at ${passer?.name}'s claimed **"${pass?.claim}"**.`;
+      const peekMessage = `${activePlayerIs} ${i18n.t('game.peeking_at')} ${passer?.name}${i18n.t('game.possessive')} ${i18n.t('game.claimed')} **"${pass?.claim && i18n.t(`suits.${pass.claim}`)}"**.`;
 
-      const message = `${activePlayerIs} going to pick ${
+      const message = `${activePlayerIs} ${
         pass
-          ? "a *claim* and *player* to pass the card to."
-          : `a *card* from ${
-              isActivePlayer ? "your" : "their"
-            } hand with a *claim* and a *player* to *pass* it to.`
+          ? i18n.t('game.going_to_pick_claim_and_player')
+          : String(i18n.t('game.is_going_to_pick'))
       }`;
 
       return pass ? peekMessage + "\n\n" + message : message;
     }
 
     case GamePhase.PREDICT_OR_PASS: {
-      const passMessage = `${passerHas} passed ${
-        isFirstPass ? "a" : "the"
-      } card onto **${
-        isActivePlayer ? "*you*" : activePlayer.name
-      }** with a claim of **"${pass?.claim}"**.`;
+      const passMessage = `${passerHas} ${i18n.t('game.passed')} ${
+        isFirstPass ? i18n.t('game.a_card') : i18n.t('game.the_card')
+      } ${i18n.t('game.onto')} **${
+        isActivePlayer ? `*${i18n.t('lobby.you')}*` : activePlayer.name
+      }** ${i18n.t('game.with_claim')} **"${pass?.claim && i18n.t(`suits.${pass.claim}`)}"**.`;
 
-      const peekOrPassMessage = `${activePlayer} due to *predict* the claim's truthfulness, or peek and *pass* it on.`;
+      const peekOrPassMessage = `${activePlayer} ${i18n.t('game.due_to_predict_or_pass')}`;
 
-      const mustPassMessage = `Since all other players have seen the card, **${
-        isActivePlayer ? "*you*" : activePlayer.name
-      }** must *predict* the claim's truthfulness.`;
+      const mustPassMessage = `${i18n.t('game.since_all_seen')}, **${
+        isActivePlayer ? `*${i18n.t('lobby.you')}*` : activePlayer.name
+      }** ${i18n.t('game.must_predict')}`;
 
-      const predictionConsequenceMessage = `If ${
+      const predictionConsequenceMessage = `${i18n.t('game.if')} ${
         isActivePlayer
-          ? "***you*** predict"
-          : `**${activePlayer.name}** predicts`
-      } correctly, ${
-        isPasser ? "***you*** are" : `**${passer?.name}** is`
-      } forced to take the card. Otherwise, ${
-        isActivePlayer ? "***you*** take" : `**${activePlayer.name}** takes`
-      } the card.`;
+          ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.predict')}`
+          : `**${activePlayer.name}** ${i18n.t('game.predicts')}`
+      } ${i18n.t('game.correctly')}, ${
+        isPasser ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.are')}` : `**${passer?.name}** ${i18n.t('game.is')}`
+      } ${i18n.t('game.forced_to_take')}. ${i18n.t('game.otherwise')}, ${
+        isActivePlayer ? `***${i18n.t('lobby.you')}*** ${i18n.t('game.take')}` : `**${activePlayer.name}** ${i18n.t('game.takes')}`
+      } ${i18n.t('game.the_card')}.`;
 
       return [
         passMessage,

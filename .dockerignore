@@ -1,0 +1,9 @@
+node_modules
+.git
+.idea
+.vscode
+client/node_modules
+server/node_modules
+npm-debug.log
+.DS_Store
+client/build 

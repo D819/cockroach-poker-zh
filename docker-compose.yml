@@ -1,0 +1,13 @@
+services:
+  cockroach-poker-server:
+    ports:
+      - 4000:4000
+    build:
+      dockerfile: server.Dockerfile
+      context: ./
+  cockroach-poker-client:
+    ports:
+      - 3005:80
+    build:
+      dockerfile: client.Dockerfile
+      context: ./

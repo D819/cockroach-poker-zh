@@ -1,77 +1,129 @@
-import { useQuery } from "react-query";
-import { useHistory } from "react-router";
-import { Alert, Button, Image } from "@mantine/core";
-// import { Button, Icon, Image, Message } from "semantic-ui-react";
-import useSocketListener from "../hooks/useSocketListener";
-import { socketUrl, useSocket } from "../socket";
-import { ClientEvent, ServerEvent } from "../types/event.types";
-import { Icon } from "semantic-ui-react";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Image,
+  Stack,
+  Text,
+  Title,
+  Alert,
+  Group,
+  SegmentedControl,
+} from "@mantine/core";
+import { useSocketAliases } from "../hooks/useSocketAliases";
+import { useTranslation } from "react-i18next";
+import { FiAlertCircle } from "react-icons/fi";
+import { useSocket } from "../socket";
+import { ClientEvent } from "../types/event.types";
+import usePlayer from "../hooks/usePlayer";
 
 function IndexRoute(): JSX.Element {
-  const socket = useSocket();
+  const { t, i18n } = useTranslation();
   const history = useHistory();
+  const { createRoom, isCreatingRoom } = useSocketAliases();
+  const [language, setLanguage] = useState(i18n.language);
+  const socket = useSocket();
+  const player = usePlayer(socket.id, []);
 
-  useSocketListener(ServerEvent.GAME_CREATED, (data) => {
-    history.push(`/game/${data.id}`);
-  });
-
-  const handleNewGame = () => {
-    socket.emit(ClientEvent.CREATE_GAME, socket.id);
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value);
+    i18n.changeLanguage(value);
+    
+    // 如果玩家已经登录，更新语言设置
+    if (player.data && player.data.gameId) {
+      socket.emit(ClientEvent.UPDATE_PLAYER, player.data.gameId, {
+        ...player.data,
+        language: value
+      });
+    }
   };
 
-  const { isLoading } = useQuery("server-ping", () =>
-    fetch(`${socketUrl}/ping`).then((res) => res.json())
-  );
+  const handleCreateRoom = () => {
+    createRoom((roomId: string) => {
+      history.push(`/game/${roomId}`);
+    });
+  };
 
   return (
-    <div
-      className="active-contents"
+    <Container
+      size="xs"
+      py="xl"
       style={{
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <div className="flex-center" style={{ textAlign: "center" }}>
-        <h1>Cockroach Poker</h1>
-        <Image src="/assets/cockroach-poker.jpg" style={{ maxHeight: "50%" }} />
-
-        {isLoading ? (
-          <Alert
-            icon={<Icon name="circle notched" loading />}
-            title="Loading..."
-            style={{ textAlign: "left", margin: "10px" }}
+      <Card
+        shadow="sm"
+        p="lg"
+        radius="md"
+        withBorder
+        style={{
+          maxWidth: "400px",
+          margin: "0 auto",
+        }}
+      >
+        <Stack spacing="md" align="center">
+          <Box
+            style={{
+              width: "100%",
+              maxWidth: "300px",
+              margin: "0 auto",
+            }}
           >
-            This can be 30-40s on first boot. Thanks for waiting!
-          </Alert>
-        ) : (
-          <p style={{ margin: "5%" }}>
-            The social bluffing game of creepy critters!
-          </p>
-        )}
-      </div>
-      <div style={{ width: "100%" }}>
-        {/* <Button
-          fullWidth
-          color="black"
-          onClick={() => window.open("https://github.com/richardcrng/2r1b")}
-        >
-          LEARN
-        </Button>
-        <Button
-          disabled={isLoading}
-          fullWidth
-          color="green"
-          onClick={handleJoinGame}
-        >
-          JOIN
-        </Button> */}
-        <Button disabled={isLoading} fullWidth onClick={handleNewGame}>
-          NEW
-        </Button>
-      </div>
-    </div>
+            <Image
+              src="/assets/text-logo.png"
+              alt="Cockroach Poker"
+              fit="contain"
+            />
+          </Box>
+
+          <Title order={1} align="center">
+            {String(t("title"))}
+          </Title>
+
+          <Text align="center" color="dimmed" size="sm">
+            {String(t("tagline"))}
+          </Text>
+
+          <Group position="center">
+            <SegmentedControl
+              value={language}
+              onChange={handleLanguageChange}
+              data={[
+                { label: String(t("english")), value: "en" },
+                { label: String(t("chinese")), value: "zh" },
+              ]}
+            />
+          </Group>
+
+          {isCreatingRoom ? (
+            <Alert
+              icon={<FiAlertCircle size={16} />}
+              title={String(t("loading"))}
+              color="blue"
+            >
+              {String(t("loading_info"))}
+            </Alert>
+          ) : null}
+
+          <Button
+            fullWidth
+            onClick={handleCreateRoom}
+            disabled={isCreatingRoom}
+            size="lg"
+            uppercase
+          >
+            {String(t("new_game"))}
+          </Button>
+        </Stack>
+      </Card>
+    </Container>
   );
 }
 

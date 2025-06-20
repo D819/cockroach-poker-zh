@@ -1,8 +1,16 @@
-import styled from "styled-components";
-import { Fragment } from "react";
-import { Box, Divider, Overlay, Paper } from "@mantine/core";
+import {
+  Box,
+  Overlay,
+  Paper,
+  Stack,
+  Grid,
+  Text,
+  Avatar,
+  Group,
+  Badge,
+  keyframes,
+} from "@mantine/core";
 import { Game, GamePhase, Player } from "../../../types/game.types";
-import HandSize from "./components/HandSize";
 import ActiveCard from "./components/ActiveCard";
 import { countEachSuit } from "../../../utils/hand-utils";
 import CardCount from "./components/CardCount";
@@ -14,6 +22,7 @@ import { GameHandlers } from "../GamePage";
 import ActiveDecision from "./components/ActiveDecision";
 import KeyInfo from "./components/KeyInfo";
 import CardReveal from "./components/CardReveal";
+import { useTranslation } from "react-i18next";
 
 interface Props
   extends Pick<
@@ -25,80 +34,17 @@ interface Props
   players: Player[];
 }
 
-const Container = styled.div`
-  height: 100%;
-  width: 100%;
-
-  display: grid;
-  grid-template-areas:
-    "data"
-    "play-area"
-    "actions";
-  grid-template-rows: auto minmax(0, 1fr) auto;
-
-  .data {
-    grid-area: data;
-    min-width: 0;
-    max-width: 100%;
+const pulseBorder = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.7);
   }
-
-  .play-area {
-    grid-area: play-area;
-    position: relative;
+  
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 105, 180, 0);
   }
-
-  .over-overlay {
-    z-index: 201;
-  }
-
-  .over-overlay img {
-    min-height: 0;
-    min-width: 0;
-    max-height: 100%;
-    max-width: 100%;
-    height: 100%;
-    border-radius: 5%;
-  }
-
-  .actions {
-    grid-area: actions;
-    align-self: end;
-  }
-
-  .headline {
-    max-width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-`;
-
-const PlayerGrid = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: min-content 1fr;
-  grid-row-gap: 10px;
-  grid-column-gap: 10px;
-`;
-
-const PlayerArea = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-areas: "hand-count collected pass";
-  grid-template-columns: min-content auto 50px;
-  grid-template-rows: auto min-content;
-  grid-row-gap: 10px;
-  grid-column-gap: 10px;
-
-  .hand-count {
-    grid-area: hand-count;
-  }
-
-  .collected-cards {
-    grid-area: collected;
-  }
-
-  .passed-card {
-    grid-area: pass;
+  
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 105, 180, 0);
   }
 `;
 
@@ -112,81 +58,126 @@ function GameOngoing({
   onCardPredict,
   onGameReset,
 }: Props): JSX.Element {
+  const { t } = useTranslation();
   const activePlayer = selectActivePlayer(game);
   const activeCard = selectActiveCard(game);
   const isActivePlayer = activePlayer.socketId === player.socketId;
 
   return (
-    <Container className="active-contents">
-      <div className="data">
-        <Paper shadow="sm" withBorder>
-          <KeyInfo {...{ game, player }} />
-        </Paper>
-        <Divider m="md" />
-      </div>
-      <Box className="play-area">
+    <Stack style={{ height: "100%", width: "100%" }} spacing="xs">
+      <Paper shadow="sm" withBorder p="xs">
+        <KeyInfo {...{ game, player }} />
+      </Paper>
+      <Box style={{ position: "relative", flex: 1, overflowY: "auto" }}>
         {game.active.phase === GamePhase.CARD_REVEAL && <Overlay blur={1} />}
-        <PlayerGrid>
-          {players.map((listPlayer, idx) => (
-            <Fragment key={listPlayer.socketId}>
-              <p
-                style={{
-                  gridColumnStart: 1,
-                  gridRowStart: idx + 1,
-                  textAlign: "right",
-                }}
-              >
-                {listPlayer.name}
-              </p>
-              <PlayerArea
-                style={{
-                  gridColumnStart: 2,
-                  gridRowStart: idx + 1,
-                }}
-              >
-                <HandSize
-                  className="hand-count"
-                  handSize={listPlayer.cards.hand.length}
-                />
-                <CardCount
-                  count={countEachSuit(listPlayer.cards.area)}
-                  filterEmpty
-                />
-                {game.active.card &&
-                  listPlayer.socketId === game.active.playerId && (
-                    <ActiveCard
-                      className="passed-card"
-                      card={game.active.card}
-                    />
-                  )}
-              </PlayerArea>
-            </Fragment>
-          ))}
-        </PlayerGrid>
+        <Stack spacing="md">
+          {players.map((listPlayer) => {
+            const isCurrentlyActive = listPlayer.socketId === activePlayer.socketId;
+            return (
+            <Paper
+              key={listPlayer.socketId}
+              withBorder
+              p="xs"
+              radius="md"
+              sx={isCurrentlyActive ? {
+                animation: `${pulseBorder} 1.5s infinite`,
+                border: '2px solid #FF69B4',
+                background: 'rgba(255, 192, 203, 0.05)',
+                transform: 'translateZ(0)'
+              } : {}}
+            >
+              <Grid align="center">
+                <Grid.Col span={4}>
+                  <Group>
+                    <Avatar
+                      size="md"
+                      radius="xl"
+                      sx={isCurrentlyActive ? {
+                        border: '2px solid #FF69B4',
+                        transform: 'scale(1.05)',
+                        transition: 'transform 0.3s ease'
+                      } : {}}
+                    >
+                      {(listPlayer.name ?? listPlayer.socketId).substring(0, 2)}
+                    </Avatar>
+                    <Stack spacing={0}>
+                      <Text
+                        size="sm"
+                        weight={500}
+                        sx={isCurrentlyActive ? { color: '#FF69B4' } : {}}
+                      >
+                        {listPlayer.name}
+                        {isCurrentlyActive && ' 🎮'}
+                      </Text>
+                      {listPlayer.socketId === player.socketId && (
+                        <Text color="dimmed" size="xs">
+                          ({t("lobby.you")})
+                        </Text>
+                      )}
+                    </Stack>
+                  </Group>
+                </Grid.Col>
+                <Grid.Col span={8}>
+                  <Group position="apart">
+                    <Group spacing="xs">
+                      <Badge variant="outline">{`${t("game.hand_size")}: ${
+                        listPlayer.cards.hand.length
+                      }`}</Badge>
+                      <CardCount
+                        count={countEachSuit(listPlayer.cards.area)}
+                        filterEmpty
+                      />
+                    </Group>
+                    {game.active.card &&
+                      listPlayer.socketId === game.active.playerId && (
+                        <ActiveCard card={game.active.card} game={game} />
+                      )}
+                  </Group>
+                </Grid.Col>
+              </Grid>
+            </Paper>
+          )})}
+        </Stack>
       </Box>
       {game.active.phase === GamePhase.CARD_REVEAL && activeCard && (
         <CardReveal
           className="play-area over-overlay"
-          style={{ maxHeight: "100%", padding: "10px" }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 201,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
           card={activeCard}
           onFlip={onCardFlip}
         />
       )}
       {isActivePlayer && (
-        <ActiveDecision
-          className="actions"
-          {...{
-            game,
-            player,
-            players,
-            onCardPass,
-            onCardPeek,
-            onCardPredict,
-            onGameReset,
-          }}
-        />
+        <Paper
+          withBorder
+          p="xs"
+          radius="md"
+          sx={{}}
+        >
+          <ActiveDecision
+            {...{
+              game,
+              player,
+              players,
+              onCardPass,
+              onCardPeek,
+              onCardPredict,
+              onGameReset,
+            }}
+          />
+        </Paper>
       )}
-    </Container>
+    </Stack>
   );
 }
 

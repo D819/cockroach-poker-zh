@@ -11,3 +11,4 @@ This repo is is a (work-in-progress) web app implementation of it, as a replacem
 1. Install monorepo dependencies (`yarn`)
 2. Run front-end: `yarn dev:client`
 3. Run back-end: `yarn dev:server`
+4. docker images: `docker-compose build`

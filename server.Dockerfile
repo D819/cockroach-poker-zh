@@ -1,11 +1,11 @@
-FROM node:14 as base
+FROM node:20 as base
 
 WORKDIR /home/node/app
 
 # Default environment (build + run time)
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
-EXPOSE 8080
+EXPOSE 4000
 
 # App and dev dependencies, and source
 COPY . .
@@ -14,7 +14,7 @@ RUN yarn install --production=false
 
 # Build step for production
 FROM base
-RUN yarn build
+RUN NODE_OPTIONS=--openssl-legacy-provider yarn build
 
 # Prune dev dependencies, modules ts files, yarn cache after build
 RUN yarn install --production && \

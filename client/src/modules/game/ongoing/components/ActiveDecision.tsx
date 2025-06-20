@@ -1,5 +1,4 @@
-import { Button, Divider, Text } from "@mantine/core";
-import styled from "styled-components";
+import { Button, Divider, Text, Stack, Grid } from "@mantine/core";
 import { Game, GamePhase, Player } from "../../../../types/game.types";
 import CardPassPicker from "./CardPassPicker";
 import { GameHandlers } from "../../GamePage";
@@ -7,35 +6,19 @@ import {
   selectIsFurtherPassPossible,
   selectPlayersAlreadyInvolvedInPass,
 } from "../../../../selectors/game-selectors";
+import { useTranslation } from "react-i18next";
 
 interface Props
   extends Pick<
     GameHandlers,
     "onCardPass" | "onCardPeek" | "onCardPredict" | "onGameReset"
   > {
-  className?: string;
-  style?: React.CSSProperties;
   game: Game;
   player: Player;
   players: Player[];
 }
 
-const Container = styled.div``;
-
-const PredictOrPass = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: min-content min-content;
-  grid-gap: 5px;
-
-  .full-button {
-    grid-column-end: span 2;
-  }
-`;
-
 function ActiveDecision({
-  className,
-  style,
   game,
   player,
   players,
@@ -44,6 +27,7 @@ function ActiveDecision({
   onCardPredict,
   onGameReset,
 }: Props): JSX.Element {
+  const { t } = useTranslation();
   const {
     active: { phase },
   } = game;
@@ -54,15 +38,20 @@ function ActiveDecision({
   switch (phase) {
     case GamePhase.DECLARE_LOSER:
       return (
-        <Container {...{ className, style }}>
+        <Stack align="center">
+          <Divider
+            labelPosition="center"
+            label={String(t("game.declare_loser_phase"))}
+            my="md"
+          />
           {player.isHost ? (
             <Button fullWidth onClick={onGameReset}>
-              Restart game
+              {String(t("game.restart_game"))}
             </Button>
           ) : (
-            <Text>Your host can restart a new round</Text>
+            <Text>{String(t("game.host_can_restart"))}</Text>
           )}
-        </Container>
+        </Stack>
       );
 
     case GamePhase.CARD_REVEAL:
@@ -70,8 +59,12 @@ function ActiveDecision({
 
     case GamePhase.PASS_SELECTION:
       return (
-        <Container {...{ className, style }}>
-          <Divider label="Pass selection" p="sm" />
+        <Stack>
+          <Divider
+            labelPosition="center"
+            label={String(t("game.pass_selection_phase"))}
+            my="md"
+          />
           <CardPassPicker
             game={game}
             player={player}
@@ -79,50 +72,61 @@ function ActiveDecision({
             isPlayerDisabled={(p) => playersInvolved.includes(p.socketId)}
             onSubmit={onCardPass}
           />
-        </Container>
+        </Stack>
       );
 
     case GamePhase.PREDICT_OR_PASS: {
       const makePredictionHandler = (truth: boolean) => () => {
-        onCardPredict && onCardPredict(truth);
+        onCardPredict?.(truth);
       };
 
       return (
-        <Container {...{ className, style }}>
-          <Divider label="Predict / Pass" p="sm" />
+        <Stack>
+          <Divider
+            labelPosition="center"
+            label={String(t("game.predict_or_pass_phase"))}
+            my="md"
+          />
           {!isFurtherPassPossible && (
-            <Text mb="md">
-              There are no players left to pass to, so you must make a
-              prediction.
+            <Text mb="md" align="center" color="dimmed" size="sm">
+              {String(t("game.no_one_to_pass_to"))}
             </Text>
           )}
-          <PredictOrPass>
-            <Button
-              color="green"
-              fullWidth
-              onClick={makePredictionHandler(true)}
-            >
-              Truth
-            </Button>
-            <Button
-              color="red"
-              fullWidth
-              onClick={makePredictionHandler(false)}
-            >
-              Lie
-            </Button>
-            <Button
-              className="full-button"
-              fullWidth
-              onClick={onCardPeek}
-              disabled={!isFurtherPassPossible}
-            >
-              Peek and pass
-            </Button>
-          </PredictOrPass>
-        </Container>
+          <Grid>
+            <Grid.Col span={6}>
+              <Button
+                color="green"
+                fullWidth
+                onClick={makePredictionHandler(true)}
+              >
+                {String(t("game.truth"))}
+              </Button>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Button
+                color="red"
+                fullWidth
+                onClick={makePredictionHandler(false)}
+              >
+                {String(t("game.lie"))}
+              </Button>
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <Button
+                fullWidth
+                onClick={onCardPeek}
+                disabled={!isFurtherPassPossible}
+                variant="outline"
+              >
+                {String(t("game.peek_and_pass"))}
+              </Button>
+            </Grid.Col>
+          </Grid>
+        </Stack>
       );
     }
+    default:
+      return <></>;
   }
 }
 
