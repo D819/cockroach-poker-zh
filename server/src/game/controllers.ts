@@ -19,9 +19,22 @@ export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
     delete game.players[playerIdToKick];
   });
   gameManager.triggerAudio(AudioEventTrigger.PLAYER_KICKED);
-  gameManager.pushGameNotificationToAll({
-    type: NotificationType.GENERAL,
-    message: `${playerName ?? "A player"} was kicked from the game`,
+  
+  // 向每个玩家发送不同语言的通知
+  gameManager.pushPlayersNotification((player) => {
+    const language = player.language || 'en';
+    
+    if (language === 'zh') {
+      return {
+        type: NotificationType.GENERAL,
+        message: `${playerName ?? "一名玩家"}被踢出了游戏`,
+      };
+    } else {
+      return {
+        type: NotificationType.GENERAL,
+        message: `${playerName ?? "A player"} was kicked from the game`,
+      };
+    }
   });
 };
 
@@ -41,9 +54,21 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
     game.active.phase = GamePhase.PREDICT_OR_PASS;
   });
 
-  gameManager.pushPlayerNotificationById(to, {
-    type: NotificationType.GENERAL,
-    message: "You're up!",
+  // 根据玩家语言发送通知
+  gameManager.pushPlayerNotificationById(to, (player) => {
+    const language = player.language || 'en';
+    
+    if (language === 'zh') {
+      return {
+        type: NotificationType.GENERAL,
+        message: "轮到你了！",
+      };
+    } else {
+      return {
+        type: NotificationType.GENERAL,
+        message: "You're up!",
+      };
+    }
   });
 
   gameManager.triggerAudio(AudioEventTrigger.PASS);

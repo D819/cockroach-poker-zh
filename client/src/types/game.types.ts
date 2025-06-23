@@ -97,6 +97,7 @@ export interface Player {
   gameId?: string;
   name?: string;
   isHost?: boolean;
+  language?: string;
   cards: {
     hand: Card[];
     area: Card[];

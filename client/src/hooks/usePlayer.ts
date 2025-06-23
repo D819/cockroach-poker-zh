@@ -40,13 +40,25 @@ export default function usePlayer(
     );
 
   useEffect(() => {
+    const aliases = Array.isArray(aliasIds) ? aliasIds : [];
+    
     gameId &&
       playerSocketId &&
-      socket.emit(ClientEvent.GET_PLAYER, gameId, playerSocketId, aliasIds);
+      socket.emit(ClientEvent.GET_PLAYER, gameId, playerSocketId, aliases);
   }, [socket, gameId, playerSocketId, aliasIds]);
 
   useSocketListener(ServerEvent.PLAYER_GOTTEN, (id, player) => {
-    [...aliasIds, playerId].includes(id) && setPlayer(player);
+    const aliases = Array.isArray(aliasIds) ? aliasIds : [];
+    
+    if (playerId) {
+      if (id === playerId || aliases.includes(id)) {
+        setPlayer(player);
+      }
+    } else {
+      if (aliases.includes(id)) {
+        setPlayer(player);
+      }
+    }
   });
 
   useSocketListener(ServerEvent.PLAYER_KICKED, (fromGameId, kickedPlayerId) => {
@@ -57,7 +69,17 @@ export default function usePlayer(
   });
 
   useSocketListener(ServerEvent.PLAYER_UPDATED, (id, player) => {
-    [...aliasIds, playerId].includes(id) && setPlayer(player);
+    const aliases = Array.isArray(aliasIds) ? aliasIds : [];
+    
+    if (playerId) {
+      if (id === playerId || aliases.includes(id)) {
+        setPlayer(player);
+      }
+    } else {
+      if (aliases.includes(id)) {
+        setPlayer(player);
+      }
+    }
   });
 
   useSocketListener(ServerEvent.PLAYER_NOT_FOUND, () => {

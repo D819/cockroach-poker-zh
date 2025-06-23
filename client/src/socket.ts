@@ -2,10 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { ClientSocket } from "./types/event.types";
 
-export const socketUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://cockroach-poker.server.upsink.games"
-    : "http://localhost:4000";
+export const socketUrl = ':4000';
 
 export const socket: ClientSocket = io(socketUrl);
 

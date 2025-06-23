@@ -3,7 +3,7 @@ import PlayerNamer from "../ui/atoms/PlayerNamer";
 import GamePage from "../modules/game/GamePage";
 import useGame from "../hooks/useGame";
 import usePlayer from "../hooks/usePlayer";
-import useSocketAliases from "../hooks/useSocketAliases";
+import { useSocketAliases } from "../hooks/useSocketAliases";
 import { useSocket } from "../socket";
 import { ClientEvent } from "../types/event.types";
 import { GameStatus } from "../types/game.types";
@@ -12,11 +12,13 @@ import {
   selectIsPredictionCorrect,
 } from "../selectors/game-selectors";
 import useGameSounds from "../hooks/useGameSounds";
+import { useTranslation } from "react-i18next";
 
 function GameRoute(): JSX.Element {
+  const { t, i18n } = useTranslation();
   const { gameId } = useParams<{ gameId: string }>();
   const socket = useSocket();
-  const socketAliases = useSocketAliases();
+  const { socketAliases } = useSocketAliases();
   const { playPredictionCorrectSound, playPredictionIncorrectSound } =
     useGameSounds();
 
@@ -28,7 +30,7 @@ function GameRoute(): JSX.Element {
   );
 
   if (game.loading) {
-    return <p>Loading...</p>;
+    return <p>{String(t("loading"))}</p>;
   } else if (game.error) {
     return <Redirect to="/" />;
   } else if (game.data?.status === GameStatus.ONGOING && !player.data) {
@@ -37,8 +39,7 @@ function GameRoute(): JSX.Element {
     return (
       <>
         <p>
-          To {player.data?.isHost ? "host" : "join"} the game, please choose a
-          player name first:
+          {player.data?.isHost ? String(t("player.host_prompt")) : String(t("player.join_prompt"))}
         </p>
         <PlayerNamer
           handleSetName={(name) => {
@@ -48,6 +49,7 @@ function GameRoute(): JSX.Element {
                 socketId: socket.id,
                 name,
                 gameId,
+                language: i18n.language,
                 cards: {
                   hand: [],
                   area: [],
@@ -59,6 +61,7 @@ function GameRoute(): JSX.Element {
                 socketId: socket.id,
                 name,
                 gameId,
+                language: i18n.language,
                 cards: {
                   hand: [],
                   area: [],
@@ -73,7 +76,7 @@ function GameRoute(): JSX.Element {
   } else {
     return (
       <>
-        {game.loading && <p>Loading...</p>}
+        {game.loading && <p>{String(t("loading"))}</p>}
         {game.data && player.data && (
           <GamePage
             game={game.data}

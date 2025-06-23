@@ -179,9 +179,20 @@ export class GameManager {
         game.active.phase = GamePhase.DECLARE_LOSER;
       });
 
-      this.pushGameNotificationToAll({
-        type: NotificationType.GENERAL,
-        message: "Game over!",
+      this.pushPlayersNotification((player) => {
+        const language = player.language || 'en';
+        
+        if (language === 'zh') {
+          return {
+            type: NotificationType.GENERAL,
+            message: "游戏结束！",
+          };
+        } else {
+          return {
+            type: NotificationType.GENERAL,
+            message: "Game over!",
+          };
+        }
       });
     }
   }
@@ -257,18 +268,29 @@ export class GameManager {
 
   public pushPlayerNotificationById(
     playerId: string,
-    notification: NotificationForPlayer
+    notification: NotificationForPlayer | ((player: Player) => NotificationForPlayer)
   ): void {
-    this.managePlayer(playerId).pushNotification(notification);
+    const player = this.getPlayer(playerId);
+    if (!player) return;
+    
+    const finalNotification = typeof notification === 'function' 
+      ? notification(player) 
+      : notification;
+    
+    this.managePlayer(playerId).pushNotification(finalNotification);
   }
 
   public pushPlayersNotification(
-    notification: NotificationForPlayer,
+    notification: NotificationForPlayer | ((player: Player) => NotificationForPlayer),
     where: (player: Player) => boolean = () => true
   ): void {
     const playersToNotify = Object.values(this.players()).filter(where);
     for (const player of playersToNotify) {
-      this.managePlayer(player.socketId).pushNotification(notification);
+      const finalNotification = typeof notification === 'function' 
+        ? notification(player) 
+        : notification;
+        
+      this.managePlayer(player.socketId).pushNotification(finalNotification);
     }
   }
 
@@ -302,20 +324,64 @@ export class GameManager {
       gainedCard && player.cards.area.push(gainedCard);
     });
 
-    this.pushPlayersNotification((player) => ({
-      type: NotificationType.GENERAL,
-      message: `${
-        to === player.socketId ? "You" : this.getPlayerOrFail(to).name
-      } ${isPredictionAccurate ? "correctly" : "incorrectly"} predicted ${
-        from === player.socketId
-          ? "your"
-          : `${this.getPlayerOrFail(from).name}'s`
-      } claim, so ${
-        player.socketId === gainingPlayerId
-          ? "you collect"
-          : `${this.getPlayerOrFail(gainingPlayerId).name} collects`
-      } the card`,
-    }));
+    this.pushPlayersNotification((player) => {
+      const language = player.language || 'en';
+      
+      if (language === 'zh') {
+        if (to === player.socketId) {
+          if (isPredictionAccurate) {
+            return {
+              type: NotificationType.GENERAL,
+              message: `你正确预测了${this.getPlayerOrFail(from).name}的声称，所以${this.getPlayerOrFail(from).name}获得了这张牌`,
+            };
+          } else {
+            return {
+              type: NotificationType.GENERAL,
+              message: `你错误预测了${this.getPlayerOrFail(from).name}的声称，所以你获得了这张牌`,
+            };
+          }
+        } else if (from === player.socketId) {
+          if (isPredictionAccurate) {
+            return {
+              type: NotificationType.GENERAL,
+              message: `${this.getPlayerOrFail(to).name}正确预测了你的声称，所以你获得了这张牌`,
+            };
+          } else {
+            return {
+              type: NotificationType.GENERAL,
+              message: `${this.getPlayerOrFail(to).name}错误预测了你的声称，所以${this.getPlayerOrFail(to).name}获得了这张牌`,
+            };
+          }
+        } else {
+          if (isPredictionAccurate) {
+            return {
+              type: NotificationType.GENERAL,
+              message: `${this.getPlayerOrFail(to).name}正确预测了${this.getPlayerOrFail(from).name}的声称，所以${this.getPlayerOrFail(from).name}获得了这张牌`,
+            };
+          } else {
+            return {
+              type: NotificationType.GENERAL,
+              message: `${this.getPlayerOrFail(to).name}错误预测了${this.getPlayerOrFail(from).name}的声称，所以${this.getPlayerOrFail(to).name}获得了这张牌`,
+            };
+          }
+        }
+      } else {
+        return {
+          type: NotificationType.GENERAL,
+          message: `${
+            to === player.socketId ? "You" : this.getPlayerOrFail(to).name
+          } ${isPredictionAccurate ? "correctly" : "incorrectly"} predicted ${
+            from === player.socketId
+              ? "your"
+              : `${this.getPlayerOrFail(from).name}'s`
+          } claim, so ${
+            player.socketId === gainingPlayerId
+              ? "you collect"
+              : `${this.getPlayerOrFail(gainingPlayerId).name} collects`
+          } the card`,
+        };
+      }
+    });
 
     // If there is a losing player, it will always be the player
     //  who has just gained a card (so no other players need checking)
