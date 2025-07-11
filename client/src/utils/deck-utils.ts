@@ -2,7 +2,6 @@ import {
   Card,
   CardSuit,
   CardVariant,
-  InitialCardSuit,
 } from "../types/game.types";
 
 const createCard = <Suit extends CardSuit, Variant extends CardVariant>(
@@ -14,9 +13,9 @@ const createCard = <Suit extends CardSuit, Variant extends CardVariant>(
   variant,
 });
 
-const createNonRoyalDeck = <Suit extends CardSuit>(
+const createSuitDeck = <Suit extends CardSuit>(
   suit: Suit
-): InitialCardSuit<Suit> => [
+): Card<Suit, CardVariant>[] => [
   createCard(suit, "1"),
   createCard(suit, "2"),
   createCard(suit, "3"),
@@ -24,16 +23,16 @@ const createNonRoyalDeck = <Suit extends CardSuit>(
   createCard(suit, "5"),
   createCard(suit, "6"),
   createCard(suit, "7"),
-  createCard(suit, "8"),
+  createCard(suit, "Royal"),
 ];
 
-export const INITIAL_DECK_NON_ROYAL: Card[] = [
-  ...createNonRoyalDeck(CardSuit.BAT),
-  ...createNonRoyalDeck(CardSuit.COCKROACH),
-  ...createNonRoyalDeck(CardSuit.FLY),
-  ...createNonRoyalDeck(CardSuit.RAT),
-  ...createNonRoyalDeck(CardSuit.SCORPION),
-  ...createNonRoyalDeck(CardSuit.SPIDER),
-  ...createNonRoyalDeck(CardSuit.STINK_BUG),
-  ...createNonRoyalDeck(CardSuit.TOAD),
+export const INITIAL_DECK: Card[] = [
+  ...createSuitDeck(CardSuit.BAT),
+  ...createSuitDeck(CardSuit.COCKROACH),
+  ...createSuitDeck(CardSuit.FLY),
+  ...createSuitDeck(CardSuit.RAT),
+  ...createSuitDeck(CardSuit.SCORPION),
+  ...createSuitDeck(CardSuit.SPIDER),
+  ...createSuitDeck(CardSuit.STINK_BUG),
+  ...createSuitDeck(CardSuit.TOAD),
 ];

@@ -23,6 +23,7 @@ import ActiveDecision from "./components/ActiveDecision";
 import KeyInfo from "./components/KeyInfo";
 import CardReveal from "./components/CardReveal";
 import { useTranslation } from "react-i18next";
+import PunishmentPile from "./components/PunishmentPile";
 
 interface Props
   extends Pick<
@@ -68,6 +69,7 @@ function GameOngoing({
       <Paper shadow="sm" withBorder p="xs">
         <KeyInfo {...{ game, player }} />
       </Paper>
+      {game.punishmentCards && <PunishmentPile punishmentCards={game.punishmentCards} />}
       <Box style={{ position: "relative", flex: 1, overflowY: "auto" }}>
         {game.active.phase === GamePhase.CARD_REVEAL && <Overlay blur={1} />}
         <Stack spacing="md">

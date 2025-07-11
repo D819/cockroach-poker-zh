@@ -9,6 +9,7 @@ export interface Game {
     prediction?: boolean;
     showFlip?: boolean;
   };
+  punishmentCards?: PunishmentCards;
   loser?: {
     id: string;
     suit?: CardSuit;
@@ -18,6 +19,11 @@ export interface Game {
   };
   status: GameStatus;
   settings: GameSettings;
+}
+
+export interface PunishmentCards {
+  pile: Card[];
+  revealedCard: Card;
 }
 
 export type CardId<
@@ -53,31 +59,14 @@ export type CardVariant =
   | "5"
   | "6"
   | "7"
-  | "8"
   | "Royal";
 
-type InitialCardSuitNonRoyal<Suit extends CardSuit> = [
-  Card<Suit, "1">,
-  Card<Suit, "2">,
-  Card<Suit, "3">,
-  Card<Suit, "4">,
-  Card<Suit, "5">,
-  Card<Suit, "6">,
-  Card<Suit, "7">,
-  Card<Suit, "8">
-];
-
-export type InitialCardSuit<
-  Suit extends CardSuit,
-  IsRoyal extends boolean = false
-> = IsRoyal extends false
-  ? InitialCardSuitNonRoyal<Suit>
-  : [...InitialCardSuitNonRoyal<Suit>, Card<Suit, "Royal">];
+export type Claim = CardSuit | "Royal";
 
 export interface CardPass {
   from: string;
   to: string;
-  claim: CardSuit;
+  claim: Claim;
 }
 
 export enum GameStatus {

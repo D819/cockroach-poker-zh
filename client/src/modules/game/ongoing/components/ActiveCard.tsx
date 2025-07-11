@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { Image, Group, Text } from "@mantine/core";
-import { Card, CardSuit, Game } from "../../../../types/game.types";
-import { FaArrowRight } from "react-icons/fa";
-import { selectCurrentPassRecord } from "../../../../selectors/game-selectors";
-import { useTranslation } from "react-i18next";
+import {Group, Image, Text} from "@mantine/core";
+import {Card, CardSuit, Claim, Game} from "../../../../types/game.types";
+import {FaArrowRight} from "react-icons/fa";
+import {selectCurrentPassRecord} from "../../../../selectors/game-selectors";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   className?: string;
@@ -59,20 +59,20 @@ const Container = styled.div`
   }
 `;
 
-function getSuitImagePath(suit: CardSuit): string {
+function getSuitImagePath(suit: Claim): string {
   const suitName = suit.toLowerCase().replace(/\s+/g, '-');
   return `/assets/icons/${suitName}.jpg`;
 }
 
 function ActiveCard({ className, style, card, isFaceUp, game }: Props): JSX.Element {
   const { t } = useTranslation();
-  // 当前卡牌的实际类型
-  const actualSuit = card.suit;
-
   // 获取当前宣称的类型
-  let claimedSuit = actualSuit; // 默认与实际相同
+  let claimedSuit: Claim = card.suit; // 默认与实际相同
 
   if (game) {
+    const a={
+      selectCurrentPassRecord,
+    }
     const currentPass = selectCurrentPassRecord(game);
     if (currentPass) {
       claimedSuit = currentPass.claim;

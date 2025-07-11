@@ -1,6 +1,6 @@
 import { Socket as TClientSocket } from "socket.io-client";
 import { Socket as TServerSocket, Server as TServer } from "socket.io";
-import { Card, CardSuit, Game, GameSettings, Player } from "./game.types";
+import { Card, CardSuit, Claim, Game, GameSettings, Player } from "./game.types";
 import { GameNotification, PlayerNotification } from "./notification.types";
 
 export type ClientSocket = TClientSocket<
@@ -76,7 +76,7 @@ export type ClientEventListeners = {
 
   [ClientEvent.PASS_CARD]: (
     gameId: string,
-    data: { from: string; to: string; claim: CardSuit; card?: Card }
+    data: { from: string; to: string; claim: Claim; card?: Card }
   ) => void;
 
   [ClientEvent.PEEK_AT_CARD]: (gameId: string) => void;

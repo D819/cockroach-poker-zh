@@ -6,13 +6,15 @@ import {
   Stack,
   Stepper,
   Box,
+  Badge,
 } from "@mantine/core";
 import { useState, useEffect } from "react";
-import { CardSuit, Game, Player } from "../../../../types/game.types";
+import { Card, CardSuit, Claim, Game, Player } from "../../../../types/game.types";
 import SuitIcon from "./SuitIcon";
 import SuitSelector from "./SuitSelector";
 import { selectCurrentPassRecord } from "../../../../selectors/game-selectors";
 import { useTranslation } from "react-i18next";
+import { groupHandByCardType } from "../../../../utils/hand-utils";
 
 interface Props {
   game: Game;
@@ -20,12 +22,12 @@ interface Props {
   players: Player[];
   isPlayerDisabled?(player: Player): boolean;
   onSubmit?(selection: CardPassSelection): void;
-  activeCard?: CardSuit;
+  activeCard?: Card;
 }
 
 export interface CardPassSelection {
-  card?: CardSuit;
-  claim: CardSuit;
+  card?: Card;
+  claim: Claim;
   playerId: string;
 }
 
@@ -35,25 +37,23 @@ function CardPassPicker({
   players,
   isPlayerDisabled = () => false,
   onSubmit,
-  activeCard,
 }: Props): JSX.Element {
   const { t } = useTranslation();
   const pass = selectCurrentPassRecord(game);
   const { card: activeCardInGame } = game.active;
+  const groupedHand = groupHandByCardType(player.cards.hand);
 
   const [activeStep, setActiveStep] = useState(0);
-  const [selection, setSelection] = useState<Partial<CardPassSelection>>({
-    card: activeCard,
-  });
+  const [selection, setSelection] = useState<Partial<CardPassSelection>>({});
 
   useEffect(() => {
     setSelection({
-      card: activeCard,
+      card: undefined,
       claim: undefined,
       playerId: undefined,
     });
     setActiveStep(0);
-  }, [activeCard]);
+  }, [activeCardInGame]);
 
   const handleStepChange = (step: number) => {
     if (step > activeStep && isStepDisabled(activeStep)) {
@@ -63,7 +63,7 @@ function CardPassPicker({
   };
 
   const isStepDisabled = (step: number): boolean => {
-    if (activeCard) {
+    if (activeCardInGame) {
       switch (step) {
         case 0:
           return !selection.claim;
@@ -87,18 +87,29 @@ function CardPassPicker({
   };
 
   const nextStep = () =>
-    handleStepChange(Math.min(activeStep + 1, 3));
+    handleStepChange(Math.min(activeStep + 1, activeCardInGame ? 2 : 3));
   const prevStep = () => handleStepChange(Math.max(activeStep - 1, 0));
 
   const handleSubmit = () => {
-    if (onSubmit && selection.claim && selection.playerId) {
+    if (!onSubmit || !selection.claim || !selection.playerId) return;
+
+    if (activeCardInGame) {
       onSubmit({
-        ...selection,
         claim: selection.claim,
         playerId: selection.playerId,
       });
+    } else if (selection.card) {
+      onSubmit({
+        claim: selection.claim,
+        playerId: selection.playerId,
+        ...selection,
+      });
     }
   };
+
+  const isSubmitDisabled = activeCardInGame
+    ? !selection.claim || !selection.playerId
+    : !selection.card || !selection.claim || !selection.playerId;
 
   return (
     <Stack>
@@ -106,9 +117,9 @@ function CardPassPicker({
         <Box my="md">
           <Group>
             <Text>
-              {String(t('game.received_card_info', { claim: pass?.claim, suit: activeCardInGame.suit }))}
+              {String(t('game.received_card_info', { claim: pass?.claim }))}
             </Text>
-            <SuitIcon suit={activeCardInGame.suit} />
+            <SuitIcon suit={activeCardInGame.suit} isRoyal={activeCardInGame.variant === 'Royal'} />
           </Group>
           <Text color="dimmed" size="sm">
             {String(t('game.pass_it_on'))}
@@ -120,28 +131,39 @@ function CardPassPicker({
         onStepClick={setActiveStep}
         breakpoint="sm"
       >
-        {!activeCard && (
-          <Stepper.Step label={String(t('game.step_pick_card', 'Pick card'))} description={selection.card ?? ''}>
-            <SuitSelector
-              onSelect={(suit) =>
-                setSelection((prev) => ({ ...prev, card: suit }))
-              }
-              value={selection.card}
-              isSuitDisabled={(suit) =>
-                !player.cards.hand.find((card) => card.suit === suit)
-              }
-            />
+        {!activeCardInGame && (
+          <Stepper.Step label={String(t('game.step_pick_card', 'Pick card'))} description={selection.card ? `${selection.card.suit} ${selection.card.variant}`: ''}>
+            <Group position="center" spacing="sm" sx={{ flexWrap: 'wrap' }}>
+              {groupedHand.map((handCard) => (
+                <Box key={handCard.id} sx={{ position: 'relative', cursor: 'pointer' }} onClick={() => setSelection((prev) => ({ ...prev, card: handCard.card }))}>
+                  <SuitIcon height="80px" suit={handCard.suit} isRoyal={handCard.variant === 'Royal'} selected={selection.card?.id === handCard.card.id} />
+                  <Badge
+                    color="pink"
+                    variant="filled"
+                    size="sm"
+                    sx={{
+                      position: 'absolute',
+                      bottom: -2,
+                      right: -2,
+                    }}
+                  >
+                    {handCard.count}
+                  </Badge>
+                </Box>
+              ))}
+            </Group>
           </Stepper.Step>
         )}
         <Stepper.Step label={String(t('game.step_pick_claim', 'Pick claim'))} description={selection.claim ?? ''}>
           <SuitSelector
-            onSelect={(suit) =>
-              setSelection((prev) => ({ ...prev, claim: suit }))
+            onSelect={(claim) =>
+              setSelection((prev) => {
+                return { ...prev, claim: claim }})
             }
             value={selection.claim}
           />
         </Stepper.Step>
-        <Stepper.Step label={String(t('game.step_pick_player', 'Pick player'))}>
+        <Stepper.Step label={String(t('game.step_pick_player', 'Pick player'))} description={selection.playerId ? players.find(p => p.socketId === selection.playerId)?.name : ''}>
           <Select
             label={String(t('game.pass_to', 'Pass to'))}
             data={players.map((p) => ({
@@ -162,8 +184,8 @@ function CardPassPicker({
       </Stepper>
       <Group position="center" mt="xl">
         {activeStep !== 0 && <Button variant="default" onClick={prevStep}>{String(t('common.back', 'Back'))}</Button>}
-        {activeStep !== 2 + (activeCard ? 0 : 1) && <Button onClick={nextStep} disabled={isStepDisabled(activeStep)}>{String(t('common.next', 'Next'))}</Button>}
-        {activeStep === 2 + (activeCard ? 0 : 1) && <Button onClick={handleSubmit}>{String(t('game.submit_pass', 'Submit Pass'))}</Button>}
+        {activeStep !== (activeCardInGame ? 1 : 2) && <Button onClick={nextStep} disabled={isStepDisabled(activeStep)}>{String(t('common.next', 'Next'))}</Button>}
+        {activeStep === (activeCardInGame ? 1 : 2) && <Button onClick={handleSubmit} disabled={isSubmitDisabled}>{String(t('game.submit_pass', 'Submit Pass'))}</Button>}
       </Group>
     </Stack>
   );

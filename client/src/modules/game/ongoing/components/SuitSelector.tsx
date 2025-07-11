@@ -1,13 +1,15 @@
 import { Group, Stack, Text, Avatar, Button } from "@mantine/core";
-import { CardSuit } from "../../../../types/game.types";
+import { CardSuit, Claim } from "../../../../types/game.types";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-  value?: CardSuit;
-  onSelect(suit: CardSuit): void;
+  value?: Claim;
+  onSelect(claim: Claim): void;
   isSuitDisabled?(suit: CardSuit): boolean;
   label?: string;
 }
+
+const ALL_CLAIMS: Claim[] = [...Object.values(CardSuit), "Royal"];
 
 function SuitSelector({
   value,
@@ -16,7 +18,7 @@ function SuitSelector({
   label,
 }: Props): JSX.Element {
   const { t } = useTranslation();
-  
+
   return (
     <Stack>
       {label && (
@@ -24,24 +26,24 @@ function SuitSelector({
           {label}
         </Text>
       )}
-      <Group position="center" mt="xs">
-        {Object.values(CardSuit).map((suit) => (
+      <Group position="center" mt="xs" sx={{ flexWrap: 'wrap' }}>
+        {ALL_CLAIMS.map((claim) => (
           <Button
-            key={suit}
-            variant={value === suit ? "filled" : "outline"}
-            onClick={() => onSelect(suit)}
-            disabled={isSuitDisabled(suit)}
+            key={claim}
+            variant={value === claim ? "filled" : "outline"}
+            onClick={() => onSelect(claim)}
+            disabled={claim !== "Royal" && isSuitDisabled(claim)}
             size="sm"
           >
             <Group spacing="xs">
               <Avatar
-                src={`/assets/icons/${suit
+                src={`/assets/icons/${claim
                   .toLowerCase()
                   .replaceAll(" ", "-")}.jpg`}
                 size="sm"
                 radius="xl"
               />
-              <Text>{t(`suits.${suit}`)}</Text>
+              <Text>{t(`suits.${claim}`)}</Text>
             </Group>
           </Button>
         ))}

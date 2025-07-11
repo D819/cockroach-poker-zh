@@ -1,4 +1,4 @@
-import { cloneDeep, last, shuffle } from "lodash";
+import * as _ from "lodash";
 import {
   AudioEventTrigger,
   ServerEvent,
@@ -9,18 +9,20 @@ import {
   NotificationForPlayer,
   NotificationType,
 } from "../../../client/src/types/notification.types";
-import { INITIAL_DECK_NON_ROYAL } from "../../../client/src/utils/deck-utils";
 import {
   Card,
   CardPass,
+  CardSuit,
   Game,
   GamePhase,
   GameStatus,
   Player,
+  GameSettings,
 } from "../../../client/src/types/game.types";
 import { PlayerManager } from "../player/manager";
 import { SERVER_IO } from "../server";
 import { generateRandomGameId } from "../../../client/src/utils/data-utils";
+import { INITIAL_DECK } from "../../../client/src/utils/deck-utils";
 
 const GAMES_DB: Record<Game["id"], Game> = {};
 
@@ -86,7 +88,7 @@ export class GameManager {
         },
       },
       status: GameStatus.LOBBY,
-      settings: { royalVariant: false },
+      settings: { royalVariant: true },
     };
     const gameManager = GameManager.for(gameId);
     gameManager.set(game);
@@ -138,22 +140,36 @@ export class GameManager {
   }
 
   private currentClaim(): CardPass {
-    const lastPass = last(this.snapshot()?.active.passHistory);
+    const lastPass = _.last(this.snapshot()?.active.passHistory);
     if (!lastPass) throw new Error("No claims found");
     return lastPass;
   }
 
   public dealInitialHands(): void {
-    const deck = shuffle(INITIAL_DECK_NON_ROYAL);
-    const playerIds = shuffle(Object.keys(this.players()));
+    const game = this.snapshot();
+    if (!game) throw new Error("could not find game");
+
+    const deck = game.settings.royalVariant
+      ? INITIAL_DECK
+      : INITIAL_DECK.filter((c) => c.variant !== "Royal");
+
+    const shuffledDeck = _.shuffle(deck);
+    const punishmentPile = shuffledDeck.splice(0, 7);
+    const revealedCard = punishmentPile.pop();
+
+    if (!revealedCard) {
+      throw new Error("Could not create punishment pile");
+    }
+
+    const playerIds = _.shuffle(Object.keys(this.players()));
     const dealtCards: Record<string, Card[]> = Object.fromEntries(
       playerIds.map((id) => [id, []])
     );
 
-    for (let deckIdx = 0; deckIdx < deck.length; deckIdx++) {
+    for (let deckIdx = 0; deckIdx < shuffledDeck.length; deckIdx++) {
       const playerIdx = deckIdx % playerIds.length;
       const playerId = playerIds[playerIdx];
-      dealtCards[playerId].push(deck[deckIdx]);
+      dealtCards[playerId].push(shuffledDeck[deckIdx]);
     }
 
     this.updateEachPlayer((player) => {
@@ -162,7 +178,73 @@ export class GameManager {
 
     this.update((game) => {
       game.active.playerId = playerIds[0];
+      game.punishmentCards = {
+        pile: punishmentPile,
+        revealedCard,
+      };
     });
+  }
+
+  private drawPenaltyCard(gainingPlayerId: string) {
+    let cardToDraw: Card | undefined;
+
+    this.update(game => {
+      const gainingPlayer = game.players[gainingPlayerId];
+      if (!gainingPlayer) return;
+
+      if (game.punishmentCards) {
+        cardToDraw = game.punishmentCards.revealedCard;
+        gainingPlayer.cards.area.push(cardToDraw);
+
+        this.pushPlayerNotificationById(gainingPlayerId, (player) => {
+          const language = player.language || 'en';
+          if (language === 'zh') {
+            return {
+              type: NotificationType.GENERAL,
+              message: `作为惩罚，你从惩罚牌堆中抽取了一张牌。`
+            };
+          }
+          return {
+            type: NotificationType.GENERAL,
+            message: `As a penalty, you drew a card from the punishment pile.`
+          };
+        });
+
+        const nextCardInPile = game.punishmentCards.pile.pop();
+        if (nextCardInPile) {
+          game.punishmentCards.revealedCard = nextCardInPile;
+        } else {
+          delete game.punishmentCards;
+        }
+      } else {
+        if (gainingPlayer.cards.hand.length > 0) {
+          const cardSample = _.sample(gainingPlayer.cards.hand);
+          if (cardSample) {
+            cardToDraw = cardSample;
+            gainingPlayer.cards.hand = gainingPlayer.cards.hand.filter(c => c.id !== cardToDraw!.id);
+            gainingPlayer.cards.area.push(cardToDraw);
+
+            this.pushPlayerNotificationById(gainingPlayerId, (player) => {
+              const language = player.language || 'en';
+              if (language === 'zh') {
+                return {
+                  type: NotificationType.GENERAL,
+                  message: `作为惩罚，你从自己的手牌中抽取了一张牌。`
+                };
+              }
+              return {
+                type: NotificationType.GENERAL,
+                message: `As a penalty, you drew a card from your own hand.`
+              };
+            });
+          }
+        }
+      }
+    });
+
+    if (cardToDraw?.variant === "Royal") {
+      this.drawPenaltyCard(gainingPlayerId);
+    }
   }
 
   public declareLoser(loserId?: string): void {
@@ -181,7 +263,7 @@ export class GameManager {
 
       this.pushPlayersNotification((player) => {
         const language = player.language || 'en';
-        
+
         if (language === 'zh') {
           return {
             type: NotificationType.GENERAL,
@@ -219,7 +301,16 @@ export class GameManager {
     const { claim } = this.currentClaim();
     const actual = this.activeCard();
 
-    return actual?.suit === claim;
+    if (!actual) {
+      // Should not happen
+      return false;
+    }
+
+    if (claim === "Royal") {
+      return actual.variant === "Royal";
+    }
+
+    return actual.suit === claim;
   }
 
   public loserId(): string | undefined {
@@ -272,11 +363,11 @@ export class GameManager {
   ): void {
     const player = this.getPlayer(playerId);
     if (!player) return;
-    
-    const finalNotification = typeof notification === 'function' 
-      ? notification(player) 
+
+    const finalNotification = typeof notification === 'function'
+      ? notification(player)
       : notification;
-    
+
     this.managePlayer(playerId).pushNotification(finalNotification);
   }
 
@@ -286,10 +377,10 @@ export class GameManager {
   ): void {
     const playersToNotify = Object.values(this.players()).filter(where);
     for (const player of playersToNotify) {
-      const finalNotification = typeof notification === 'function' 
-        ? notification(player) 
+      const finalNotification = typeof notification === 'function'
+        ? notification(player)
         : notification;
-        
+
       this.managePlayer(player.socketId).pushNotification(finalNotification);
     }
   }
@@ -321,12 +412,16 @@ export class GameManager {
     const gainingPlayerId = isPredictionAccurate ? from : to;
 
     this.managePlayer(gainingPlayerId).update((player) => {
-      gainedCard && player.cards.area.push(gainedCard);
+      player.cards.area.push(gainedCard);
     });
+
+    if (gainedCard.variant === "Royal") {
+      this.drawPenaltyCard(gainingPlayerId);
+    }
 
     this.pushPlayersNotification((player) => {
       const language = player.language || 'en';
-      
+
       if (language === 'zh') {
         if (to === player.socketId) {
           if (isPredictionAccurate) {
@@ -385,7 +480,7 @@ export class GameManager {
 
     // If there is a losing player, it will always be the player
     //  who has just gained a card (so no other players need checking)
-    if (this.managePlayer(gainingPlayerId).hasLost()) {
+    if (this.managePlayer(gainingPlayerId).hasLost() || this.managePlayer(gainingPlayerId).snapshot()?.cards.hand.length === 0) {
       this.declareLoser(gainingPlayerId);
     } else {
       this.startNewCardPass(gainingPlayerId);
@@ -415,7 +510,7 @@ export class GameManager {
   }
 
   public snapshot(): Game | undefined {
-    const operation = this._withPointer((pointer) => cloneDeep(pointer));
+    const operation = this._withPointer((pointer) => _.cloneDeep(pointer));
     if (operation.status === "success") {
       return operation.result;
     }

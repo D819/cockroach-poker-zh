@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="8fe46316-45f7-4102-afd0-aac9cc414661" name="更改" comment="汉化+ui优化+docker线上环境前端配置，对于git push的eslint监测暂时禁用" />
+    <list default="true" id="8fe46316-45f7-4102-afd0-aac9cc414661" name="更改" comment="加入皇冠牌、声称类型、皇冠牌惩罚机制惩罚，优化卡牌显示ui">
+      <change afterPath="$PROJECT_DIR$/client/public/assets/card-fronts/spider-royal.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/PunishmentPile.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/assets/card-fronts/stinkbug-royal.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/assets/card-fronts/stink-bug-royal.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/i18n/zh.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/i18n/zh.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/GameOngoing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/GameOngoing.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/ActiveCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/ActiveCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/CardPassPicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/CardPassPicker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitSelector.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/routes/GameRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/routes/GameRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/types/event.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/types/event.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/types/game.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/types/game.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/data-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/data-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/deck-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/deck-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/hand-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/hand-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/game/controllers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/game/controllers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/game/manager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/game/manager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,9 +39,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2ytUgPnnVYGUl22ZhOu0XEZrdbw" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -26,12 +52,51 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "F:/德国蟑螂/cockroach-poker1/test/cockroach-poker",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
+    "npm.cockroach-poker-zh > dev:client.executor": "Run",
+    "npm.cockroach-poker-zh > dev:server.executor": "Debug",
+    "ts.external.directory.path": "F:\\德国蟑螂\\cockroach-poker1\\cockroach-poker-zh\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\德国蟑螂\cockroach-poker1\cockroach-poker-zh\client\public\assets\card-fronts" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.cockroach-poker-zh &gt; dev:server">
+    <configuration name="cockroach-poker-zh &gt; dev:client" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev:client" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="cockroach-poker-zh &gt; dev:server" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev:server" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.cockroach-poker-zh &gt; dev:server" />
+        <item itemvalue="npm.cockroach-poker-zh &gt; dev:client" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -41,7 +106,32 @@
       <option name="presentableId" value="Default" />
       <updated>1750653473709</updated>
       <workItem from="1750653474825" duration="93000" />
+      <workItem from="1750653573258" duration="1331000" />
+      <workItem from="1750659775963" duration="1815000" />
+      <workItem from="1750664112836" duration="5000" />
+      <workItem from="1750678917956" duration="926000" />
+      <workItem from="1750724661010" duration="976000" />
+      <workItem from="1750751602506" duration="4609000" />
+      <workItem from="1750811379142" duration="1248000" />
+      <workItem from="1750897850727" duration="572000" />
+      <workItem from="1750917785529" duration="128000" />
+      <workItem from="1751688738572" duration="1144000" />
+      <workItem from="1751697182794" duration="635000" />
+      <workItem from="1752036318171" duration="6147000" />
+      <workItem from="1752107139981" duration="10605000" />
+      <workItem from="1752196452421" duration="1140000" />
+      <workItem from="1752197634982" duration="9137000" />
+      <workItem from="1752214536271" duration="11173000" />
     </task>
+    <task id="LOCAL-00001" summary="汉化+ui优化+docker线上环境前端配置，对于git push的eslint监测暂时禁用">
+      <option name="closed" value="true" />
+      <created>1750653598089</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1750653598089</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -57,5 +147,22 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="汉化+ui优化+docker线上环境前端配置，对于git push的eslint监测暂时禁用" />
+    <MESSAGE value="加入皇冠牌、声称类型、皇冠牌惩罚机制惩罚，优化卡牌显示ui" />
+    <option name="LAST_COMMIT_MESSAGE" value="加入皇冠牌、声称类型、皇冠牌惩罚机制惩罚，优化卡牌显示ui" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/src/game/manager.ts</url>
+          <line>190</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

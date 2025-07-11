@@ -90,11 +90,10 @@ function GameRoute(): JSX.Element {
               socket.emit(ClientEvent.RESOLVE_FLIP, game.data.id);
             }}
             onCardPass={(selection) => {
-              if (!game.data) return;
-
+              if (!game.data || !player.data) return;
               const cardPassed = selection.card
                 ? selectActivePlayer(game.data).cards.hand.find(
-                    (card) => card.suit === selection.card
+                    (card) => card.id === selection.card?.id
                   )
                 : undefined;
 

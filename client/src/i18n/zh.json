@@ -88,7 +88,11 @@
     "forced_to_take": "被迫拿走这张卡牌",
     "otherwise": "否则",
     "take": "拿走",
-    "takes": "拿走"
+    "takes": "拿走",
+    "deal": "发牌",
+    "punishment_pile": "惩罚牌堆",
+    "game_over": "游戏结束",
+    "loser_was": "失败者是 "
   },
   "common": {
     "back": "上一步",
@@ -102,7 +106,8 @@
     "Scorpion": "蝎子",
     "Spider": "蜘蛛",
     "Stink bug": "臭虫",
-    "Toad": "蟾蜍"
+    "Toad": "蟾蜍",
+    "Royal": "皇冠"
   },
   "player": {
     "set_name": "设置玩家名称",

@@ -19,11 +19,11 @@ export const kickPlayer: ClientEventListeners[ClientEvent.KICK_PLAYER] = (
     delete game.players[playerIdToKick];
   });
   gameManager.triggerAudio(AudioEventTrigger.PLAYER_KICKED);
-  
+
   // 向每个玩家发送不同语言的通知
   gameManager.pushPlayersNotification((player) => {
     const language = player.language || 'en';
-    
+
     if (language === 'zh') {
       return {
         type: NotificationType.GENERAL,
@@ -57,7 +57,7 @@ export const passCard: ClientEventListeners[ClientEvent.PASS_CARD] = (
   // 根据玩家语言发送通知
   gameManager.pushPlayerNotificationById(to, (player) => {
     const language = player.language || 'en';
-    
+
     if (language === 'zh') {
       return {
         type: NotificationType.GENERAL,
