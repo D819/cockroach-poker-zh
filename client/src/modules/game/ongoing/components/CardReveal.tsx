@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { config } from "react-spring";
 import CardFlip from "../../../../lib/card-flip/CardFlip";
-import { Card } from "../../../../types/game.types";
+import {Card, CardSuit} from "../../../../types/game.types";
 
 interface Props {
   className?: string;
@@ -20,6 +20,17 @@ function CardReveal({ className, style, card, onFlip }: Props): JSX.Element {
       }, 500);
     }
   }, [isFlipped, setIsFlipped]);
+  const suitName = card.suit.toLowerCase().replaceAll(" ", "-");
+  let imageName = "";
+  if (card.suit === CardSuit.JOKER) {
+    imageName = "special-joker";
+  } else if (card.suit === CardSuit.NOTHING) {
+    imageName = "special-nothing";
+  } else if (card.variant === "Royal") {
+    imageName = `${suitName}-royal`;
+  } else {
+    imageName = `${suitName}-1`;
+  }
 
   return (
     <CardFlip
@@ -36,9 +47,7 @@ function CardReveal({ className, style, card, onFlip }: Props): JSX.Element {
       front={
         <img
           alt="card-front"
-          src={`/assets/card-fronts/${card.id
-            .toLowerCase()
-            .replaceAll(" ", "-")}.jpg`}
+          src={`/assets/card-fronts/${imageName}.jpg`}
         />
       }
       back={<img alt="card-back" src="/assets/card-back.jpg" />}

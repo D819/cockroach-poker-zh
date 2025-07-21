@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ import usePlayer from "../hooks/usePlayer";
 
 function IndexRoute(): JSX.Element {
   const { t, i18n } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { createRoom, isCreatingRoom } = useSocketAliases();
   const [language, setLanguage] = useState(i18n.language);
   const socket = useSocket();
@@ -43,7 +43,7 @@ function IndexRoute(): JSX.Element {
 
   const handleCreateRoom = () => {
     createRoom((roomId: string) => {
-      history.push(`/game/${roomId}`);
+      navigate(`/game/${roomId}`);
     });
   };
 

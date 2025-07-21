@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, TextInput } from "@mantine/core";
+import {Button, Space, TextInput} from "@mantine/core";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -30,6 +30,7 @@ function PlayerNamer({ handleSetName, takenNames }: Props): JSX.Element {
           setInputText(e.target.value);
         }}
       />
+      <Space h="md" />
       <Button onClick={handleSetClick}>{String(t("player.set_name"))}</Button>
     </>
   );

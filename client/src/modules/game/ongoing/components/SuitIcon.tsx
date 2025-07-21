@@ -1,12 +1,12 @@
 import { Image, ImageProps } from "@mantine/core";
-import { CardSuit } from "../../../../types/game.types";
+import { CardSuit, CardVariant } from "../../../../types/game.types";
 import { CSSProperties } from "react";
 
 interface Props extends ImageProps {
   className?: string;
   style?: React.CSSProperties;
   suit: CardSuit;
-  isRoyal?: boolean;
+  variant?: CardVariant;
   selected?: boolean;
 }
 
@@ -14,7 +14,7 @@ function SuitIcon({
   className,
   style,
   suit,
-  isRoyal,
+  variant,
   selected,
   height = "25px",
   ...rest
@@ -22,19 +22,25 @@ function SuitIcon({
   if (!suit) return null;
 
   const suitName = suit.toLowerCase().replaceAll(" ", "-");
-  const selectedStyles: CSSProperties = selected ? {
-    boxSizing: 'border-box',
-    border: "3px solid #FF69B4",
-    borderRadius: '8px',
-    transform: "scale(1.1)",
-  } : {};
+  const selectedStyles: CSSProperties = selected
+    ? {
+        boxSizing: "border-box",
+        border: "3px solid #FF69B4",
+        borderRadius: "8px",
+        transform: "scale(1.1)",
+      }
+    : {};
 
-  let imageName = suitName;
-  if (!isRoyal) {
+  let imageName = "";
+  if (suit === CardSuit.JOKER) {
+    imageName = "special-joker";
+  } else if (suit === CardSuit.NOTHING) {
+    imageName = "special-nothing";
+  } else if (variant === "Royal") {
+    imageName = `${suitName}-royal`;
+  } else {
     // Non-royal cards need a number, let's just pick one for display
-    imageName = `${suitName}-1`
-  }else{
-    imageName = `${suitName}-royal`
+    imageName = `${suitName}-1`;
   }
 
   return (

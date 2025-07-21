@@ -1,12 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
+import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { socket, SocketContext } from "./socket";
-import "semantic-ui-css/semantic.min.css";
 import "./styles.css";
 // 导入i18n配置
 import "./i18n/config";
@@ -27,7 +26,10 @@ if (typeof window !== 'undefined' && !window.process) {
 
 const queryClient = new QueryClient();
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+root.render(
   <React.StrictMode>
     <SocketContext.Provider value={socket}>
       <QueryClientProvider client={queryClient}>
@@ -38,8 +40,7 @@ ReactDOM.render(
         </MantineProvider>
       </QueryClientProvider>
     </SocketContext.Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -80,7 +80,7 @@ function KeyInfo({
   const { t } = useTranslation();
   const [highlight, setHighlight] = useState(false);
   const [prevGamePhase, setPrevGamePhase] = useState(game.active.phase);
-  
+
   // 当游戏阶段变化时触发动画
   useEffect(() => {
     if (prevGamePhase !== game.active.phase) {
@@ -92,22 +92,17 @@ function KeyInfo({
   }, [game.active.phase, prevGamePhase]);
 
   return (
-    <>
-      <PlayerHand>
-        <p className="hand">{String(t("game.your_hand"))}</p>
-        <CardCount count={countEachSuit(player.cards.hand)} />
-      </PlayerHand>
       <AnimatedAlert
         className={highlight ? "highlight" : ""}
         icon={<GameInfoPopover {...{ game, player }} />}
         styles={{
-          root: { 
-            padding: "10px 5px", 
+          root: {
+            padding: "10px 5px",
             overflowX: "scroll",
             transition: "background-color 0.3s ease",
           },
-          message: { 
-            marginRight: "5px", 
+          message: {
+            marginRight: "5px",
             display: "inline-block",
             transition: "transform 0.3s ease",
           },
@@ -117,7 +112,6 @@ function KeyInfo({
           {getGameHeadlineMarkdown(game, player)}
         </ReactMarkdown>
       </AnimatedAlert>
-    </>
   );
 }
 

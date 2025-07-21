@@ -36,7 +36,8 @@
     "pass_to": "传给",
     "claim_suit": "声称花色是",
     "submit": "提交",
-    "received_card_info": "声称的\"{{claim}}\"实际上是……一个{{suit}}！",
+    "received_card_info_part1": "声称:",
+    "received_card_info_part2": "实际:",
     "pass_it_on": "轮到你把它传下去了！",
     "step_pick_card": "选择卡牌",
     "step_pick_claim": "选择声称",
@@ -107,6 +108,8 @@
     "Spider": "蜘蛛",
     "Stink bug": "臭虫",
     "Toad": "蟾蜍",
+    "Joker": "小丑",
+    "Nothing": "任意牌",
     "Royal": "皇冠"
   },
   "player": {

@@ -54,6 +54,8 @@ export enum AudioEventTrigger {
   PREDICT = "predict",
   PLAYER_JOINED = "player-joined",
   PLAYER_KICKED = "player-kicked",
+  PREDICTION_CORRECT = "prediction-correct",
+  PREDICTION_INCORRECT = "prediction-incorrect",
 }
 
 /**

@@ -49,6 +49,8 @@ export enum CardSuit {
   SPIDER = "Spider",
   STINK_BUG = "Stink bug",
   TOAD = "Toad",
+  JOKER = "Joker",
+  NOTHING = "Nothing",
 }
 
 export type CardVariant =
@@ -59,7 +61,8 @@ export type CardVariant =
   | "5"
   | "6"
   | "7"
-  | "Royal";
+  | "Royal"
+  | "SPECIAL";
 
 export type Claim = CardSuit | "Royal";
 

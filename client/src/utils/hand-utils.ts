@@ -3,7 +3,7 @@ import { Card, CardSuit } from "../types/game.types";
 export interface HandCard {
   id: string;
   suit: CardSuit;
-  variant: "Royal" | "Normal";
+  variant: "Royal" | "Normal" | "SPECIAL";
   card: Card;
   count: number;
 }
@@ -12,7 +12,15 @@ export const groupHandByCardType = (cards: Card[]): HandCard[] => {
   const cardMap = new Map<string, HandCard>();
 
   for (const card of cards) {
-    const variantType = card.variant === "Royal" ? "Royal" : "Normal";
+    let variantType: "Royal" | "Normal" | "SPECIAL";
+    if (card.variant === "Royal") {
+      variantType = "Royal";
+    } else if (card.variant === "SPECIAL") {
+      variantType = "SPECIAL";
+    } else {
+      variantType = "Normal";
+    }
+
     const id = `${card.suit}-${variantType}`;
 
     if (cardMap.has(id)) {

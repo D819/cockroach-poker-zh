@@ -290,33 +290,29 @@ export class GameManager {
 
   public getPlayerOrFail(playerId: string) {
     const player = this.getPlayer(playerId);
-    if (player) {
-      return player;
-    } else {
-      throw new Error(`Couldn't find player with id ${playerId}`);
-    }
+    if (player) return player;
+    else throw new Error(`Could not find player by id ${playerId}`);
   }
 
   private isCurrentClaimTruthful(): boolean {
-    const { claim } = this.currentClaim();
-    const actual = this.activeCard();
+    const activeCard = this.activeCard();
+    if (!activeCard) throw new Error("Could not find active card");
 
-    if (!actual) {
-      // Should not happen
-      return false;
+    const { claim } = this.currentClaim();
+
+    if (activeCard.suit === CardSuit.JOKER) {
+      return claim !== "Royal";
     }
 
     if (claim === "Royal") {
-      return actual.variant === "Royal";
+      return activeCard.variant === "Royal";
     }
 
-    return actual.suit === claim;
+    return activeCard.suit === claim;
   }
 
   public loserId(): string | undefined {
-    for (const playerId of this.playerIds()) {
-      if (this.managePlayer(playerId).hasLost()) return playerId;
-    }
+    return this.snapshot()?.loser?.id;
   }
 
   public manageEachPlayer(cb: (playerManager: PlayerManager) => void) {
@@ -387,103 +383,93 @@ export class GameManager {
 
   public resetGame(): void {
     this.update((game) => {
+      // Preserve players and their properties
+      for (const pId in game.players) {
+        const player = game.players[pId];
+        player.cards = { area: [], hand: [] };
+      }
+
+      delete game.loser;
+
       game.status = GameStatus.LOBBY;
       game.active = {
-        playerId: this.getHostPlayer()?.socketId ?? this.playerIds()[0],
+        playerId: game.active.playerId,
         passHistory: [],
         phase: GamePhase.PASS_SELECTION,
-      };
-    });
-
-    this.updateEachPlayer((player) => {
-      player.cards = {
-        hand: [],
-        area: [],
       };
     });
   }
 
   public resolveCardPrediction(prediction: boolean): void {
-    const gainedCard = this.activeCard();
-    if (!gainedCard) return;
+    const activeCard = this.activeCard();
 
-    const isPredictionAccurate = this.isCurrentClaimTruthful() === prediction;
-    const { to, from } = this.currentClaim();
-    const gainingPlayerId = isPredictionAccurate ? from : to;
+    if (!activeCard) {
+      return;
+    }
+    const { from: passerId, to: activePlayerId } = this.currentClaim();
 
-    this.managePlayer(gainingPlayerId).update((player) => {
-      player.cards.area.push(gainedCard);
-    });
+    let isCorrect: boolean;
 
-    if (gainedCard.variant === "Royal") {
-      this.drawPenaltyCard(gainingPlayerId);
+    if (activeCard.suit === CardSuit.NOTHING) {
+      isCorrect = false;
+    } else {
+      const isTruthful = this.isCurrentClaimTruthful();
+      isCorrect = prediction === isTruthful;
     }
 
-    this.pushPlayersNotification((player) => {
-      const language = player.language || 'en';
+    const penaltyReceiverId = isCorrect ? passerId : activePlayerId;
 
-      if (language === 'zh') {
-        if (to === player.socketId) {
-          if (isPredictionAccurate) {
-            return {
-              type: NotificationType.GENERAL,
-              message: `你正确预测了${this.getPlayerOrFail(from).name}的声称，所以${this.getPlayerOrFail(from).name}获得了这张牌`,
-            };
-          } else {
-            return {
-              type: NotificationType.GENERAL,
-              message: `你错误预测了${this.getPlayerOrFail(from).name}的声称，所以你获得了这张牌`,
-            };
-          }
-        } else if (from === player.socketId) {
-          if (isPredictionAccurate) {
-            return {
-              type: NotificationType.GENERAL,
-              message: `${this.getPlayerOrFail(to).name}正确预测了你的声称，所以你获得了这张牌`,
-            };
-          } else {
-            return {
-              type: NotificationType.GENERAL,
-              message: `${this.getPlayerOrFail(to).name}错误预测了你的声称，所以${this.getPlayerOrFail(to).name}获得了这张牌`,
-            };
-          }
-        } else {
-          if (isPredictionAccurate) {
-            return {
-              type: NotificationType.GENERAL,
-              message: `${this.getPlayerOrFail(to).name}正确预测了${this.getPlayerOrFail(from).name}的声称，所以${this.getPlayerOrFail(from).name}获得了这张牌`,
-            };
-          } else {
-            return {
-              type: NotificationType.GENERAL,
-              message: `${this.getPlayerOrFail(to).name}错误预测了${this.getPlayerOrFail(from).name}的声称，所以${this.getPlayerOrFail(to).name}获得了这张牌`,
-            };
-          }
-        }
+    // 特殊牌与皇冠牌才进行额外惩罚
+    if(["Royal","SPECIAL"].includes(activeCard.variant)){
+      this.drawPenaltyCard(penaltyReceiverId);
+    }
+    this.triggerAudio(
+      isCorrect
+        ? AudioEventTrigger.PREDICTION_CORRECT
+        : AudioEventTrigger.PREDICTION_INCORRECT
+    );
+
+    const loser = this.players()[penaltyReceiverId];
+    const passer = this.players()[passerId];
+    const activePlayer = this.players()[activePlayerId];
+
+    this.pushPlayersNotification((player) => {
+      const language = player.language || "en";
+      if (language === "zh") {
+        return {
+          type: NotificationType.GENERAL,
+          message: `${activePlayer.name} ${
+            isCorrect ? "正确地" : "错误地"
+          } 猜测了 ${passer.name} 传递的卡片. ${
+            loser.name
+          } 抽了一张惩罚牌.`,
+        };
       } else {
         return {
           type: NotificationType.GENERAL,
-          message: `${
-            to === player.socketId ? "You" : this.getPlayerOrFail(to).name
-          } ${isPredictionAccurate ? "correctly" : "incorrectly"} predicted ${
-            from === player.socketId
-              ? "your"
-              : `${this.getPlayerOrFail(from).name}'s`
-          } claim, so ${
-            player.socketId === gainingPlayerId
-              ? "you collect"
-              : `${this.getPlayerOrFail(gainingPlayerId).name} collects`
-          } the card`,
+          message: `${activePlayer.name} guessed ${
+            isCorrect ? "correctly" : "incorrectly"
+          } about the card from ${passer.name}. ${
+            loser.name
+          } drew a penalty card.`,
         };
       }
     });
 
-    // If there is a losing player, it will always be the player
-    //  who has just gained a card (so no other players need checking)
-    if (this.managePlayer(gainingPlayerId).hasLost() || this.managePlayer(gainingPlayerId).snapshot()?.cards.hand.length === 0) {
-      this.declareLoser(gainingPlayerId);
+    this.managePlayer(penaltyReceiverId).update(player => {
+        player.cards.area.push(activeCard);
+    });
+
+    const { area: loserArea } = this.players()[penaltyReceiverId].cards;
+
+    // 按花色分组统计，检查任意花色是否达到4张
+    const suitCounts = _.groupBy(loserArea, 'suit');
+    const hasFourOfAnySuit = Object.values(suitCounts).some(cards => cards.length >= 4);
+
+    if (hasFourOfAnySuit ) {
+      this.declareLoser(penaltyReceiverId);
     } else {
-      this.startNewCardPass(gainingPlayerId);
+      this.startNewCardPass(penaltyReceiverId);
     }
   }
 

@@ -36,7 +36,8 @@
     "pass_to": "Pass to",
     "claim_suit": "Claim suit is",
     "submit": "Submit",
-    "received_card_info": "The claimed \"{{claim}}\" is actually... a {{suit}}!",
+    "received_card_info_part1": "Claimed:",
+    "received_card_info_part2": "Actual:",
     "pass_it_on": "Now it's your turn to pass it on!",
     "step_pick_card": "Pick card",
     "step_pick_claim": "Pick claim",
@@ -102,7 +103,10 @@
     "Scorpion": "Scorpion",
     "Spider": "Spider",
     "Stink bug": "Stink bug",
-    "Toad": "Toad"
+    "Toad": "Toad",
+    "Joker": "Joker",
+    "Nothing": "Nothing",
+    "Royal": "Royal"
   },
   "player": {
     "set_name": "Set player name",

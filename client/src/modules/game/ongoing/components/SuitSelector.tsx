@@ -9,7 +9,8 @@ interface Props {
   label?: string;
 }
 
-const ALL_CLAIMS: Claim[] = [...Object.values(CardSuit), "Royal"];
+const ALL_SUITS = Object.values(CardSuit).filter(s => s !== CardSuit.JOKER && s !== CardSuit.NOTHING);
+const ALL_CLAIMS: Claim[] = [...ALL_SUITS, "Royal"];
 
 function SuitSelector({
   value,
@@ -33,7 +34,7 @@ function SuitSelector({
             variant={value === claim ? "filled" : "outline"}
             onClick={() => onSelect(claim)}
             disabled={claim !== "Royal" && isSuitDisabled(claim)}
-            size="sm"
+            size="xs"
           >
             <Group spacing="xs">
               <Avatar

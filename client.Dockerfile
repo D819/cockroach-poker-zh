@@ -4,13 +4,14 @@ ADD client/package.json /temp/package.json
 #ADD package-lock.json /temp/package-lock.json
 RUN set -xe; \
     cd /temp ; \
+    rm -f package-lock.json; \
     npm install --verbose --legacy-peer-deps
 COPY ./client /src
 # 拉取代码并打包
 RUN cd /src ; \
     if [ -d "node_modules" ]; then rm -rf node_modules; fi;\
     mv /temp/node_modules /src/node_modules;\
-    export NODE_OPTIONS="--openssl-legacy-provider --max-old-space-size=14096"; \
+    export NODE_OPTIONS="--openssl-legacy-provider";\
     npm run build;
 # nginx
 FROM nginx:1.25-alpine As server

@@ -3,29 +3,40 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BookmarksViewState">
+    <option name="rewriteBookmarkType" value="true" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="8fe46316-45f7-4102-afd0-aac9cc414661" name="更改" comment="加入皇冠牌、声称类型、皇冠牌惩罚机制惩罚，优化卡牌显示ui">
-      <change afterPath="$PROJECT_DIR$/client/public/assets/card-fronts/spider-royal.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/PunishmentPile.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client.Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/client.Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/assets/card-fronts/stinkbug-royal.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/assets/card-fronts/stink-bug-royal.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/usePlayer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/usePlayer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/i18n/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/i18n/en.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/i18n/zh.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/i18n/zh.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/GameOngoing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/GameOngoing.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/ActiveCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/ActiveCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/lobby/GameLobby.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/lobby/GameLobby.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/CardPassPicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/CardPassPicker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/CardReveal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/CardReveal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/KeyInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/KeyInfo.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitIcon.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/modules/game/ongoing/components/SuitSelector.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/routes/GameRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/routes/GameRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/routes/IndexRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/routes/IndexRoute.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/types/event.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/types/event.types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/types/game.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/types/game.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/data-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/data-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/atoms/PlayerNamer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/atoms/PlayerNamer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/utils/deck-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/deck-utils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/utils/hand-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/hand-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/game/controllers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/game/controllers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/server.Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/game/manager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/game/manager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/tsconfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,29 +58,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "F:/德国蟑螂/cockroach-poker1/test/cockroach-poker",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "npm.cockroach-poker-zh > dev:client.executor": "Run",
-    "npm.cockroach-poker-zh > dev:server.executor": "Debug",
-    "ts.external.directory.path": "F:\\德国蟑螂\\cockroach-poker1\\cockroach-poker-zh\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/德国蟑螂/cockroach-poker1/test/cockroach-poker&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;npm.cockroach-poker-zh &gt; dev:client.executor&quot;: &quot;Run&quot;,
+    &quot;npm.cockroach-poker-zh &gt; dev:server.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;F:\\德国蟑螂\\cockroach-poker1\\cockroach-poker-zh\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\德国蟑螂\cockroach-poker1\cockroach-poker-zh\client\public\assets\card-fronts" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.cockroach-poker-zh &gt; dev:server">
+  <component name="RunManager" selected="npm.cockroach-poker-zh &gt; dev:client">
     <configuration name="cockroach-poker-zh &gt; dev:client" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -92,8 +103,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.cockroach-poker-zh &gt; dev:server" />
         <item itemvalue="npm.cockroach-poker-zh &gt; dev:client" />
+        <item itemvalue="npm.cockroach-poker-zh &gt; dev:server" />
       </list>
     </recent_temporary>
   </component>
@@ -121,7 +132,19 @@
       <workItem from="1752107139981" duration="10605000" />
       <workItem from="1752196452421" duration="1140000" />
       <workItem from="1752197634982" duration="9137000" />
-      <workItem from="1752214536271" duration="11173000" />
+      <workItem from="1752214536271" duration="11501000" />
+      <workItem from="1752279350910" duration="1273000" />
+      <workItem from="1752453223122" duration="939000" />
+      <workItem from="1752548997560" duration="1441000" />
+      <workItem from="1752551208209" duration="13238000" />
+      <workItem from="1752625154384" duration="15184000" />
+      <workItem from="1752711625294" duration="2019000" />
+      <workItem from="1752715998713" duration="1006000" />
+      <workItem from="1752723071622" duration="1216000" />
+      <workItem from="1752738020285" duration="2067000" />
+      <workItem from="1752797793267" duration="886000" />
+      <workItem from="1752884820360" duration="1140000" />
+      <workItem from="1753057079475" duration="439000" />
     </task>
     <task id="LOCAL-00001" summary="汉化+ui优化+docker线上环境前端配置，对于git push的eslint监测暂时禁用">
       <option name="closed" value="true" />
@@ -131,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750653598089</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="加入皇冠牌、声称类型、皇冠牌惩罚机制惩罚，优化卡牌显示ui">
+      <option name="closed" value="true" />
+      <created>1752225893332</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752225893333</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,17 +183,5 @@
     <MESSAGE value="汉化+ui优化+docker线上环境前端配置，对于git push的eslint监测暂时禁用" />
     <MESSAGE value="加入皇冠牌、声称类型、皇冠牌惩罚机制惩罚，优化卡牌显示ui" />
     <option name="LAST_COMMIT_MESSAGE" value="加入皇冠牌、声称类型、皇冠牌惩罚机制惩罚，优化卡牌显示ui" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/src/game/manager.ts</url>
-          <line>190</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

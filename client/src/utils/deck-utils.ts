@@ -35,4 +35,6 @@ export const INITIAL_DECK: Card[] = [
   ...createSuitDeck(CardSuit.SPIDER),
   ...createSuitDeck(CardSuit.STINK_BUG),
   ...createSuitDeck(CardSuit.TOAD),
+  createCard(CardSuit.JOKER, "SPECIAL"),
+  createCard(CardSuit.NOTHING, "SPECIAL"),
 ];

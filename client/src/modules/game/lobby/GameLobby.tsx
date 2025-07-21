@@ -21,12 +21,12 @@ import {
   Avatar,
   Box,
 } from "@mantine/core";
-import { useClipboard } from "@mantine/hooks";
 import { FaCrown } from "react-icons/fa";
 import { FiAlertCircle, FiCheck, FiCopy, FiX } from "react-icons/fi";
 import {
   useTranslation
 } from "react-i18next";
+import { useState } from "react";
 
 interface Props
   extends Pick <
@@ -47,8 +47,32 @@ function GameLobby({
   const {
     t
   } = useTranslation();
-  const clipboard = useClipboard({ timeout: 2000 });
+  const [copied, setCopied] = useState(false);
   const isAtMinimumPlayerCount = players.length >= 3;
+
+  const handleCopy = () => {
+    const textArea = document.createElement("textarea");
+    textArea.value = window.location.href;
+
+    // Prevent scrolling to bottom
+    textArea.style.position = "fixed";
+    textArea.style.top = "0px";
+    textArea.style.left = "0px";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      document.execCommand("copy");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2s
+    } catch (err) {
+      console.error("Unable to copy", err);
+    }
+
+    document.body.removeChild(textArea);
+  };
 
   return (
     <Container size="sm" py="xl" style={{ height: "100%" }}>
@@ -74,21 +98,15 @@ function GameLobby({
                 {String(t("lobby.game_id"))}: {game.id}
               </Text>
               <Tooltip
-                label={
-                  clipboard.copied ? String(t("lobby.copied")) : String(t("lobby.copy"))
-                }
+                label={copied ? String(t("lobby.copied")) : String(t("lobby.copy"))}
                 withArrow
                 position="right"
               >
                 <ActionIcon
-                  color={clipboard.copied ? "teal" : "gray"}
-                  onClick={() => clipboard.copy(window.location.href)}
+                  color={copied ? "teal" : "gray"}
+                  onClick={handleCopy}
                 >
-                  {clipboard.copied ? (
-                    <FiCheck size={16} />
-                  ) : (
-                    <FiCopy size={16} />
-                  )}
+                  {copied ? <FiCheck size={16} /> : <FiCopy size={16} />}
                 </ActionIcon>
               </Tooltip>
             </Group>

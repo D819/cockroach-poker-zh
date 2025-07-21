@@ -5,7 +5,7 @@ import { useSocket } from "../socket";
 import { ClientEvent, ServerEvent } from "../types/event.types";
 import { Player } from "../types/game.types";
 import useSocketListener from "./useSocketListener";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 
 interface UsePlayerResult {
@@ -25,7 +25,7 @@ export default function usePlayer(
   aliasIds: string[] = []
 ): UsePlayerResult {
   const socket = useSocket();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { state, dispatch, actions } = useRiducer(initialState);
   const { gameId } = useParams<{ gameId: string }>();
   const playerSocketId = playerId ?? socket.id;
@@ -63,7 +63,7 @@ export default function usePlayer(
 
   useSocketListener(ServerEvent.PLAYER_KICKED, (fromGameId, kickedPlayerId) => {
     if (fromGameId === gameId && state.data?.socketId === kickedPlayerId) {
-      history.push("/");
+      navigate("/");
       window.alert("You have been kicked from the game by the host!");
     }
   });

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import useMobileVH from "./hooks/useMobileVH";
@@ -24,10 +24,10 @@ function App(): JSX.Element {
         }}
       >
         <div className="active-area">
-          <Switch>
-            <Route exact path="/game/:gameId" component={GameRoute} />
-            <Route path="/" component={IndexRoute} />
-          </Switch>
+          <Routes>
+            <Route path="/game/:gameId" element={<GameRoute />} />
+            <Route path="/" element={<IndexRoute />} />
+          </Routes>
         </div>
       </main>
     </Router>
