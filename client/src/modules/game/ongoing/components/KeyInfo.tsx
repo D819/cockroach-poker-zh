@@ -4,13 +4,10 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { Game, Player } from "../../../../types/game.types";
-import { countEachSuit } from "../../../../utils/hand-utils";
-import CardCount from "./CardCount";
 import {
   getGameHeadlineMarkdown,
   getGameInfoMarkdown,
 } from "../../../../utils/game-utils";
-import { useTranslation } from "react-i18next";
 
 interface KeyInfoProps {
   className?: string;
@@ -36,29 +33,6 @@ const pulse = keyframes`
   }
 `;
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const PlayerHand = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  column-gap: 5px;
-  animation: ${fadeIn} 0.5s ease-in-out;
-
-  .hand {
-    font-weight: bold;
-  }
-`;
-
 const AnimatedAlert = styled(Alert)`
   transition: all 0.3s ease;
   
@@ -72,12 +46,9 @@ const AnimatedAlert = styled(Alert)`
 `;
 
 function KeyInfo({
-  className,
-  style,
   game,
   player,
 }: KeyInfoProps): JSX.Element {
-  const { t } = useTranslation();
   const [highlight, setHighlight] = useState(false);
   const [prevGamePhase, setPrevGamePhase] = useState(game.active.phase);
 

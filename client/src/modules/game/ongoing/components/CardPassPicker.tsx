@@ -9,7 +9,7 @@ import {
   Badge,
 } from "@mantine/core";
 import { useState, useEffect } from "react";
-import { Card, CardSuit, Claim, Game, Player } from "../../../../types/game.types";
+import { Card,  Claim, Game, Player } from "../../../../types/game.types";
 import SuitIcon from "./SuitIcon";
 import SuitSelector from "./SuitSelector";
 import { selectCurrentPassRecord } from "../../../../selectors/game-selectors";

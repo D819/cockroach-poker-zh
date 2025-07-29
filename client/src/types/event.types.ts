@@ -1,6 +1,6 @@
 import { Socket as TClientSocket } from "socket.io-client";
 import { Socket as TServerSocket, Server as TServer } from "socket.io";
-import { Card, CardSuit, Claim, Game, GameSettings, Player } from "./game.types";
+import { Card, Claim, Game, GameSettings, Player } from "./game.types";
 import { GameNotification, PlayerNotification } from "./notification.types";
 
 export type ClientSocket = TClientSocket<

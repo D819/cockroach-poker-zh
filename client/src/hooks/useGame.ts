@@ -18,7 +18,7 @@ const initialState: UseGameResult = {
   error: undefined,
 };
 
-export default function useGame(gameId: Game["id"]): UseGameResult {
+export default function useGame(gameId: Game["id"] | undefined): UseGameResult {
   const socket = useSocket();
   const { state, dispatch, actions } = useRiducer(initialState);
 
@@ -29,6 +29,15 @@ export default function useGame(gameId: Game["id"]): UseGameResult {
   };
 
   useEffect(() => {
+    if (!gameId) {
+      dispatch(
+        bundle([
+          actions.error.create.update("Game not found"),
+          actions.loading.create.off(),
+        ])
+      );
+      return;
+    }
     socket.emit(ClientEvent.GET_GAME, gameId);
   }, [socket, gameId]);
 

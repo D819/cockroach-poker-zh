@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Group, Image, Text} from "@mantine/core";
-import {Card, CardSuit, Claim, Game} from "../../../../types/game.types";
+import {Card, Claim, Game} from "../../../../types/game.types";
 import {FaArrowRight} from "react-icons/fa";
 import {selectCurrentPassRecord} from "../../../../selectors/game-selectors";
 import {useTranslation} from "react-i18next";
@@ -70,9 +70,6 @@ function ActiveCard({ className, style, card, isFaceUp, game }: Props): JSX.Elem
   let claimedSuit: Claim = card.suit; // 默认与实际相同
 
   if (game) {
-    const a={
-      selectCurrentPassRecord,
-    }
     const currentPass = selectCurrentPassRecord(game);
     if (currentPass) {
       claimedSuit = currentPass.claim;

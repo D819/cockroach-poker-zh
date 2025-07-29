@@ -10,4 +10,4 @@ services:
       - 3005:80
     build:
       dockerfile: client.Dockerfile
-      context: ./do
+      context: ./
